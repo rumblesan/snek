@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: #000;
+}
+
+canvas {
+  display: block;
+  width: 1024px;
+  height: 768px;
+  border: 1px solid black;
+}
+
+main {
+  margin:0 auto;
+  width: 1024px;
+}
