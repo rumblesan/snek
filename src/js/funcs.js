@@ -1,11 +1,10 @@
-
-const glslFuncs = {
+export const glslFuncs = {
   osc: {
     type: 'src',
     inputs: [
       { name: 'frequency', type: 'float', default: 60.0 },
       { name: 'sync', type: 'float', default: 0.1 },
-      { name: 'offset', type: 'float', default: 0.0 }
+      { name: 'offset', type: 'float', default: 0.0 },
     ],
     glsl: `
           vec4 osc(vec2 _st, float freq, float sync, float offset){
@@ -17,4 +16,3 @@ const glslFuncs = {
           }`,
   },
 };
-

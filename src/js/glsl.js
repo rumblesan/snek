@@ -3,15 +3,15 @@ precision mediump float;
 uniform sampler2D texture;
 uniform float u_time;
 varying vec2 uv;
-`
+`;
 
 const vertHeader = `
 precision mediump float;
 attribute vec2 a_position;
 varying vec2 uv;
-`
+`;
 
-function generateVertCode() {
+export function generateVertCode() {
   return `
   ${vertHeader}
 
@@ -21,7 +21,7 @@ function generateVertCode() {
   }`;
 }
 
-function generateFragCode(body, funcs=[]) {
+export function generateFragCode(body, funcs = []) {
   return `
   ${fragHeader}
 
