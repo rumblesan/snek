@@ -88,6 +88,13 @@ function typeCheckRouting(ast, state) {
   const bus = ast.to;
   bus.type = typeCheckSignal(ast.from, state);
 
+  if (state.busses[bus.name]) {
+    if (!typesMatch(state.busses[bus.name].type, bus.type)) {
+      throw new TypeCheckerException(
+        `Types must match for pre-existing bus ${bus.name}`
+      );
+    }
+  }
   state.busses[bus.name] = BusType(bus.name, bus.type);
   return bus.type;
 }
