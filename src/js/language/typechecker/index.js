@@ -151,7 +151,6 @@ function typeCheckFunction(ast, inputType, state) {
   const argTypes = ast.args.map(a => typeCheckSignal(a, state));
   if (
     typesMatch(funcTypes.inputType, inputType) &&
-    funcTypes.argTypes.length === argTypes.length &&
     funcTypes.argTypes.every((a, idx) => typesMatch(a, argTypes[idx]))
   ) {
     if (funcTypes.returnType.type === INPUT) {
