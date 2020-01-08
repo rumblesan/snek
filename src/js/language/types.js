@@ -42,3 +42,14 @@ export function typesMatch(target, value) {
       return false;
   }
 }
+
+export function typeToString(type) {
+  switch (type.type) {
+    case GENERIC:
+      return 'generic';
+    case FLOAT:
+      return 'float';
+    case VEC:
+      return `vec${type.count}`;
+  }
+}
