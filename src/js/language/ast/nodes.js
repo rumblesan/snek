@@ -2,7 +2,7 @@ export const PROGRAM = 'PROGRAM';
 
 export const ROUTING = 'ROUTING';
 
-export const SIGNAL = 'SIGNAL';
+export const SOURCE = 'SOURCE';
 export const PATCH = 'PATCH';
 export const FUNC = 'FUNC';
 export const SUBPATCH = 'SUBPATCH';

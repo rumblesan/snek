@@ -5,7 +5,7 @@ import parser from '../../parser';
 import {
   Program,
   Routing,
-  Signal,
+  Source,
   Patch,
   Func,
   BinaryOp,
@@ -14,7 +14,7 @@ import {
   Bus,
 } from '../../ast';
 
-import { typeCheck, BusType, FunctionType, OperatorType } from './index';
+import { typeCheck, BusType, FunctionType, OperatorType } from '../index';
 import { Float, Generic, Input, Vector } from '../../types';
 
 import { dedent } from 'dentist';
@@ -36,16 +36,16 @@ describe('Type Checker', function() {
     const expected = Program([
       Routing(
         Patch(
-          Signal(
+          Source(
             BinaryOp(
               '+',
-              Signal(Accessor('position', 'x', Float()), Float()),
-              Signal(Num(1, Float()), Float()),
+              Source(Accessor('position', 'x', Float()), Float()),
+              Source(Num(1, Float()), Float()),
               Float()
             ),
             Float()
           ),
-          Func('osc', [Signal(Num(10, Float()), Float())], Float()),
+          Func('osc', [Source(Num(10, Float()), Float())], Float()),
           Float()
         ),
         Bus('speed', Float())
@@ -80,10 +80,10 @@ describe('Type Checker', function() {
         Patch(
           Patch(
             Patch(
-              Signal(Accessor('position', 'x', Float()), Float()),
+              Source(Accessor('position', 'x', Float()), Float()),
               Func(
                 'osc',
-                [Signal(Num(10, Float()), Float())],
+                [Source(Num(10, Float()), Float())],
                 Vector(4, Float())
               ),
               Vector(4, Float())
@@ -95,10 +95,10 @@ describe('Type Checker', function() {
             'modulate',
             [
               Patch(
-                Signal(Accessor('position', 'y', Float()), Float()),
+                Source(Accessor('position', 'y', Float()), Float()),
                 Func(
                   'osc',
-                  [Signal(Num(1, Float()), Float())],
+                  [Source(Num(1, Float()), Float())],
                   Vector(4, Float())
                 ),
                 Vector(4, Float())
@@ -133,10 +133,10 @@ describe('Type Checker', function() {
       Routing(
         Patch(
           Patch(
-            Signal(Accessor('position', 'x', Float()), Float()),
+            Source(Accessor('position', 'x', Float()), Float()),
             Func(
               'osc',
-              [Signal(Num(10, Float()), Float())],
+              [Source(Num(10, Float()), Float())],
               Vector(4, Float())
             ),
             Vector(4, Float())

@@ -2,7 +2,7 @@ import { GENERIC, INPUT, VEC, Float, typesMatch } from '../types';
 import {
   PROGRAM,
   ROUTING,
-  SIGNAL,
+  SOURCE,
   PATCH,
   FUNC,
   SUBPATCH,
@@ -86,17 +86,17 @@ function typeCheckProgram(ast, state) {
 function typeCheckRouting(ast, state) {
   nodeAssert(ast, ROUTING);
   const bus = ast.to;
-  bus.type = typeCheckSignalChain(ast.from, state);
+  bus.type = typeCheckSignal(ast.from, state);
 
   state.busses[bus.name] = BusType(bus.name, bus.type);
   return bus.type;
 }
 
-function typeCheckSignalChain(ast, state) {
+function typeCheckSignal(ast, state) {
   if (ast.node === PATCH) {
     ast.type = typeCheckPatch(ast, state);
-  } else if (ast.node === SIGNAL) {
-    ast.type = typeCheckSignal(ast, state);
+  } else if (ast.node === SOURCE) {
+    ast.type = typeCheckSource(ast, state);
   } else {
     throw new TypeCheckerException(
       `Expecting Patch or Signal but found ${ast.node}`
@@ -107,36 +107,36 @@ function typeCheckSignalChain(ast, state) {
 
 function typeCheckPatch(ast, state) {
   nodeAssert(ast, PATCH);
-  const sourceType = typeCheckSignalChain(ast.source, state);
-  switch (ast.transformer.node) {
+  const inputType = typeCheckSignal(ast.input, state);
+  switch (ast.func.node) {
     case FUNC:
-      ast.type = typeCheckFunction(ast.transformer, sourceType, state);
+      ast.type = typeCheckFunction(ast.func, inputType, state);
       return ast.type;
     case SUBPATCH:
-      ast.type = typeCheckSubPatch(ast.transformer, sourceType, state);
+      ast.type = typeCheckSubPatch(ast.func, inputType, state);
       return ast.type;
     default:
       throw new TypeCheckerException(
-        `Expecting Function or SubPatch but found ${ast.transformer.node}`
+        `Expecting Function or SubPatch but found ${ast.func.node}`
       );
   }
 }
 
-function typeCheckSignal(ast, state) {
-  nodeAssert(ast, SIGNAL);
-  const signal = ast.signal;
-  switch (signal.node) {
+function typeCheckSource(ast, state) {
+  nodeAssert(ast, SOURCE);
+  const source = ast.source;
+  switch (source.node) {
     case BINARYOP:
-      ast.type = typeCheckBinaryOp(signal, state);
+      ast.type = typeCheckBinaryOp(source, state);
       return ast.type;
     case NUM:
-      ast.type = typeCheckNum(signal, state);
+      ast.type = typeCheckNum(source, state);
       return ast.type;
     case ACCESSOR:
-      ast.type = typeCheckAccessor(signal, state);
+      ast.type = typeCheckAccessor(source, state);
       return ast.type;
     case BUS:
-      ast.type = typeCheckBus(signal, state);
+      ast.type = typeCheckBus(source, state);
       return ast.type;
     default:
       throw new TypeCheckerException(
@@ -148,7 +148,7 @@ function typeCheckSignal(ast, state) {
 function typeCheckFunction(ast, inputType, state) {
   nodeAssert(ast, FUNC);
   const funcTypes = state.functions[ast.name];
-  const argTypes = ast.args.map(a => typeCheckSignalChain(a, state));
+  const argTypes = ast.args.map(a => typeCheckSignal(a, state));
   if (
     typesMatch(funcTypes.inputType, inputType) &&
     funcTypes.argTypes.length === argTypes.length &&
@@ -178,8 +178,8 @@ function typeCheckSubPatch(ast /*, inputType, state*/) {
 
 function typeCheckBinaryOp(ast, state) {
   nodeAssert(ast, BINARYOP);
-  const leftType = typeCheckSignal(ast.value1, state);
-  const rightType = typeCheckSignal(ast.value2, state);
+  const leftType = typeCheckSource(ast.value1, state);
+  const rightType = typeCheckSource(ast.value2, state);
   const opTypes = state.operators[ast.op];
   if (
     typesMatch(opTypes.leftType, leftType) &&

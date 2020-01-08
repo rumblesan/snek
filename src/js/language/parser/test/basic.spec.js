@@ -5,7 +5,7 @@ import parser from '../index';
 import {
   Program,
   Routing,
-  Signal,
+  Source,
   Patch,
   Func,
   SubPatch,
@@ -30,10 +30,10 @@ describe('Parser', function() {
     const expected = Program([
       Routing(
         Patch(
-          Signal(
-            BinaryOp('+', Signal(Accessor('position', 'x')), Signal(Num(1)))
+          Source(
+            BinaryOp('+', Source(Accessor('position', 'x')), Source(Num(1)))
           ),
-          Func('osc', [Signal(Num(10))])
+          Func('osc', [Source(Num(10))])
         ),
         Bus('speed')
       ),
@@ -52,10 +52,10 @@ describe('Parser', function() {
     const expected = Program([
       Routing(
         Patch(
-          Signal(Bus('position')),
+          Source(Bus('position')),
           SubPatch(
             'in',
-            Patch(Signal(Accessor('in', 'x')), Func('osc', [Signal(Num(10))]))
+            Patch(Source(Accessor('in', 'x')), Func('osc', [Source(Num(10))]))
           )
         ),
         Bus('out')
@@ -77,10 +77,10 @@ describe('Parser', function() {
         Patch(
           Patch(
             Patch(
-              Signal(Accessor('position', 'x')),
-              Func('rotate', [Signal(Num(3))])
+              Source(Accessor('position', 'x')),
+              Func('rotate', [Source(Num(3))])
             ),
-            Func('osc', [Signal(Num(10))])
+            Func('osc', [Source(Num(10))])
           ),
           Func('invert', [])
         ),

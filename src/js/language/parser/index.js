@@ -6,7 +6,7 @@ import ArithmaticShunter from './shuntingYard';
 import {
   Program,
   Routing,
-  Signal,
+  Source,
   Patch,
   Func,
   SubPatch,
@@ -45,7 +45,7 @@ parser.routing = function(debug = false) {
 
 parser.signal = function(debug = false) {
   if (debug) console.log('Signal');
-  let source = Signal(this.source(debug));
+  let source = this.source(debug);
   while (this.la1('patch arrow')) {
     this.match('patch arrow');
     const func = this.func(debug);
@@ -60,7 +60,7 @@ parser.source = function(debug = false) {
   if (this.la1('operator')) {
     src = this.operator(src);
   }
-  return src;
+  return Source(src);
 };
 
 parser.baseSource = function(debug = false) {
@@ -109,10 +109,10 @@ parser.func = function(debug = false) {
 parser.operator = function(left, debug = false) {
   if (debug) console.log('Operator');
   const shunter = new ArithmaticShunter();
-  shunter.shuntValue(Signal(left));
+  shunter.shuntValue(Source(left));
   while (this.la1('operator')) {
     shunter.shuntOp(this.match('operator').content);
-    shunter.shuntValue(Signal(this.source(debug)));
+    shunter.shuntValue(this.source(debug));
   }
   return shunter.getOutput();
 };

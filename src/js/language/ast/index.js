@@ -1,7 +1,7 @@
 import {
   PROGRAM,
   ROUTING,
-  SIGNAL,
+  SOURCE,
   PATCH,
   FUNC,
   SUBPATCH,
@@ -22,7 +22,7 @@ export function Program(routings) {
 }
 
 /**
- *  from: Signal | Patch
+ *  from: Source | Patch
  *  to:   Bus
  */
 export function Routing(from, to, { line, pos } = {}) {
@@ -38,10 +38,10 @@ export function Routing(from, to, { line, pos } = {}) {
 /**
  *  value: BinaryOp | Num | Accessor | Bus
  */
-export function Signal(signal, type, { line, pos } = {}) {
+export function Source(source, type, { line, pos } = {}) {
   return {
-    node: SIGNAL,
-    signal,
+    node: SOURCE,
+    source,
     type,
     line,
     pos,
@@ -49,14 +49,14 @@ export function Signal(signal, type, { line, pos } = {}) {
 }
 
 /**
- *  source:      Signal | Patch
- *  transformer: Function | SubPatch
+ *  input: Source | Patch
+ *  func:  Function | SubPatch
  */
-export function Patch(source, transformer, type, { line, pos } = {}) {
+export function Patch(input, func, type, { line, pos } = {}) {
   return {
     node: PATCH,
-    source,
-    transformer,
+    input,
+    func,
     type,
     line,
     pos,
@@ -65,7 +65,7 @@ export function Patch(source, transformer, type, { line, pos } = {}) {
 
 /**
  *  name: Identifier
- *  args: [Signal | Patch]
+ *  args: [Source | Patch]
  */
 export function Func(name, args, type, { line, pos } = {}) {
   return {
@@ -81,7 +81,7 @@ export function Func(name, args, type, { line, pos } = {}) {
 /**
  *  name: Identifier
  *  input: Identifier
- *  patch: Signal | Patch
+ *  patch: Source | Patch
  */
 export function SubPatch(input, patch, type, { line, pos } = {}) {
   return {
@@ -96,8 +96,8 @@ export function SubPatch(input, patch, type, { line, pos } = {}) {
 
 /**
  *  operator: Op
- *  value1: Expression | Signal
- *  value2: Expression | Signal
+ *  value1: Source
+ *  value2: Source
  */
 export function BinaryOp(op, value1, value2, type, { line, pos } = {}) {
   return {
