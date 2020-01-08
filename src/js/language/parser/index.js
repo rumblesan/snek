@@ -12,7 +12,7 @@ import {
   SubPatch,
   //BinaryOp,
   Num,
-  Channel,
+  Accessor,
   Bus,
 } from '../ast';
 
@@ -35,9 +35,9 @@ parser.program = function(debug = false) {
 
 parser.routing = function(debug = false) {
   if (debug) console.log('Routing');
-  let signal = this.signal(debug);
+  const signal = this.signal(debug);
   this.match('route arrow');
-  let bus = this.bus(debug);
+  const bus = this.bus(debug);
   this.match('semi colon');
 
   return Routing(signal, bus);
@@ -45,24 +45,13 @@ parser.routing = function(debug = false) {
 
 parser.signal = function(debug = false) {
   if (debug) console.log('Signal');
-  const source = this.source(debug);
-  if (this.la1('patch arrow')) {
+  let source = Signal(this.source(debug));
+  while (this.la1('patch arrow')) {
     this.match('patch arrow');
-    const to = this.signalChain(debug);
-    return Patch(source, to);
+    const func = this.func(debug);
+    source = Patch(source, func);
   }
-  return Signal(source);
-};
-
-parser.signalChain = function(debug = false) {
-  if (debug) console.log('Signal Chain');
-  const from = this.sink(debug);
-  if (this.la1('patch arrow')) {
-    this.match('patch arrow');
-    const to = this.signalChain(debug);
-    return Patch(from, to);
-  }
-  return from;
+  return source;
 };
 
 parser.source = function(debug = false) {
@@ -83,28 +72,19 @@ parser.baseSource = function(debug = false) {
     if (this.la1('period')) {
       this.match('period');
       const channelName = this.match('identifier').content;
-      return Channel(id, channelName);
+      return Accessor(id, channelName);
     }
     return Bus(id);
   } else if (this.la1('open paren')) {
     this.match('open paren');
-    const sig = this.signal(debug);
+    const source = this.source(debug);
     this.match('close paren');
-    return sig;
+    return source;
   }
 };
 
-parser.sink = function(debug = false) {
-  if (debug) console.log('Sink');
-  let snk = this.baseSink(debug);
-  if (this.la1('operator')) {
-    snk = this.operator(snk, debug);
-  }
-  return snk;
-};
-
-parser.baseSink = function(debug = false) {
-  if (debug) console.log('Base Sink');
+parser.func = function(debug = false) {
+  if (debug) console.log('Function');
   if (this.la1('identifier')) {
     const id = this.match('identifier').content;
     if (this.la1('open paren')) {
@@ -120,19 +100,19 @@ parser.baseSink = function(debug = false) {
     return Bus(id);
   } else if (this.la1('open paren')) {
     this.match('open paren');
-    const sink = this.sink(debug);
+    const func = this.func(debug);
     this.match('close paren');
-    return sink;
+    return func;
   }
 };
 
 parser.operator = function(left, debug = false) {
   if (debug) console.log('Operator');
   const shunter = new ArithmaticShunter();
-  shunter.shuntValue(left);
+  shunter.shuntValue(Signal(left));
   while (this.la1('operator')) {
     shunter.shuntOp(this.match('operator').content);
-    shunter.shuntValue(this.source(debug));
+    shunter.shuntValue(Signal(this.source(debug)));
   }
   return shunter.getOutput();
 };
@@ -156,6 +136,11 @@ parser.bus = function(debug = false) {
   const busName = this.match('identifier').content;
   if (debug) console.log(`parsed Bus: ${busName}`);
   return Bus(busName);
+};
+
+parser.position = function() {
+  const { line, character } = this.tokens[0];
+  return { line, character };
 };
 
 export default parser;

@@ -11,7 +11,7 @@ import {
   SubPatch,
   BinaryOp,
   Num,
-  Channel,
+  Accessor,
   Bus,
 } from '../../ast';
 
@@ -30,7 +30,9 @@ describe('Parser', function() {
     const expected = Program([
       Routing(
         Patch(
-          BinaryOp('+', Channel('position', 'x'), Num(1)),
+          Signal(
+            BinaryOp('+', Signal(Accessor('position', 'x')), Signal(Num(1)))
+          ),
           Func('osc', [Signal(Num(10))])
         ),
         Bus('speed')
@@ -42,7 +44,7 @@ describe('Parser', function() {
 
   it('parses a patch with a subpatch', function() {
     const program = dedent(`
-                           position->(in => (in.x->osc(10)) + (in.y->osc(12))) >> out;
+                           position->(in => in.x->osc(10)) >> out;
                            `);
 
     const parsed = parser.parse(program);
@@ -50,19 +52,39 @@ describe('Parser', function() {
     const expected = Program([
       Routing(
         Patch(
-          Bus('position'),
+          Signal(Bus('position')),
           SubPatch(
             'in',
-            Signal(
-              BinaryOp(
-                '+',
-                Patch(Channel('in', 'x'), Func('osc', [Signal(Num(10))])),
-                Patch(Channel('in', 'y'), Func('osc', [Signal(Num(12))]))
-              )
-            )
+            Patch(Signal(Accessor('in', 'x')), Func('osc', [Signal(Num(10))]))
           )
         ),
         Bus('out')
+      ),
+    ]);
+
+    assert.deepEqual(parsed, expected);
+  });
+
+  it('parses a chain of functions', function() {
+    const program = dedent(`
+                           position.x -> rotate(3) -> osc(10) -> invert() >> speed;
+                           `);
+
+    const parsed = parser.parse(program);
+
+    const expected = Program([
+      Routing(
+        Patch(
+          Patch(
+            Patch(
+              Signal(Accessor('position', 'x')),
+              Func('rotate', [Signal(Num(3))])
+            ),
+            Func('osc', [Signal(Num(10))])
+          ),
+          Func('invert', [])
+        ),
+        Bus('speed')
       ),
     ]);
 

@@ -7,11 +7,9 @@ import {
   SUBPATCH,
   BINARYOP,
   NUM,
-  CHANNEL,
+  ACCESSOR,
   BUS,
 } from './nodes';
-
-import { FLOAT } from '../types';
 
 /**
  *  value: [Routings]
@@ -24,37 +22,44 @@ export function Program(routings) {
 }
 
 /**
- *  source: Signal | Patch
- *  to:     Bus
+ *  from: Signal | Patch
+ *  to:   Bus
  */
-export function Routing(from, to) {
+export function Routing(from, to, { line, pos } = {}) {
   return {
     node: ROUTING,
     from,
     to,
+    line,
+    pos,
   };
 }
 
 /**
- *  value: BinaryOp | UnaryOp | Num | Channel | Bus
+ *  value: BinaryOp | Num | Accessor | Bus
  */
-export function Signal(signal, type) {
+export function Signal(signal, type, { line, pos } = {}) {
   return {
     node: SIGNAL,
     signal,
     type,
+    line,
+    pos,
   };
 }
 
 /**
- *  source:  Signal | Patch
- *  sink:    Function | SubPatch
+ *  source:      Signal | Patch
+ *  transformer: Function | SubPatch
  */
-export function Patch(source, sink) {
+export function Patch(source, transformer, type, { line, pos } = {}) {
   return {
     node: PATCH,
     source,
-    sink,
+    transformer,
+    type,
+    line,
+    pos,
   };
 }
 
@@ -62,12 +67,14 @@ export function Patch(source, sink) {
  *  name: Identifier
  *  args: [Signal | Patch]
  */
-export function Func(name, args, type) {
+export function Func(name, args, type, { line, pos } = {}) {
   return {
     node: FUNC,
     name,
     args,
     type,
+    line,
+    pos,
   };
 }
 
@@ -76,12 +83,14 @@ export function Func(name, args, type) {
  *  input: Identifier
  *  patch: Signal | Patch
  */
-export function SubPatch(input, patch, type) {
+export function SubPatch(input, patch, type, { line, pos } = {}) {
   return {
     node: SUBPATCH,
     input,
     patch,
     type,
+    line,
+    pos,
   };
 }
 
@@ -90,24 +99,28 @@ export function SubPatch(input, patch, type) {
  *  value1: Expression | Signal
  *  value2: Expression | Signal
  */
-export function BinaryOp(op, value1, value2, type) {
+export function BinaryOp(op, value1, value2, type, { line, pos } = {}) {
   return {
     node: BINARYOP,
     op,
     value1,
     value2,
     type,
+    line,
+    pos,
   };
 }
 
 /**
  *  value: Float
  */
-export function Num(value) {
+export function Num(value, type, { line, pos } = {}) {
   return {
     node: NUM,
     value,
-    type: FLOAT,
+    type,
+    line,
+    pos,
   };
 }
 
@@ -115,21 +128,26 @@ export function Num(value) {
  *  source:  Identifier
  *  channel: Identifier
  */
-export function Channel(source, channel, type) {
+export function Accessor(bus, channel, type, { line, pos } = {}) {
   return {
-    node: CHANNEL,
-    name,
+    node: ACCESSOR,
+    bus,
+    channel,
     type,
+    line,
+    pos,
   };
 }
 
 /**
  *  name:  Identifier
  */
-export function Bus(name, type) {
+export function Bus(name, type, { line, pos } = {}) {
   return {
     node: BUS,
     name,
     type,
+    line,
+    pos,
   };
 }

@@ -8,5 +8,5 @@ export const FUNC = 'FUNC';
 export const SUBPATCH = 'SUBPATCH';
 export const BINARYOP = 'BINARYOP';
 export const NUM = 'NUM';
-export const CHANNEL = 'CHANNEL';
+export const ACCESSOR = 'ACCESSOR';
 export const BUS = 'BUS';
