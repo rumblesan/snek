@@ -1,5 +1,19 @@
 export const FLOAT = 'FLOAT';
 export const VEC = 'VEC';
+export const INPUT = 'INPUT';
+export const GENERIC = 'GENERIC';
+
+export function Generic() {
+  return {
+    type: GENERIC,
+  };
+}
+
+export function Float() {
+  return {
+    type: FLOAT,
+  };
+}
 
 export function Vector(count, dataType) {
   return {
@@ -7,4 +21,24 @@ export function Vector(count, dataType) {
     count,
     dataType,
   };
+}
+
+export function Input() {
+  return {
+    type: INPUT,
+  };
+}
+
+export function typesMatch(target, value) {
+  switch (target.type) {
+    case GENERIC:
+      return true;
+    case FLOAT:
+      return value.type === FLOAT;
+    case VEC:
+      if (value.type === VEC) {
+        return value.count === target.count;
+      }
+      return false;
+  }
 }
