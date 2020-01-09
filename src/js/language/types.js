@@ -53,3 +53,7 @@ export function typeToString(type) {
       return `vec${type.count}`;
   }
 }
+
+export function isGeneric(type) {
+  return type.type === GENERIC;
+}
