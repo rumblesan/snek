@@ -4,7 +4,7 @@ import './css/style.css';
 
 import createREGL from 'regl';
 
-import { generateVertCode } from './js/glsl';
+import { defaultVertexShader } from './js/glsl';
 
 import { codeToFrag } from './js/language';
 
@@ -17,7 +17,7 @@ function updateDrawFunc(regl, fragShader) {
   const drawSnek = regl({
     frag: fragShader,
 
-    vert: generateVertCode(),
+    vert: defaultVertexShader,
 
     attributes: {
       a_position: [-2, 0, 0, -2, 2, 2],
