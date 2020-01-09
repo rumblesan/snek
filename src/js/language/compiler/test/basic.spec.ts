@@ -44,7 +44,7 @@ describe('Compiler', function() {
       BuiltInBus('out', 'output', Vector(4, Float()), 'gl_FragColor', ''),
       BuiltInBus('position', 'input', Vector(2, Float()), 'uv', 'varying'),
     ];
-    const bifs = [BuiltInFunction('osc', [], false, {}, 'test', {})];
+    const bifs = [BuiltInFunction('osc', [], false, { default: 'test' })];
 
     const compiledCode = compile(ast, bibs, bifs);
 

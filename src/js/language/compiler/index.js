@@ -56,21 +56,12 @@ export function BuiltInBus(name, direction, type, glslName, glslType) {
   };
 }
 
-export function BuiltInFunction(
-  name,
-  defaultArgs,
-  generic,
-  typedNames,
-  body,
-  typedBody
-) {
+export function BuiltInFunction(name, defaultArgs, generic, code) {
   return {
     name,
     defaultArgs,
     generic,
-    typedNames,
-    body,
-    typedBody,
+    code,
   };
 }
 
@@ -100,16 +91,16 @@ function compileProgram(ast, state) {
   const builtInFuncCode = Object.values(usedBuiltIns).map(ub => ub.body);
 
   const mainBody = dedent(`
-    precision mediump float;
+precision mediump float;
 
-    ${builtInBusCode}
+${builtInBusCode}
 
-    ${builtInFuncCode.join('\n')}
+${builtInFuncCode.join('\n')}
 
-    void main() {
-      ${programCode.join('\n')}
-    }
-  `);
+void main() {
+  ${programCode.join('\n')}
+}
+`);
 
   return mainBody;
 }
@@ -173,7 +164,9 @@ function compilePatch(ast, state) {
       );
       break;
   }
-  Object.values(output.usedBuiltIns).forEach(ub => (usedBuiltIns[ub] = ub));
+  Object.keys(output.usedBuiltIns).forEach(
+    name => (usedBuiltIns[name] = output.usedBuiltIns[name])
+  );
   return compiledCode(usedBuiltIns, output.programCode);
 }
 
@@ -185,13 +178,15 @@ function compileFunction(ast, inputAst, signalInputCode, state) {
     }
   }
   let usedFuncName = func.name;
-  let funcBody = func.body;
+  let funcBody = func.code.default;
   if (func.generic) {
     const type = typeToString(inputAst.type);
-    usedFuncName = func.typedNames[type];
-    funcBody = func.typedBody[type];
+    usedFuncName = `${func.name}${type}`;
+    funcBody = func.code[type];
   }
-  const usedBuiltIns = { usedFuncName: { name: usedFuncName, body: funcBody } };
+  const usedBuiltIns = {
+    [usedFuncName]: { name: usedFuncName, body: funcBody },
+  };
   const argCode = [signalInputCode];
   ast.args.forEach(arg => {
     const output = compileSignal(arg, state);
