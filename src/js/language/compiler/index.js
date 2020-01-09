@@ -213,10 +213,12 @@ function compileNum(ast /*, state */) {
   );
 }
 
-function compileAccessor(ast /*, state */) {
-  return simpleCode(`${ast.bus}.${ast.channel}`);
+function compileAccessor(ast, state) {
+  const glslBusName = state.busses[ast.bus].glslName;
+  return simpleCode(`${glslBusName}.${ast.channel}`);
 }
 
-function compileBus(ast /*, state */) {
-  return simpleCode(`${ast.name}`);
+function compileBus(ast, state) {
+  const glslBusName = state.busses[ast.name].glslName;
+  return simpleCode(`${glslBusName}`);
 }

@@ -17,6 +17,13 @@ export const glslBusses = {
     glslName: 'gl_FragColor',
     glslType: '',
   },
+  time: {
+    type: Float(),
+    channels: [],
+    direction: 'input',
+    glslName: 'u_time',
+    glslType: 'uniform',
+  },
 };
 
 export const busTypes = Object.keys(glslBusses).map(name => {
