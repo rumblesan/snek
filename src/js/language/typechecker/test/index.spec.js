@@ -30,7 +30,7 @@ describe('Type Checker', function() {
     const parsed = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [FunctionType('osc', Float(), [Float()], Float())];
-    const opTypes = [OperatorType('+', Float(), Float(), Float())];
+    const opTypes = [OperatorType('+', Float(), Float(), Float(), Float())];
     typeCheck(parsed, busTypes, functionTypes, opTypes);
 
     const expected = Program([
