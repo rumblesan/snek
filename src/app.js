@@ -4,30 +4,18 @@ import './css/style.css';
 
 import createREGL from 'regl';
 
-import { generateFragCode, generateVertCode } from './js/glsl';
-import { glslFuncs } from './js/funcs';
+import { generateVertCode } from './js/glsl';
+
+import { codeToFrag } from './js/language';
 
 const snek = {
-  drawFuncs: [],
+  drawFunc: null,
 };
 
-function run() {
-  const canvas = document.getElementById('c');
-
-  var gl = canvas.getContext('webgl2');
-  if (!gl) {
-    return;
-  }
-  const regl = createREGL({
-    gl: gl,
-  });
-
-  const body = `
-    c = osc(uv, 5.0, 0.1, 0.0);
-  `;
-
+function updateDrawFunc(regl, fragShader) {
+  console.log(fragShader);
   const drawSnek = regl({
-    frag: generateFragCode(body, [glslFuncs.osc.glsl]),
+    frag: fragShader,
 
     vert: generateVertCode(),
 
@@ -41,16 +29,35 @@ function run() {
 
     count: 3,
   });
+  snek.drawFunc = drawSnek;
+}
 
-  snek.drawFuncs.push(drawSnek);
+function run() {
+  const canvas = document.getElementById('c');
+
+  var gl = canvas.getContext('webgl2');
+  if (!gl) {
+    return;
+  }
+  const regl = createREGL({
+    gl: gl,
+  });
+
+  const button = document.getElementById('compile');
+  button.addEventListener('click', () => {
+    const program = document.getElementById('code').value;
+    updateDrawFunc(regl, codeToFrag(program));
+  });
+
+  updateDrawFunc(regl, codeToFrag(document.getElementById('code').value));
 
   regl.frame(function() {
     regl.clear({
       color: [0, 0, 0, 1],
     });
 
-    for (let i = 0; i < snek.drawFuncs.length; i++) {
-      snek.drawFuncs[i]();
+    if (snek.drawFunc !== null) {
+      snek.drawFunc();
     }
   });
 }

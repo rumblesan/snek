@@ -8,12 +8,12 @@ body {
 
 canvas {
   display: block;
-  width: 1024px;
-  height: 768px;
+  width: 500px;
+  height: 500px;
   border: 1px solid black;
 }
 
 main {
-  margin:0 auto;
+  margin: 0 auto;
   width: 1024px;
 }
