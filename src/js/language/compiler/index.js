@@ -56,6 +56,15 @@ export function BuiltInBus(name, direction, type, glslName, glslType) {
   };
 }
 
+export function ProgramBus(name, type) {
+  return {
+    name,
+    direction: 'internal',
+    type,
+    glslName: name,
+  };
+}
+
 export function BuiltInFunction(name, defaultArgs, generic, code) {
   return {
     name,
@@ -109,10 +118,18 @@ function compileRouting(ast, state) {
   const signal = compileSignal(ast.from, state);
   const bus = ast.to;
   let assignment = '';
-  if (state.busses[bus.name] && state.busses[bus.name].direction === 'output') {
+  const snekBus = state.busses[bus.name];
+  if (!snekBus) {
+    assignment = `${typeToString(bus.type)} ${bus.name} =`;
+    state.busses[bus.name] = ProgramBus(bus.name, bus.type);
+  } else if (snekBus.direction === 'output') {
+    assignment = `${state.busses[bus.name].glslName} =`;
+  } else if (snekBus.direction === 'internal') {
     assignment = `${state.busses[bus.name].glslName} =`;
   } else {
-    assignment = `${typeToString(bus.type)} ${bus.name} =`;
+    throw new CompilerException(
+      `Unsupported bus direction ${snekBus.direction}`
+    );
   }
   return compiledCode(
     signal.usedBuiltIns,

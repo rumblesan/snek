@@ -1,4 +1,11 @@
-import { GENERIC, INPUT, VEC, Float, typesMatch } from '../types';
+import {
+  GENERIC,
+  INPUT,
+  VEC,
+  Float,
+  typesMatch,
+  busTypeChannels,
+} from '../types';
 import {
   PROGRAM,
   ROUTING,
@@ -40,6 +47,14 @@ export function BusType(id, type, channels) {
     id,
     type,
     channels,
+  };
+}
+
+export function InternalBusType(id, type) {
+  return {
+    id,
+    type,
+    channels: busTypeChannels(type),
   };
 }
 
@@ -95,7 +110,7 @@ function typeCheckRouting(ast, state) {
       );
     }
   }
-  state.busses[bus.name] = BusType(bus.name, bus.type);
+  state.busses[bus.name] = InternalBusType(bus.name, bus.type);
   return bus.type;
 }
 

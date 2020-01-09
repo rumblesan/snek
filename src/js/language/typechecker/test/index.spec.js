@@ -150,4 +150,40 @@ describe('Type Checker', function() {
 
     assert.deepEqual(parsed, expected);
   });
+
+  it('typechecks an internal bus', function() {
+    const program = dedent(`
+                           position.x -> osc(10) >> foo;
+                           foo.w -> osc(2) >> out;
+                           `);
+
+    const parsed = parser.parse(program);
+    const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
+    const functionTypes = [
+      FunctionType('osc', Float(), [Float()], Vector(4, Float())),
+    ];
+    const opTypes = [];
+    typeCheck(parsed, busTypes, functionTypes, opTypes);
+
+    const expected = Program([
+      Routing(
+        Patch(
+          Source(Accessor('position', 'x', Float()), Float()),
+          Func('osc', [Source(Num(10, Float()), Float())], Vector(4, Float())),
+          Vector(4, Float())
+        ),
+        Bus('foo', Vector(4, Float()))
+      ),
+      Routing(
+        Patch(
+          Source(Accessor('foo', 'w', Float()), Float()),
+          Func('osc', [Source(Num(2, Float()), Float())], Vector(4, Float())),
+          Vector(4, Float())
+        ),
+        Bus('out', Vector(4, Float()))
+      ),
+    ]);
+
+    assert.deepEqual(parsed, expected);
+  });
 });

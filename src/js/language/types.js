@@ -54,6 +54,22 @@ export function typeToString(type) {
   }
 }
 
+export function busTypeChannels(type) {
+  const channels = [];
+  const available = ['x', 'y', 'z', 'w'];
+  switch (type.type) {
+    case FLOAT:
+      channels.push('x');
+      break;
+    case VEC:
+      for (let i = 0; i < type.count; i += 1) {
+        channels.push(available[i]);
+      }
+      break;
+  }
+  return channels;
+}
+
 export function isGeneric(type) {
   return type.type === GENERIC;
 }
