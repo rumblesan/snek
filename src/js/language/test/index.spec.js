@@ -18,7 +18,8 @@ describe('Language', function() {
     const expected = dedent(`
 precision mediump float;
 
-varying vec2 uv;
+varying vec2 position;
+uniform float u_time;
 
 ${glslFuncs.osc.code.default}
 
@@ -40,7 +41,8 @@ void main() {
     const expected = dedent(`
 precision mediump float;
 
-varying vec2 uv;
+varying vec2 position;
+uniform float u_time;
 
 ${glslFuncs.osc.code.default}
 ${glslFuncs.mult.code.vec4}

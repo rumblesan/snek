@@ -7,7 +7,7 @@ export const glslBusses = {
     type: Vector(2, Float()),
     channels: ['x', 'y'],
     direction: 'input',
-    glslName: 'uv',
+    glslName: 'position',
     glslType: 'varying',
   },
   out: {

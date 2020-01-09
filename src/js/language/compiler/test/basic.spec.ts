@@ -42,7 +42,13 @@ describe('Compiler', function() {
 
     const bibs = [
       BuiltInBus('out', 'output', Vector(4, Float()), 'gl_FragColor', ''),
-      BuiltInBus('position', 'input', Vector(2, Float()), 'uv', 'varying'),
+      BuiltInBus(
+        'position',
+        'input',
+        Vector(2, Float()),
+        'position',
+        'varying'
+      ),
     ];
     const bifs = [BuiltInFunction('osc', [], false, { default: 'test' })];
 
@@ -51,7 +57,7 @@ describe('Compiler', function() {
     const expected = dedent(`
     precision mediump float;
 
-    varying vec2 uv;
+    varying vec2 position;
 
     test
 
