@@ -1,3 +1,5 @@
+/* global CodeMirror */
+
 import './index.html';
 import './css/reset.css';
 import './css/style.css';
@@ -43,13 +45,19 @@ function run() {
     gl: gl,
   });
 
+  const textArea = document.getElementById('code');
+
+  const editor = CodeMirror.fromTextArea(textArea, {
+    lineNumbers: true,
+  });
+
   const button = document.getElementById('compile');
   button.addEventListener('click', () => {
-    const program = document.getElementById('code').value;
+    const program = editor.getValue();
     updateDrawFunc(regl, codeToFrag(program));
   });
 
-  updateDrawFunc(regl, codeToFrag(document.getElementById('code').value));
+  updateDrawFunc(regl, codeToFrag(editor.getValue()));
 
   regl.frame(function() {
     regl.clear({

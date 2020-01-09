@@ -4,6 +4,7 @@
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
   <meta charset="utf-8">
   <title>Snek</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css" />
 </head>
 <body>
 
@@ -11,12 +12,13 @@
     <canvas id="c"></canvas>
   </main>
 
-  <textarea id="code" rows="5" columns="30">position.x -> osc(5) >> out;</textarea>
-
   <button type="button" id="compile">Compile</button>
+
+  <textarea id="code" rows="5" columns="30">position.x -> osc(5) >> out;</textarea>
 
 </body>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
 <script src="app.js"></script>
 
 </html>
