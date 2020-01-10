@@ -28,6 +28,7 @@ parser.parse = function(program, debug = false) {
 parser.program = function(debug = false) {
   const routings = [];
   while (!this.eof()) {
+    // TODO if an error is thrown, ignore all tokens until a semicolon
     routings.push(this.routing(debug));
   }
   return Program(routings);
@@ -85,25 +86,25 @@ parser.baseSource = function(debug = false) {
 
 parser.func = function(debug = false) {
   if (debug) console.log('Function');
-  if (this.la1('identifier')) {
-    const id = this.match('identifier').content;
-    if (this.la1('open paren')) {
-      this.match('open paren');
-      const args = this.argList(debug);
-      this.match('close paren');
-      return Func(id, args);
-    } else if (this.la1('subpatch arrow')) {
-      this.match('subpatch arrow');
-      const body = this.signal(debug);
-      return SubPatch(id, body);
-    }
-    return Bus(id);
-  } else if (this.la1('open paren')) {
+  if (this.la1('open paren')) {
     this.match('open paren');
     const func = this.func(debug);
     this.match('close paren');
     return func;
   }
+
+  const id = this.match('identifier').content;
+  if (this.la1('open paren')) {
+    this.match('open paren');
+    const args = this.argList(debug);
+    this.match('close paren');
+    return Func(id, args);
+  } else if (this.la1('subpatch arrow')) {
+    this.match('subpatch arrow');
+    const body = this.signal(debug);
+    return SubPatch(id, body);
+  }
+  // TODO error handling
 };
 
 parser.operator = function(left, debug = false) {
