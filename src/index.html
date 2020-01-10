@@ -2,19 +2,30 @@
 <html>
 <head>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+
   <meta charset="utf-8">
+
   <title>Snek</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css" />
+  <style>
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-  <main class="container">
-    <canvas id="c"></canvas>
-  </main>
+  <header>
+    <ul id="nav" class="hidden">
+      <li>
+        <span>Snek</span>
+      </li>
+    </ul>
+  </header>
 
-  <button type="button" id="compile">Compile</button>
+  <textarea id="code" class="hidden">position.x -> osc(5) >> out;</textarea>
 
-  <textarea id="code">position.x -> osc(5) >> out;</textarea>
+  <canvas id="canvas" class="hidden"></canvas>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.min.js"></script>

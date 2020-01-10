@@ -41,7 +41,7 @@ function run() {
   const keyMap = urlParams.has('keymap') ? urlParams.get('keymap') : 'vim';
   console.log(keyMap);
 
-  const canvas = document.getElementById('c');
+  const canvas = document.getElementById('canvas');
 
   var gl = canvas.getContext('webgl2');
   if (!gl) {
@@ -57,18 +57,13 @@ function run() {
     lineNumbers: true,
     keyMap,
     value: startProgram,
+    theme: 'snek',
     extraKeys: {
       'Ctrl-Enter': function(instance) {
         var program = instance.getValue();
         updateDrawFunc(regl, codeToFrag(program));
       },
     },
-  });
-
-  const button = document.getElementById('compile');
-  button.addEventListener('click', () => {
-    const program = editor.getValue();
-    updateDrawFunc(regl, codeToFrag(program));
   });
 
   updateDrawFunc(regl, codeToFrag(editor.getValue()));
