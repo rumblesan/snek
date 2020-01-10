@@ -72,8 +72,8 @@ parser.baseSource = function(debug = false) {
     const bus = Bus(this.match('identifier').content);
     if (this.la1('period')) {
       this.match('period');
-      const channelName = this.match('identifier').content;
-      return Accessor(bus, channelName);
+      const channelNames = this.match('identifier').content.split('');
+      return Accessor(bus, channelNames);
     }
     return bus;
   } else if (this.la1('open paren')) {
@@ -110,8 +110,8 @@ parser.func = function(debug = false) {
 
   if (this.la1('period')) {
     this.match('period');
-    const channelName = this.match('identifier').content;
-    return Accessor(func, channelName);
+    const channelNames = this.match('identifier').content.split('');
+    return Accessor(func, channelNames);
   }
   return func;
 };

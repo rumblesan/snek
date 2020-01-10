@@ -54,4 +54,28 @@ void main() {
 
     assert.deepEqual(fragShader, expected);
   });
+
+  it('compiles a patch with multi channel accessors', function() {
+    const program = dedent(`
+                           position.yx -> rotate(10, position.y->osc(1).r).y -> osc(4) >> out;
+                           `);
+
+    const fragShader = codeToFrag(program);
+
+    const expected = dedent(`
+precision mediump float;
+
+varying vec2 position;
+uniform float u_time;
+
+${glslFuncs.rotate.code.default}
+${glslFuncs.osc.code.default}
+
+void main() {
+  gl_FragColor = osc(rotate(position.yx, 10.0, osc(position.y, 1.0, 0.1, 0.0).x).y, 4.0, 0.1, 0.0);
+}
+`);
+
+    assert.deepEqual(fragShader, expected);
+  });
 });

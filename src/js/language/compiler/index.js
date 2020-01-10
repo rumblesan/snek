@@ -238,9 +238,21 @@ function compileNum(ast /*, state */) {
   );
 }
 
+const channelAliases = {
+  x: 'x',
+  y: 'y',
+  z: 'z',
+  w: 'w',
+  r: 'x',
+  g: 'y',
+  b: 'z',
+  a: 'w',
+};
+
 function compileSourceAccessor(ast, state) {
   const sourceCode = compileBus(ast.source, state);
-  return simpleCode(`${sourceCode.programCode}.${ast.channel}`);
+  const channelCode = ast.channels.map(c => channelAliases[c]).join('');
+  return simpleCode(`${sourceCode.programCode}.${channelCode}`);
 }
 
 function compilePatchAccessor(ast, inputAst, signalInputCode, state) {
@@ -263,9 +275,10 @@ function compilePatchAccessor(ast, inputAst, signalInputCode, state) {
       );
       break;
   }
+  const channelCode = ast.channels.map(c => channelAliases[c]).join('');
   return compiledCode(
     sourceCode.usedBuiltIns,
-    `${sourceCode.programCode}.${ast.channel}`
+    `${sourceCode.programCode}.${channelCode}`
   );
 }
 

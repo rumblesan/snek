@@ -3,9 +3,11 @@ import {
   INPUT,
   VEC,
   Float,
+  Vector,
   typesMatch,
+  typeToString,
   busTypeChannels,
-  validChannelForSource,
+  validChannelsForSource,
 } from '../types';
 import {
   PROGRAM,
@@ -106,8 +108,10 @@ function typeCheckRouting(ast, state) {
 
   if (state.busses[bus.name]) {
     if (!typesMatch(state.busses[bus.name].type, bus.type)) {
+      const signalTypeString = typeToString(bus.type);
+      const busTypeString = typeToString(state.busses[bus.name].type);
       throw new TypeCheckerException(
-        `Types must match for pre-existing bus ${bus.name}`
+        `Types must match for pre-existing bus ${bus.name}: Can't send ${signalTypeString} to ${busTypeString}`
       );
     }
   }
@@ -236,8 +240,12 @@ function typeCheckAccessor(ast, inputType, state) {
     throw new TypeCheckerException(
       "Can't take a single channel from a non Vector type bus"
     );
-  } else if (validChannelForSource(ast.channel, sourceType)) {
-    ast.type = sourceType.dataType;
+  } else if (validChannelsForSource(ast.channels, sourceType)) {
+    if (ast.channels.length === 1) {
+      ast.type = sourceType.dataType;
+    } else {
+      ast.type = Vector(ast.channels.length, sourceType.dataType);
+    }
     return ast.type;
   } else {
     throw new TypeCheckerException(

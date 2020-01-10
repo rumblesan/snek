@@ -81,11 +81,11 @@ const channelNumbers = {
   a: 3,
 };
 
-export function validChannelForSource(channel, busType) {
+export function validChannelsForSource(channels, busType) {
   if (busType.type === GENERIC || busType.type === FLOAT) {
     return false;
   }
-  return channelNumbers[channel] <= busType.count - 1;
+  return channels.every(c => channelNumbers[c] <= busType.count - 1);
 }
 
 export function isGeneric(type) {
