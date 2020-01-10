@@ -5,6 +5,7 @@ import {
   Float,
   typesMatch,
   busTypeChannels,
+  validChannelForSource,
 } from '../types';
 import {
   PROGRAM,
@@ -137,6 +138,9 @@ function typeCheckPatch(ast, state) {
     case SUBPATCH:
       ast.type = typeCheckSubPatch(ast.func, inputType, state);
       return ast.type;
+    case ACCESSOR:
+      ast.type = typeCheckAccessor(ast.func, inputType, state);
+      return ast.type;
     default:
       throw new TypeCheckerException(
         `Expecting Function or SubPatch but found ${ast.func.node}`
@@ -155,7 +159,7 @@ function typeCheckSource(ast, state) {
       ast.type = typeCheckNum(source, state);
       return ast.type;
     case ACCESSOR:
-      ast.type = typeCheckAccessor(source, state);
+      ast.type = typeCheckAccessor(source, null, state);
       return ast.type;
     case BUS:
       ast.type = typeCheckBus(source, state);
@@ -215,20 +219,30 @@ function typeCheckBinaryOp(ast, state) {
   }
 }
 
-function typeCheckAccessor(ast, state) {
-  const busType = typeCheckBus(ast.bus, state);
-  const stateBus = state.busses[ast.bus.name];
-  if (busType.type !== VEC) {
+function typeCheckAccessor(ast, inputType, state) {
+  let sourceType;
+  switch (ast.source.node) {
+    case BUS:
+      sourceType = typeCheckBus(ast.source, state);
+      break;
+    case FUNC:
+      sourceType = typeCheckFunction(ast.source, inputType, state);
+      break;
+    case SUBPATCH:
+      sourceType = typeCheckSubPatch(ast.source, inputType, state);
+      break;
+  }
+  if (sourceType.type !== VEC) {
     throw new TypeCheckerException(
       "Can't take a single channel from a non Vector type bus"
     );
-  } else if (stateBus.channels.indexOf(ast.channel) === -1) {
-    throw new TypeCheckerException(
-      `Accessor ${ast.channel} is not available on bus ${ast.bus}`
-    );
-  } else {
-    ast.type = busType.dataType;
+  } else if (validChannelForSource(ast.channel, sourceType)) {
+    ast.type = sourceType.dataType;
     return ast.type;
+  } else {
+    throw new TypeCheckerException(
+      `Accessor ${ast.channel} is not available on a vector with only ${ast.source.type.count} elements`
+    );
   }
 }
 

@@ -125,13 +125,13 @@ export function Num(value, type, { line, pos } = {}) {
 }
 
 /**
- *  source:  Bus
+ *  source:  Bus | Function | SubPatch
  *  channel: Identifier
  */
-export function Accessor(bus, channel, type, { line, pos } = {}) {
+export function Accessor(source, channel, type, { line, pos } = {}) {
   return {
     node: ACCESSOR,
-    bus,
+    source,
     channel,
     type,
     line,

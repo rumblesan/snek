@@ -153,7 +153,7 @@ function compileSource(ast, state) {
     case NUM:
       return compileNum(source, state);
     case ACCESSOR:
-      return compileAccessor(source, state);
+      return compileSourceAccessor(source, state);
     case BUS:
       return compileBus(source, state);
   }
@@ -174,6 +174,14 @@ function compilePatch(ast, state) {
       break;
     case SUBPATCH:
       output = compileSubPatch(
+        ast.func,
+        ast.input,
+        inputCode.programCode,
+        state
+      );
+      break;
+    case ACCESSOR:
+      output = compilePatchAccessor(
         ast.func,
         ast.input,
         inputCode.programCode,
@@ -230,9 +238,35 @@ function compileNum(ast /*, state */) {
   );
 }
 
-function compileAccessor(ast, state) {
-  const busCode = compileBus(ast.bus, state);
-  return simpleCode(`${busCode.programCode}.${ast.channel}`);
+function compileSourceAccessor(ast, state) {
+  const sourceCode = compileBus(ast.source, state);
+  return simpleCode(`${sourceCode.programCode}.${ast.channel}`);
+}
+
+function compilePatchAccessor(ast, inputAst, signalInputCode, state) {
+  let sourceCode;
+  switch (ast.source.node) {
+    case FUNC:
+      sourceCode = compileFunction(
+        ast.source,
+        inputAst,
+        signalInputCode,
+        state
+      );
+      break;
+    case SUBPATCH:
+      sourceCode = compileSubPatch(
+        ast.source,
+        inputAst,
+        signalInputCode,
+        state
+      );
+      break;
+  }
+  return compiledCode(
+    sourceCode.usedBuiltIns,
+    `${sourceCode.programCode}.${ast.channel}`
+  );
 }
 
 function compileBus(ast, state) {

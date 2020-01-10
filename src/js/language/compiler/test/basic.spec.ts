@@ -31,12 +31,14 @@ import assert from 'assert';
 describe('Compiler', function() {
   it('compiles a simple patch', function() {
     const program = dedent(`
-                           position.x + 1 -> osc(10) >> out;
+                           position.x + 1 -> osc(10).w -> osc(4) >> out;
                            `);
 
     const ast = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
-    const functionTypes = [FunctionType('osc', Float(), [Float()], Float())];
+    const functionTypes = [
+      FunctionType('osc', Float(), [Float()], Vector(4, Float())),
+    ];
     const opTypes = [OperatorType('+', Float(), Float(), Float())];
     typeCheck(ast, busTypes, functionTypes, opTypes);
 
@@ -62,7 +64,7 @@ describe('Compiler', function() {
     test
 
     void main() {
-      gl_FragColor = osc(position.x + 1.0, 10.0);
+      gl_FragColor = osc(osc(position.x + 1.0, 10.0).w, 4.0);
     }
     `);
 

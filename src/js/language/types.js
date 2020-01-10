@@ -70,6 +70,24 @@ export function busTypeChannels(type) {
   return channels;
 }
 
+const channelNumbers = {
+  x: 0,
+  r: 0,
+  y: 1,
+  g: 1,
+  z: 2,
+  b: 2,
+  w: 3,
+  a: 3,
+};
+
+export function validChannelForSource(channel, busType) {
+  if (busType.type === GENERIC || busType.type === FLOAT) {
+    return false;
+  }
+  return channelNumbers[channel] <= busType.count - 1;
+}
+
 export function isGeneric(type) {
   return type.type === GENERIC;
 }

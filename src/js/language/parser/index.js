@@ -107,6 +107,12 @@ parser.func = function(debug = false) {
   } else {
     // TODO error handling
   }
+
+  if (this.la1('period')) {
+    this.match('period');
+    const channelName = this.match('identifier').content;
+    return Accessor(func, channelName);
+  }
   return func;
 };
 

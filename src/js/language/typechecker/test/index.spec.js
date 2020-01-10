@@ -204,4 +204,46 @@ describe('Type Checker', function() {
 
     assert.deepEqual(parsed, expected);
   });
+
+  it('typechecks an accessor on a function call', function() {
+    const program = dedent(`
+                           position.x -> osc(10).x -> osc(4) >> speed;
+                           `);
+
+    const parsed = parser.parse(program);
+    const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
+    const functionTypes = [
+      FunctionType('osc', Float(), [Float()], Vector(4, Float())),
+    ];
+    const opTypes = [];
+    typeCheck(parsed, busTypes, functionTypes, opTypes);
+
+    const expected = Program([
+      Routing(
+        Patch(
+          Patch(
+            Source(
+              Accessor(Bus('position', Vector(2, Float())), 'x', Float()),
+              Float()
+            ),
+            Accessor(
+              Func(
+                'osc',
+                [Source(Num(10, Float()), Float())],
+                Vector(4, Float())
+              ),
+              'x',
+              Float()
+            ),
+            Float()
+          ),
+          Func('osc', [Source(Num(4, Float()), Float())], Vector(4, Float())),
+          Vector(4, Float())
+        ),
+        Bus('speed', Vector(4, Float()))
+      ),
+    ]);
+
+    assert.deepEqual(parsed, expected);
+  });
 });
