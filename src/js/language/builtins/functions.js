@@ -17,12 +17,12 @@ export const glslFuncs = {
     returnType: Vector(4, Float()),
     code: {
       default: dedent(`
-            vec4 osc(float x, float freq, float sync, float offset){
-              float r = sin((x-offset/freq+u_time*sync)*freq)*0.5  + 0.5;
-              float g = sin((x+u_time*sync)*freq)*0.5 + 0.5;
-              float b = sin((x+offset/freq+u_time*sync)*freq)*0.5  + 0.5;
-              return vec4(r, g, b, 1.0);
-            }`),
+        vec4 osc(float x, float freq, float sync, float offset){
+          float r = sin((x-offset/freq+u_time*sync)*freq)*0.5  + 0.5;
+          float g = sin((x+u_time*sync)*freq)*0.5 + 0.5;
+          float b = sin((x+offset/freq+u_time*sync)*freq)*0.5  + 0.5;
+          return vec4(r, g, b, 1.0);
+        }`),
     },
   },
   mult: {
@@ -31,21 +31,51 @@ export const glslFuncs = {
     returnType: Input(),
     code: {
       float: dedent(`
-          float multfloat(float signal, float multiplier){
-            return signal * multiplier;
-          }`),
+        float multfloat(float signal, float multiplier){
+          return signal * multiplier;
+        }`),
       vec2: dedent(`
-          vec2 multvec2(vec2 signal, float multiplier){
-            return signal * multiplier;
-          }`),
+        vec2 multvec2(vec2 signal, float multiplier){
+          return signal * multiplier;
+        }`),
       vec3: dedent(`
-          vec3 multvec3(vec3 signal, float multiplier){
-            return signal * multiplier;
-          }`),
+        vec3 multvec3(vec3 signal, float multiplier){
+          return signal * multiplier;
+        }`),
       vec4: dedent(`
-          vec4 multvec4(vec4 signal, float multiplier){
-            return signal * multiplier;
-          }`),
+        vec4 multvec4(vec4 signal, float multiplier){
+          return signal * multiplier;
+        }`),
+    },
+  },
+  rotate: {
+    inputType: Vector(2, Float()),
+    args: [
+      { name: 'angle', type: Float(), default: Source(Num(10.0)) },
+      { name: 'speed', type: Float(), default: Source(Num(0.0)) },
+    ],
+    code: {
+      default: dedent(`
+        vec2 rotate(vec2 st, float _angle, float speed){
+          vec2 xy = st - vec2(0.5);
+          float angle = _angle + speed *time;
+          xy = mat2(cos(angle),-sin(angle), sin(angle),cos(angle))*xy;
+          xy += 0.5;
+          return xy;
+        }`),
+    },
+  },
+  modulate: {
+    inputType: Vector(2, Float()),
+    args: [
+      { name: 'texture', type: Vector(4, Float()) },
+      { name: 'amount', type: Float(), default: Source(Num(0.1)) },
+    ],
+    code: {
+      default: dedent(`
+        vec2 modulate(vec2 st, vec4 c1, float amount){
+          return st + c1.xy*amount;
+        }`),
     },
   },
 };

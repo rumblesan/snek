@@ -8,6 +8,30 @@ export const glslOps = {
     rightType: Float(),
     outputType: Float(),
   },
+  '-': {
+    inputType: Float(),
+    leftType: Float(),
+    rightType: Float(),
+    outputType: Float(),
+  },
+  '/': {
+    inputType: Float(),
+    leftType: Float(),
+    rightType: Float(),
+    outputType: Float(),
+  },
+  '*': {
+    inputType: Float(),
+    leftType: Float(),
+    rightType: Float(),
+    outputType: Float(),
+  },
+  '%': {
+    inputType: Float(),
+    leftType: Float(),
+    rightType: Float(),
+    outputType: Float(),
+  },
 };
 
 export const opTypes = Object.keys(glslOps).map(op => {
