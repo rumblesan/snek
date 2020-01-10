@@ -22,20 +22,15 @@ header ul#nav {
   display: block;
   position: relative;
 }
-header ul li {
+#nav li {
   display: block;
   list-style: none;
   float: left;
-  position: relative;
-}
-header ul a,
-header ul span {
-  display: block;
-  position: relative;
 }
 
-header ul li a,
-header ul li span {
+#nav li a,
+#nav li span {
+  display: block;
   padding: 4px 15px;
   text-decoration: none;
   text-align: center;
