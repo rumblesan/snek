@@ -1,6 +1,6 @@
 /* global describe, it */
 
-import parser from '../index';
+import Parser from '../index';
 
 import {
   Program,
@@ -25,6 +25,7 @@ describe('Parser', function() {
                            position.x + 1 -> osc(10) >> speed;
                            `);
 
+    const parser = new Parser({ testing: true });
     const { ast, errors } = parser.parse(program);
 
     const expected = Program([
@@ -52,6 +53,7 @@ describe('Parser', function() {
                            position->(in => in.x->osc(10)) >> out;
                            `);
 
+    const parser = new Parser({ testing: true });
     const { ast, errors } = parser.parse(program);
 
     const expected = Program([
@@ -79,6 +81,7 @@ describe('Parser', function() {
                            position.x -> rotate(3) -> osc(10) -> invert() >> speed;
                            `);
 
+    const parser = new Parser({ testing: true });
     const { ast, errors } = parser.parse(program);
 
     const expected = Program([

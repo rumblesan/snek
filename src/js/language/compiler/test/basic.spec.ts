@@ -1,7 +1,7 @@
 /* global describe, it */
 
 import { compile, BuiltInBus, BuiltInFunction } from '../../compiler';
-import parser from '../../parser';
+import Parser from '../../parser';
 
 import {
   typeCheck,
@@ -21,6 +21,7 @@ describe('Compiler', function() {
                            position.x + 1 -> osc(10).w -> osc(4) >> out;
                            `);
 
+    const parser = new Parser({ testing: true });
     const { ast } = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [

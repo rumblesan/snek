@@ -39,7 +39,6 @@ function run() {
   const urlParams = new URLSearchParams(window.location.search);
 
   const keyMap = urlParams.has('keymap') ? urlParams.get('keymap') : 'vim';
-  console.log(keyMap);
 
   const canvas = document.getElementById('canvas');
 
@@ -61,12 +60,20 @@ function run() {
     extraKeys: {
       'Ctrl-Enter': function(instance) {
         var program = instance.getValue();
-        updateDrawFunc(regl, codeToFrag(program));
+        const result = codeToFrag(program);
+        if (result.errors.length < 1) {
+          updateDrawFunc(regl, result.code);
+        } else {
+          console.log('errors', result.errors);
+        }
       },
     },
   });
 
-  updateDrawFunc(regl, codeToFrag(editor.getValue()));
+  const result = codeToFrag(editor.getValue());
+  if (result.errors.length < 1) {
+    updateDrawFunc(regl, result.code);
+  }
 
   regl.frame(function() {
     regl.clear({

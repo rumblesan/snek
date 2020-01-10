@@ -28,12 +28,59 @@ export class TypeCheckerException extends Error {
   }
 }
 
+export class UnexpectedTypeException extends TypeCheckerException {
+  constructor(expected, ast) {
+    const msg = `Found ${ast.node} with type ${typeToString(
+      ast.type
+    )} but expected ${typeToString(expected)}`;
+    super(msg);
+    this.name = 'UnexpectedTypeException';
+    this.displayable = true;
+    this.line = ast.line;
+    this.character = ast.character;
+  }
+}
+
+export class IncorrectPatchTypeException extends TypeCheckerException {
+  constructor(func, inputAst, funcAst) {
+    const msg = `Function ${func.name} expected a ${typeToString(
+      func.inputType
+    )} input but received ${typeToString(inputAst.type)}`;
+    super(msg);
+    this.name = 'UnexpectedTypeException';
+    this.displayable = true;
+    this.line = funcAst.line;
+    this.character = funcAst.character;
+  }
+}
+
+export class InvalidAccessorException extends TypeCheckerException {
+  constructor(message, accessorAst) {
+    super(message);
+    this.name = 'InvalidAccessorException';
+    this.displayable = true;
+    this.line = accessorAst.line;
+    this.character = accessorAst.character;
+  }
+}
+
+export class InvalidBusException extends TypeCheckerException {
+  constructor(ast) {
+    const message = `Bus ${ast.name} is invalid`;
+    super(message);
+    this.name = 'InvalidBusException';
+    this.displayable = true;
+    this.line = ast.line;
+    this.character = ast.character;
+  }
+}
+
 function CheckerState(busses, functions, operators) {
   const busDict = {};
   busses.forEach(b => (busDict[b.id] = b));
 
   const funcDict = {};
-  functions.forEach(f => (funcDict[f.id] = f));
+  functions.forEach(f => (funcDict[f.name] = f));
 
   const opDict = {};
   operators.forEach(o => (opDict[o.id] = o));
@@ -70,9 +117,9 @@ export function OperatorType(id, leftType, rightType, returnType) {
   };
 }
 
-export function FunctionType(id, inputType, argTypes, returnType) {
+export function FunctionType(name, inputType, argTypes, returnType) {
   return {
-    id,
+    name,
     inputType,
     argTypes,
     returnType,
@@ -92,32 +139,41 @@ export function typeCheck(ast, busses = [], functions = [], ops = []) {
 
   const state = CheckerState(busses, functions, ops);
 
-  typeCheckProgram(ast, state);
-  return {
-    ast,
-    errors: [],
-  };
+  return typeCheckProgram(ast, state);
 }
 
 function typeCheckProgram(ast, state) {
   nodeAssert(ast, PROGRAM);
-  ast.routings.forEach(routing => typeCheckRouting(routing, state));
+  const result = { ast: null, errors: [] };
+  ast.routings.forEach(routing => {
+    try {
+      typeCheckRouting(routing, state);
+    } catch (err) {
+      if (err.displayable) {
+        result.errors.push(err);
+      } else {
+        throw err;
+      }
+    }
+  });
+  if (result.errors.length < 1) {
+    result.ast = ast;
+  }
+  return result;
 }
 
 function typeCheckRouting(ast, state) {
   nodeAssert(ast, ROUTING);
   const bus = ast.to;
-  bus.type = typeCheckSignal(ast.from, state);
+  const signalType = typeCheckSignal(ast.from, state);
 
   if (state.busses[bus.name]) {
-    if (!typesMatch(state.busses[bus.name].type, bus.type)) {
-      const signalTypeString = typeToString(bus.type);
-      const busTypeString = typeToString(state.busses[bus.name].type);
-      throw new TypeCheckerException(
-        `Types must match for pre-existing bus ${bus.name}: Can't send ${signalTypeString} to ${busTypeString}`
-      );
+    const existingBus = state.busses[bus.name];
+    if (!typesMatch(existingBus.type, signalType)) {
+      throw new UnexpectedTypeException(signalType, existingBus);
     }
   }
+  bus.type = signalType;
   state.busses[bus.name] = InternalBusType(bus.name, bus.type);
   return bus.type;
 }
@@ -137,16 +193,16 @@ function typeCheckSignal(ast, state) {
 
 function typeCheckPatch(ast, state) {
   nodeAssert(ast, PATCH);
-  const inputType = typeCheckSignal(ast.input, state);
+  typeCheckSignal(ast.input, state);
   switch (ast.func.node) {
     case FUNC:
-      ast.type = typeCheckFunction(ast.func, inputType, state);
+      ast.type = typeCheckFunction(ast.func, ast.input, state);
       return ast.type;
     case SUBPATCH:
-      ast.type = typeCheckSubPatch(ast.func, inputType, state);
+      ast.type = typeCheckSubPatch(ast.func, ast.input, state);
       return ast.type;
     case ACCESSOR:
-      ast.type = typeCheckAccessor(ast.func, inputType, state);
+      ast.type = typeCheckAccessor(ast.func, ast.input, state);
       return ast.type;
     default:
       throw new TypeCheckerException(
@@ -178,29 +234,28 @@ function typeCheckSource(ast, state) {
   }
 }
 
-function typeCheckFunction(ast, inputType, state) {
+function typeCheckFunction(ast, inputAst, state) {
   nodeAssert(ast, FUNC);
   const funcTypes = state.functions[ast.name];
-  const argTypes = ast.args.map(a => typeCheckSignal(a, state));
-  if (
-    typesMatch(funcTypes.inputType, inputType) &&
-    argTypes.every((a, idx) => typesMatch(a, funcTypes.argTypes[idx]))
-  ) {
-    if (funcTypes.returnType.type === INPUT) {
-      if (funcTypes.inputType.type === GENERIC) {
-        ast.type = inputType;
-      } else {
-        ast.type = funcTypes.inputType;
-      }
-    } else {
-      ast.type = funcTypes.returnType;
-    }
-    return ast.type;
-  } else {
-    throw new TypeCheckerException(
-      `Expecting BinaryOp, Number or Accessor but found ${ast.node}`
-    );
+  ast.args.forEach(a => typeCheckSignal(a, state));
+  if (!typesMatch(funcTypes.inputType, inputAst.type)) {
+    throw new IncorrectPatchTypeException(funcTypes, inputAst, ast);
   }
+  ast.args.forEach((arg, idx) => {
+    if (!typesMatch(arg.type, funcTypes.argTypes[idx])) {
+      throw new UnexpectedTypeException(funcTypes.argTypes[idx], arg);
+    }
+  });
+  if (funcTypes.returnType.type === INPUT) {
+    if (funcTypes.inputType.type === GENERIC) {
+      ast.type = inputAst.type;
+    } else {
+      ast.type = funcTypes.inputType;
+    }
+  } else {
+    ast.type = funcTypes.returnType;
+  }
+  return ast.type;
 }
 
 function typeCheckSubPatch(ast /*, inputType, state*/) {
@@ -213,17 +268,14 @@ function typeCheckBinaryOp(ast, state) {
   const leftType = typeCheckSource(ast.value1, state);
   const rightType = typeCheckSource(ast.value2, state);
   const opTypes = state.operators[ast.op];
-  if (
-    typesMatch(opTypes.leftType, leftType) &&
-    typesMatch(opTypes.rightType, rightType)
-  ) {
-    ast.type = opTypes.returnType;
-    return ast.type;
-  } else {
-    throw new TypeCheckerException(
-      `Expecting BinaryOp, Number or Accessor but found ${ast.node}`
-    );
+  if (!typesMatch(opTypes.leftType, leftType)) {
+    throw new UnexpectedTypeException(opTypes.leftType, ast.value1);
   }
+  if (!typesMatch(opTypes.rightType, rightType)) {
+    throw new UnexpectedTypeException(opTypes.rightType, ast.value2);
+  }
+  ast.type = opTypes.returnType;
+  return ast.type;
 }
 
 function typeCheckAccessor(ast, inputType, state) {
@@ -240,8 +292,9 @@ function typeCheckAccessor(ast, inputType, state) {
       break;
   }
   if (sourceType.type !== VEC) {
-    throw new TypeCheckerException(
-      "Can't take a single channel from a non Vector type bus"
+    throw new InvalidAccessorException(
+      "Can't access channels from a non Vector type bus",
+      ast
     );
   } else if (validChannelsForSource(ast.channels, sourceType)) {
     if (ast.channels.length === 1) {
@@ -251,16 +304,22 @@ function typeCheckAccessor(ast, inputType, state) {
     }
     return ast.type;
   } else {
-    throw new TypeCheckerException(
-      `Accessor ${ast.channel} is not available on a vector with only ${ast.source.type.count} elements`
+    throw new InvalidAccessorException(
+      `Accessor ${ast.channel} is not available on a vector with only ${ast.source.type.count} elements`,
+      ast.line,
+      ast.character
     );
   }
 }
 
-function typeCheckBus(bus, state) {
-  const busTyping = state.busses[bus.name];
-  bus.type = busTyping.type;
-  return bus.type;
+function typeCheckBus(ast, state) {
+  const busInfo = state.busses[ast.name];
+  if (!busInfo) {
+    throw new InvalidBusException(ast);
+  }
+  const busTyping = state.busses[ast.name];
+  ast.type = busTyping.type;
+  return ast.type;
 }
 
 function typeCheckNum(ast) {

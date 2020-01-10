@@ -1,4 +1,4 @@
-import parser from './parser';
+import Parser from './parser';
 import { typeCheck } from './typechecker';
 import { compile } from './compiler';
 
@@ -8,8 +8,13 @@ import { busTypes, busCompileTargets } from './builtins/busses';
 
 export function codeToFrag(snekCode) {
   const errors = [];
+  const parser = new Parser();
   const parseResult = parser.parse(snekCode);
-  parseResult.errors.forEach(errors.push);
+  parseResult.errors.forEach(err => errors.push(err));
+
+  if (!parseResult.ast) {
+    return { errors };
+  }
 
   const typeCheckResult = typeCheck(
     parseResult.ast,
@@ -17,13 +22,17 @@ export function codeToFrag(snekCode) {
     funcTypes,
     opTypes
   );
-  typeCheckResult.errors.forEach(errors.push);
+  typeCheckResult.errors.forEach(err => errors.push(err));
+  if (!typeCheckResult.ast) {
+    return { errors };
+  }
+
   const compileResult = compile(
     typeCheckResult.ast,
     busCompileTargets,
     funcCompileTargets
   );
-  compileResult.errors.forEach(errors.push);
+  compileResult.errors.forEach(err => errors.push(err));
   return {
     code: compileResult.code,
     errors,
