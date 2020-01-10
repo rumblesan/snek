@@ -59,7 +59,7 @@ export const glslFuncs = {
       default: dedent(`
         vec2 rotate(vec2 st, float _angle, float speed){
           vec2 xy = st - vec2(0.5);
-          float angle = _angle + speed *time;
+          float angle = _angle + speed * u_time;
           xy = mat2(cos(angle),-sin(angle), sin(angle),cos(angle))*xy;
           xy += 0.5;
           return xy;
