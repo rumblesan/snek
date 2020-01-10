@@ -54,6 +54,7 @@ export const glslFuncs = {
       { name: 'angle', type: Float(), default: Source(Num(10.0)) },
       { name: 'speed', type: Float(), default: Source(Num(0.0)) },
     ],
+    returnType: Vector(2, Float()),
     code: {
       default: dedent(`
         vec2 rotate(vec2 st, float _angle, float speed){
@@ -71,6 +72,7 @@ export const glslFuncs = {
       { name: 'texture', type: Vector(4, Float()) },
       { name: 'amount', type: Float(), default: Source(Num(0.1)) },
     ],
+    returnType: Vector(2, Float()),
     code: {
       default: dedent(`
         vec2 modulate(vec2 st, vec4 c1, float amount){
