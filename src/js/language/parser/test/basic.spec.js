@@ -31,7 +31,11 @@ describe('Parser', function() {
       Routing(
         Patch(
           Source(
-            BinaryOp('+', Source(Accessor('position', 'x')), Source(Num(1)))
+            BinaryOp(
+              '+',
+              Source(Accessor(Bus('position'), 'x')),
+              Source(Num(1))
+            )
           ),
           Func('osc', [Source(Num(10))])
         ),
@@ -55,7 +59,10 @@ describe('Parser', function() {
           Source(Bus('position')),
           SubPatch(
             'in',
-            Patch(Source(Accessor('in', 'x')), Func('osc', [Source(Num(10))]))
+            Patch(
+              Source(Accessor(Bus('in'), 'x')),
+              Func('osc', [Source(Num(10))])
+            )
           )
         ),
         Bus('out')
@@ -77,7 +84,7 @@ describe('Parser', function() {
         Patch(
           Patch(
             Patch(
-              Source(Accessor('position', 'x')),
+              Source(Accessor(Bus('position'), 'x')),
               Func('rotate', [Source(Num(3))])
             ),
             Func('osc', [Source(Num(10))])

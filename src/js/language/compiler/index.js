@@ -231,8 +231,8 @@ function compileNum(ast /*, state */) {
 }
 
 function compileAccessor(ast, state) {
-  const glslBusName = state.busses[ast.bus].glslName;
-  return simpleCode(`${glslBusName}.${ast.channel}`);
+  const busCode = compileBus(ast.bus, state);
+  return simpleCode(`${busCode.programCode}.${ast.channel}`);
 }
 
 function compileBus(ast, state) {

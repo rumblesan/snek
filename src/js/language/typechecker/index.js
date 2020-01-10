@@ -216,24 +216,25 @@ function typeCheckBinaryOp(ast, state) {
 }
 
 function typeCheckAccessor(ast, state) {
-  const bus = state.busses[ast.bus];
-  if (bus.type.type !== VEC) {
+  const busType = typeCheckBus(ast.bus, state);
+  const stateBus = state.busses[ast.bus.name];
+  if (busType.type !== VEC) {
     throw new TypeCheckerException(
       "Can't take a single channel from a non Vector type bus"
     );
-  } else if (bus.channels.indexOf(ast.channel) === -1) {
+  } else if (stateBus.channels.indexOf(ast.channel) === -1) {
     throw new TypeCheckerException(
       `Accessor ${ast.channel} is not available on bus ${ast.bus}`
     );
   } else {
-    ast.type = bus.type.dataType;
+    ast.type = busType.dataType;
     return ast.type;
   }
 }
 
 function typeCheckBus(bus, state) {
   const busTyping = state.busses[bus.name];
-  bus.type = busTyping.type.dataType;
+  bus.type = busTyping.type;
   return bus.type;
 }
 

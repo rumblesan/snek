@@ -125,7 +125,7 @@ export function Num(value, type, { line, pos } = {}) {
 }
 
 /**
- *  source:  Identifier
+ *  source:  Bus
  *  channel: Identifier
  */
 export function Accessor(bus, channel, type, { line, pos } = {}) {

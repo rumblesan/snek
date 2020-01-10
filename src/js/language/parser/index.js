@@ -69,13 +69,13 @@ parser.baseSource = function(debug = false) {
   if (this.la1('number')) {
     return Num(this.match('number').content);
   } else if (this.la1('identifier')) {
-    const id = this.match('identifier').content;
+    const bus = Bus(this.match('identifier').content);
     if (this.la1('period')) {
       this.match('period');
       const channelName = this.match('identifier').content;
-      return Accessor(id, channelName);
+      return Accessor(bus, channelName);
     }
-    return Bus(id);
+    return bus;
   } else if (this.la1('open paren')) {
     this.match('open paren');
     const source = this.source(debug);
@@ -93,18 +93,21 @@ parser.func = function(debug = false) {
     return func;
   }
 
+  let func;
   const id = this.match('identifier').content;
   if (this.la1('open paren')) {
     this.match('open paren');
     const args = this.argList(debug);
     this.match('close paren');
-    return Func(id, args);
+    func = Func(id, args);
   } else if (this.la1('subpatch arrow')) {
     this.match('subpatch arrow');
     const body = this.signal(debug);
-    return SubPatch(id, body);
+    func = SubPatch(id, body);
+  } else {
+    // TODO error handling
   }
-  // TODO error handling
+  return func;
 };
 
 parser.operator = function(left, debug = false) {
