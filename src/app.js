@@ -10,6 +10,7 @@ import { defaultVertexShader } from './js/glsl';
 
 import { codeToFrag } from './js/language';
 
+const startProgram = 'position.x -> osc(5) >> out;';
 const snek = {
   drawFunc: null,
 };
@@ -35,6 +36,11 @@ function updateDrawFunc(regl, fragShader) {
 }
 
 function run() {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  const keyMap = urlParams.has('keymap') ? urlParams.get('keymap') : 'vim';
+  console.log(keyMap);
+
   const canvas = document.getElementById('c');
 
   var gl = canvas.getContext('webgl2');
@@ -49,6 +55,14 @@ function run() {
 
   const editor = CodeMirror.fromTextArea(textArea, {
     lineNumbers: true,
+    keyMap,
+    value: startProgram,
+    extraKeys: {
+      'Ctrl-Enter': function(instance) {
+        var program = instance.getValue();
+        updateDrawFunc(regl, codeToFrag(program));
+      },
+    },
   });
 
   const button = document.getElementById('compile');
