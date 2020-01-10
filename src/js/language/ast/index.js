@@ -25,26 +25,26 @@ export function Program(routings) {
  *  from: Source | Patch
  *  to:   Bus
  */
-export function Routing(from, to, { line, pos } = {}) {
+export function Routing(from, to, { line, character } = {}) {
   return {
     node: ROUTING,
     from,
     to,
     line,
-    pos,
+    character,
   };
 }
 
 /**
  *  value: BinaryOp | Num | Accessor | Bus
  */
-export function Source(source, type, { line, pos } = {}) {
+export function Source(source, type, { line, character } = {}) {
   return {
     node: SOURCE,
     source,
     type,
     line,
-    pos,
+    character,
   };
 }
 
@@ -52,14 +52,14 @@ export function Source(source, type, { line, pos } = {}) {
  *  input: Source | Patch
  *  func:  Function | SubPatch
  */
-export function Patch(input, func, type, { line, pos } = {}) {
+export function Patch(input, func, type, { line, character } = {}) {
   return {
     node: PATCH,
     input,
     func,
     type,
     line,
-    pos,
+    character,
   };
 }
 
@@ -67,14 +67,14 @@ export function Patch(input, func, type, { line, pos } = {}) {
  *  name: Identifier
  *  args: [Source | Patch]
  */
-export function Func(name, args, type, { line, pos } = {}) {
+export function Func(name, args, type, { line, character } = {}) {
   return {
     node: FUNC,
     name,
     args,
     type,
     line,
-    pos,
+    character,
   };
 }
 
@@ -83,14 +83,14 @@ export function Func(name, args, type, { line, pos } = {}) {
  *  input: Identifier
  *  patch: Source | Patch
  */
-export function SubPatch(input, patch, type, { line, pos } = {}) {
+export function SubPatch(input, patch, type, { line, character } = {}) {
   return {
     node: SUBPATCH,
     input,
     patch,
     type,
     line,
-    pos,
+    character,
   };
 }
 
@@ -99,7 +99,7 @@ export function SubPatch(input, patch, type, { line, pos } = {}) {
  *  value1: Source
  *  value2: Source
  */
-export function BinaryOp(op, value1, value2, type, { line, pos } = {}) {
+export function BinaryOp(op, value1, value2, type, { line, character } = {}) {
   return {
     node: BINARYOP,
     op,
@@ -107,20 +107,20 @@ export function BinaryOp(op, value1, value2, type, { line, pos } = {}) {
     value2,
     type,
     line,
-    pos,
+    character,
   };
 }
 
 /**
  *  value: Float
  */
-export function Num(value, type, { line, pos } = {}) {
+export function Num(value, type, { line, character } = {}) {
   return {
     node: NUM,
     value,
     type,
     line,
-    pos,
+    character,
   };
 }
 
@@ -128,26 +128,26 @@ export function Num(value, type, { line, pos } = {}) {
  *  source:   Bus | Function | SubPatch
  *  channels: [Identifier]
  */
-export function Accessor(source, channels, type, { line, pos } = {}) {
+export function Accessor(source, channels, type, { line, character } = {}) {
   return {
     node: ACCESSOR,
     source,
     channels,
     type,
     line,
-    pos,
+    character,
   };
 }
 
 /**
  *  name:  Identifier
  */
-export function Bus(name, type, { line, pos } = {}) {
+export function Bus(name, type, { line, character } = {}) {
   return {
     node: BUS,
     name,
     type,
     line,
-    pos,
+    character,
   };
 }

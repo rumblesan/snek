@@ -7,8 +7,25 @@ import { opTypes } from './builtins/ops';
 import { busTypes, busCompileTargets } from './builtins/busses';
 
 export function codeToFrag(snekCode) {
-  const ast = parser.parse(snekCode);
+  const errors = [];
+  const parseResult = parser.parse(snekCode);
+  parseResult.errors.forEach(errors.push);
 
-  typeCheck(ast, busTypes, funcTypes, opTypes);
-  return compile(ast, busCompileTargets, funcCompileTargets);
+  const typeCheckResult = typeCheck(
+    parseResult.ast,
+    busTypes,
+    funcTypes,
+    opTypes
+  );
+  typeCheckResult.errors.forEach(errors.push);
+  const compileResult = compile(
+    typeCheckResult.ast,
+    busCompileTargets,
+    funcCompileTargets
+  );
+  compileResult.errors.forEach(errors.push);
+  return {
+    code: compileResult.code,
+    errors,
+  };
 }

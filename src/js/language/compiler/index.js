@@ -77,7 +77,11 @@ export function BuiltInFunction(name, defaultArgs, generic, code) {
 export function compile(ast, builtInBusses, builtinFunctions) {
   const state = CompilerState(builtInBusses, builtinFunctions);
 
-  return compileProgram(ast, state);
+  const code = compileProgram(ast, state);
+  return {
+    code,
+    errors: [],
+  };
 }
 
 function compileProgram(ast, state) {

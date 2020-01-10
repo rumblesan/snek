@@ -26,26 +26,30 @@ export default class ArithmaticShunter {
   shuntValue(value) {
     this.output.push(value);
   }
-  collapseOp(op) {
+  collapseOp(operator, opts) {
+    const position = opts.positions
+      ? { line: operator.line, character: operator.character }
+      : {};
     const v2 = this.output.pop();
     const v1 = this.output.pop();
-    const expr = ast.BinaryOp(op, v1, v2);
+    const expr = ast.BinaryOp(operator.content, v1, v2, undefined, position);
     this.output.push(expr);
   }
   shuntOp(newOp) {
-    if (!this.precedences[newOp]) {
-      throw new ParserException(`${newOp} is not a valid operator`);
+    const opSymbol = newOp.content;
+    if (!this.precedences[opSymbol]) {
+      throw new ParserException(`${opSymbol} is not a valid operator`);
     }
     const peekOp = this.operatorStack[this.operatorStack.length - 1];
-    if (this.precedences[newOp] <= this.precedences[peekOp]) {
+    if (this.precedences[opSymbol] <= this.precedences[peekOp]) {
       const topOp = this.operatorStack.pop();
       this.collapseOp(topOp);
     }
     this.operatorStack.push(newOp);
   }
-  getOutput() {
+  getOutput(opts) {
     while (this.operatorStack.length > 0) {
-      this.collapseOp(this.operatorStack.pop());
+      this.collapseOp(this.operatorStack.pop(), opts);
     }
     if (this.output.length !== 1) {
       throw new ParserException(

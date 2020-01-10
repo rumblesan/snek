@@ -93,7 +93,10 @@ export function typeCheck(ast, busses = [], functions = [], ops = []) {
   const state = CheckerState(busses, functions, ops);
 
   typeCheckProgram(ast, state);
-  return ast;
+  return {
+    ast,
+    errors: [],
+  };
 }
 
 function typeCheckProgram(ast, state) {

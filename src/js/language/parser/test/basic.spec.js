@@ -25,7 +25,7 @@ describe('Parser', function() {
                            position.x + 1 -> osc(10) >> speed;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast, errors } = parser.parse(program);
 
     const expected = Program([
       Routing(
@@ -43,7 +43,8 @@ describe('Parser', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(errors, []);
+    assert.deepEqual(ast, expected);
   });
 
   it('parses a patch with a subpatch', function() {
@@ -51,7 +52,7 @@ describe('Parser', function() {
                            position->(in => in.x->osc(10)) >> out;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast, errors } = parser.parse(program);
 
     const expected = Program([
       Routing(
@@ -69,7 +70,8 @@ describe('Parser', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(errors, []);
+    assert.deepEqual(ast, expected);
   });
 
   it('parses a chain of functions', function() {
@@ -77,7 +79,7 @@ describe('Parser', function() {
                            position.x -> rotate(3) -> osc(10) -> invert() >> speed;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast, errors } = parser.parse(program);
 
     const expected = Program([
       Routing(
@@ -95,6 +97,7 @@ describe('Parser', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(errors, []);
+    assert.deepEqual(ast, expected);
   });
 });

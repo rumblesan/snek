@@ -13,7 +13,7 @@ describe('Language', function() {
                            position.x + 1 -> osc(10) >> out;
                            `);
 
-    const fragShader = codeToFrag(program);
+    const result = codeToFrag(program);
 
     const expected = dedent(`
 precision mediump float;
@@ -28,7 +28,7 @@ void main() {
 }
 `);
 
-    assert.deepEqual(fragShader, expected);
+    assert.deepEqual(result.code, expected);
   });
 
   it('compiles a patch with generic functions', function() {
@@ -36,7 +36,7 @@ void main() {
                            position.x -> osc(10) -> mult(0.3) >> out;
                            `);
 
-    const fragShader = codeToFrag(program);
+    const result = codeToFrag(program);
 
     const expected = dedent(`
 precision mediump float;
@@ -52,7 +52,7 @@ void main() {
 }
 `);
 
-    assert.deepEqual(fragShader, expected);
+    assert.deepEqual(result.code, expected);
   });
 
   it('compiles a patch with multi channel accessors', function() {
@@ -60,7 +60,7 @@ void main() {
                            position.yx -> rotate(10, position.y->osc(1).r).y -> osc(4) >> out;
                            `);
 
-    const fragShader = codeToFrag(program);
+    const result = codeToFrag(program);
 
     const expected = dedent(`
 precision mediump float;
@@ -76,6 +76,6 @@ void main() {
 }
 `);
 
-    assert.deepEqual(fragShader, expected);
+    assert.deepEqual(result.code, expected);
   });
 });

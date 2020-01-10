@@ -27,11 +27,11 @@ describe('Type Checker', function() {
                            position.x + 1 -> osc(10) >> speed;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast } = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [FunctionType('osc', Float(), [Float()], Float())];
     const opTypes = [OperatorType('+', Float(), Float(), Float(), Float())];
-    typeCheck(parsed, busTypes, functionTypes, opTypes);
+    typeCheck(ast, busTypes, functionTypes, opTypes);
 
     const expected = Program([
       Routing(
@@ -55,7 +55,7 @@ describe('Type Checker', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(ast, expected);
   });
 
   it('type checks a chain of functions', function() {
@@ -63,7 +63,7 @@ describe('Type Checker', function() {
                            position.x -> osc(10) -> invert() -> modulate(position.y -> osc(1)) >> out;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast } = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
@@ -76,7 +76,7 @@ describe('Type Checker', function() {
       ),
     ];
     const opTypes = [];
-    typeCheck(parsed, busTypes, functionTypes, opTypes);
+    typeCheck(ast, busTypes, functionTypes, opTypes);
 
     const expected = Program([
       Routing(
@@ -121,7 +121,7 @@ describe('Type Checker', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(ast, expected);
   });
 
   it('typechecks a generic function', function() {
@@ -129,14 +129,14 @@ describe('Type Checker', function() {
                            position.x -> osc(10) -> invert() >> speed;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast } = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
       FunctionType('invert', Generic(), [], Input()),
     ];
     const opTypes = [];
-    typeCheck(parsed, busTypes, functionTypes, opTypes);
+    typeCheck(ast, busTypes, functionTypes, opTypes);
 
     const expected = Program([
       Routing(
@@ -160,7 +160,7 @@ describe('Type Checker', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(ast, expected);
   });
 
   it('typechecks an internal bus', function() {
@@ -169,13 +169,13 @@ describe('Type Checker', function() {
                            foo.w -> osc(2) >> out;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast } = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
     ];
     const opTypes = [];
-    typeCheck(parsed, busTypes, functionTypes, opTypes);
+    typeCheck(ast, busTypes, functionTypes, opTypes);
 
     const expected = Program([
       Routing(
@@ -202,7 +202,7 @@ describe('Type Checker', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(ast, expected);
   });
 
   it('typechecks an accessor on a function call', function() {
@@ -210,13 +210,13 @@ describe('Type Checker', function() {
                            position.x -> osc(10).x -> osc(4) >> speed;
                            `);
 
-    const parsed = parser.parse(program);
+    const { ast } = parser.parse(program);
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
     ];
     const opTypes = [];
-    typeCheck(parsed, busTypes, functionTypes, opTypes);
+    typeCheck(ast, busTypes, functionTypes, opTypes);
 
     const expected = Program([
       Routing(
@@ -244,6 +244,6 @@ describe('Type Checker', function() {
       ),
     ]);
 
-    assert.deepEqual(parsed, expected);
+    assert.deepEqual(ast, expected);
   });
 });
