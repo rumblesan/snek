@@ -3,7 +3,7 @@ import { ParserException } from 'canto34';
 import * as ast from '../ast';
 
 export default class ArithmaticShunter {
-  constructor() {
+  constructor(options = {}) {
     this.operatorStack = [];
     this.output = [];
     this.precedences = {
@@ -22,14 +22,15 @@ export default class ArithmaticShunter {
       '&&': 6,
       '||': 5,
     };
+    this.testing = options.testing || false;
   }
   shuntValue(value) {
     this.output.push(value);
   }
-  collapseOp(operator, opts) {
-    const position = opts.positions
-      ? { line: operator.line, character: operator.character }
-      : {};
+  collapseOp(operator) {
+    const position = this.testing
+      ? {}
+      : { line: operator.line, character: operator.character };
     const v2 = this.output.pop();
     const v1 = this.output.pop();
     const expr = ast.BinaryOp(operator.content, v1, v2, undefined, position);
@@ -47,9 +48,9 @@ export default class ArithmaticShunter {
     }
     this.operatorStack.push(newOp);
   }
-  getOutput(opts) {
+  getOutput() {
     while (this.operatorStack.length > 0) {
-      this.collapseOp(this.operatorStack.pop(), opts);
+      this.collapseOp(this.operatorStack.pop());
     }
     if (this.output.length !== 1) {
       throw new ParserException(
