@@ -1,0 +1,78 @@
+/*
+  Name:       Snek Theme
+*/
+
+.cm-s-snek.CodeMirror {
+  background: rgba(0, 0, 0, 0);
+  color: #cccccc;
+  font-size: 18px;
+}
+
+/* general text stylings */
+
+.cm-s-snek .CodeMirror-line > span {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #cccccc;
+}
+.cm-s-snek .CodeMirror-line span span.CodeMirror-selectedtext {
+  background: #93a1a1;
+  color: #073642;
+}
+
+/* make cursor appear above text */
+.cm-s-snek.cm-fat-cursor .CodeMirror-cursors {
+  z-index: 15;
+}
+/* Cursor in command mode */
+.cm-s-snek.cm-fat-cursor .CodeMirror-cursor {
+  background: #ffffffdd;
+}
+/* Cursor in insert mode */
+.cm-s-snek .CodeMirror-cursor {
+  border-left: 3px solid #999;
+}
+
+/* language highlighting */
+.cm-s-snek span.cm-comment {
+  color: #d27b53;
+}
+.cm-s-snek span.cm-atom {
+  color: #a16a94;
+}
+.cm-s-snek span.cm-number {
+  color: #a16a94;
+}
+
+.cm-s-snek span.cm-property,
+.cm-s-snek span.cm-attribute {
+  color: #99cc99;
+}
+.cm-s-snek span.cm-keyword {
+  color: #f2777a;
+}
+.cm-s-snek span.cm-string {
+  color: #ffcc66;
+}
+
+.cm-s-snek span.cm-variable {
+  color: #99cc99;
+}
+.cm-s-snek span.cm-variable-2 {
+  color: #6699cc;
+}
+.cm-s-snek span.cm-def {
+  color: #f99157;
+}
+.cm-s-snek span.cm-bracket {
+  color: #cccccc;
+}
+.cm-s-snek span.cm-tag {
+  color: #f2777a;
+}
+.cm-s-snek span.cm-link {
+  color: #a16a94;
+}
+.cm-s-snek span.cm-error {
+  background: #f2777a;
+  color: #6a6a6a;
+}

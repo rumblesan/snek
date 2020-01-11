@@ -3,12 +3,15 @@
 import './index.html';
 import './css/reset.css';
 import './css/style.css';
+import './css/snek-theme.css';
 
 import createREGL from 'regl';
 
 import { defaultVertexShader } from './js/glsl';
 
 import { codeToFrag, lint } from './js/language';
+
+import './js/ui/editor-mode';
 
 const startProgram = 'position.x -> osc(5) >> out;';
 const snek = {

@@ -55,8 +55,3 @@ canvas#canvas {
   width: 100%;
   height: calc(100% - 30px);
 }
-
-/* CodeMirror */
-.cm-s-snek span {
-  background: yellow;
-}
