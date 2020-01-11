@@ -1,15 +1,25 @@
 # Language
 
-```
+Snek's language is based on the idea of signal patching. A Source is patched through a bunch of transformation functions, before being routed to a Bus.
 
-// Expression source routed to a bus
-3 * pi >> rotAngle;
-
-// x component of the position signal modified by an oscilator function
-// 1.0 added to the signal then routed to a channel
-position.x -> osc() -> add(1) >> speed;
-
-//
-position->rotate(rotAngle, speed.0)->(in => sum(in.x->osc(10), in.y->osc(12))) >> out;
+For example, the following program takes the x channel of the `position` signal, patches it into the `osc` transformation function (which is also given a value of `100` for it's frequency argument), and then routes that to the `out` bus.
 
 ```
+position.x -> osc(100) >> out;
+```
+
+The result is a black and white oscillator across the X axis.
+
+Something more interesting would be the following:
+
+```
+position -> rotate(time/10).y -> osc(0.07) >> speed;
+
+time / 30 -> osc(30).yx -> rotate(time).x -> osc(1) >> sync;
+
+position.x -> osc(5, speed.r, sync.x * 2) >> out;
+```
+
+## TODO
+
+This document is obviously incomplete currently. The language is potentially going to evolve significantly as I play with different things, so it may not always be fully up to date at any point in the future either.
