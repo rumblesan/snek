@@ -4,7 +4,7 @@ import { isGeneric, Generic, Input, Vector, Float } from '../types';
 import { FunctionType } from '../typechecker';
 import { BuiltInFunction } from '../compiler';
 
-import { Source, Num } from '../ast';
+import { Source, Bus, Num } from '../ast';
 
 export const glslFuncs = {
   osc: {
@@ -50,17 +50,13 @@ export const glslFuncs = {
   },
   rotate: {
     inputType: Vector(2, Float()),
-    args: [
-      { name: 'angle', type: Float(), default: Source(Num(10.0)) },
-      { name: 'speed', type: Float(), default: Source(Num(0.0)) },
-    ],
+    args: [{ name: 'angle', type: Float(), default: Source(Bus('time')) }],
     returnType: Vector(2, Float()),
     code: {
       default: dedent(`
-        vec2 rotate(vec2 st, float _angle, float speed){
+        vec2 rotate(vec2 st, float angle){
           vec2 xy = st - vec2(0.5);
-          float angle = _angle + speed * u_time;
-          xy = mat2(cos(angle),-sin(angle), sin(angle),cos(angle))*xy;
+          xy = mat2(cos(angle),-sin(angle), sin(angle),cos(angle)) * xy;
           xy += 0.5;
           return xy;
         }`),
