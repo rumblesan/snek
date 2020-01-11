@@ -21,8 +21,7 @@ describe('Compiler', function() {
                            position.x + 1 -> osc(10).w -> osc(4) >> out;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast } = parser.parse(program);
+    const { ast } = Parser.parse(program, { testing: true });
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),

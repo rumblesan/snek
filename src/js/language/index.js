@@ -8,8 +8,7 @@ import { busTypes, busCompileTargets } from './builtins/busses';
 
 export function codeToFrag(snekCode) {
   const errors = [];
-  const parser = new Parser();
-  const parseResult = parser.parse(snekCode);
+  const parseResult = Parser.parse(snekCode);
   parseResult.errors.forEach(err => errors.push(err));
 
   if (!parseResult.ast) {

@@ -26,8 +26,7 @@ describe('Parser', function() {
                            position.x + 1 -> osc(10) >> speed;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast, errors } = parser.parse(program);
+    const { ast, errors } = Parser.parse(program, { testing: true });
 
     const expected = Program([
       Routing(
@@ -54,8 +53,7 @@ describe('Parser', function() {
                            position->(in => in.x->osc(10)) >> out;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast, errors } = parser.parse(program);
+    const { ast, errors } = Parser.parse(program, { testing: true });
 
     const expected = Program([
       Routing(
@@ -82,8 +80,7 @@ describe('Parser', function() {
                            position.x -> rotate(3) -> osc(10) -> invert() >> speed;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast, errors } = parser.parse(program);
+    const { ast, errors } = Parser.parse(program, { testing: true });
 
     const expected = Program([
       Routing(

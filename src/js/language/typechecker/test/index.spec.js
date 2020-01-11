@@ -28,8 +28,8 @@ describe('Type Checker', function() {
                            position.x + 1 -> osc(10) >> speed;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast } = parser.parse(program);
+    const { ast } = Parser.parse(program, { testing: true });
+
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [FunctionType('osc', Float(), [Float()], Float())];
     const opTypes = [OperatorType('+', Float(), Float(), Float(), Float())];
@@ -69,8 +69,8 @@ describe('Type Checker', function() {
                            position.x -> osc(10) -> invert() -> modulate(position.y -> osc(1)) >> out;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast } = parser.parse(program);
+    const { ast } = Parser.parse(program, { testing: true });
+
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
@@ -144,8 +144,8 @@ describe('Type Checker', function() {
                            position.x -> osc(10) -> invert() >> speed;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast } = parser.parse(program);
+    const { ast } = Parser.parse(program, { testing: true });
+
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
@@ -189,8 +189,8 @@ describe('Type Checker', function() {
                            foo.w -> osc(2) >> out;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast } = parser.parse(program);
+    const { ast } = Parser.parse(program, { testing: true });
+
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
@@ -235,8 +235,8 @@ describe('Type Checker', function() {
                            position.x -> osc(10).x -> osc(4) >> speed;
                            `);
 
-    const parser = new Parser({ testing: true });
-    const { ast } = parser.parse(program);
+    const { ast } = Parser.parse(program, { testing: true });
+
     const busTypes = [BusType('position', Vector(2, Float()), ['x', 'y'])];
     const functionTypes = [
       FunctionType('osc', Float(), [Float()], Vector(4, Float())),
