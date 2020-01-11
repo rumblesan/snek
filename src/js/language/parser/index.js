@@ -17,12 +17,13 @@ export class ParserException extends Error {
 
 export class UnexpectedTokenException extends ParserException {
   constructor(expected, token) {
-    const msg = `Expected ${expected} but found ${token.type} at line ${token.line}, char${token.character}`;
+    const msg = `Expected ${expected} but found ${token.type}`;
     super(msg);
     this.name = 'UnexpectedTokenException';
     this.displayable = true;
     this.line = token.line;
     this.character = token.character;
+    this.length = token.content.length;
   }
 }
 

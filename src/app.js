@@ -8,7 +8,7 @@ import createREGL from 'regl';
 
 import { defaultVertexShader } from './js/glsl';
 
-import { codeToFrag } from './js/language';
+import { codeToFrag, lint } from './js/language';
 
 const startProgram = 'position.x -> osc(5) >> out;';
 const snek = {
@@ -16,7 +16,7 @@ const snek = {
 };
 
 function updateDrawFunc(regl, fragShader) {
-  console.log(fragShader);
+  //console.log(fragShader);
   const drawSnek = regl({
     frag: fragShader,
 
@@ -57,6 +57,20 @@ function run() {
     keyMap,
     value: startProgram,
     theme: 'snek',
+    mode: 'snek',
+    gutters: ['CodeMirror-lint-markers'],
+    lint: {
+      getAnnotations: text => {
+        const { errors } = lint(text);
+
+        return errors.map(err => ({
+          from: CodeMirror.Pos(err.line - 1, err.character),
+          to: CodeMirror.Pos(err.line - 1, err.character + err.length),
+          message: err.message,
+          severity: 'error',
+        }));
+      },
+    },
     extraKeys: {
       'Ctrl-Enter': function(instance) {
         var program = instance.getValue();

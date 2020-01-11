@@ -38,3 +38,8 @@ export function codeToFrag(snekCode) {
     errors,
   };
 }
+
+export function lint(code) {
+  console.log('linting');
+  return codeToFrag(code);
+}

@@ -38,6 +38,7 @@ export class UnexpectedTypeException extends TypeCheckerException {
     this.displayable = true;
     this.line = ast.line;
     this.character = ast.character;
+    this.length = 1;
   }
 }
 
@@ -51,6 +52,7 @@ export class IncorrectPatchTypeException extends TypeCheckerException {
     this.displayable = true;
     this.line = funcAst.line;
     this.character = funcAst.character;
+    this.length = func.name.length;
   }
 }
 
@@ -61,6 +63,7 @@ export class InvalidAccessorException extends TypeCheckerException {
     this.displayable = true;
     this.line = accessorAst.line;
     this.character = accessorAst.character;
+    this.length = 1;
   }
 }
 
@@ -72,6 +75,7 @@ export class InvalidBusException extends TypeCheckerException {
     this.displayable = true;
     this.line = ast.line;
     this.character = ast.character;
+    this.length = ast.name.length;
   }
 }
 
