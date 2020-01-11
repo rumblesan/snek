@@ -25,7 +25,7 @@ Under the hood, snek is really just taking the input code and turning it into a 
 ## Credits
 
 Some bits of code pulled from [hydra-synth](https://github.com/ojack/hydra-synth).
-[Canto34](https://github.com/stevecooperorg/canto34) used as my parser builder of choice.
+The [Virgil](https://github.com/rumblesan/virgil) parsing library is based on [Canto34](https://github.com/stevecooperorg/canto34).
 
 
 ## Contact
