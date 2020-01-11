@@ -8,6 +8,7 @@ import {
   BINARYOP,
   NUM,
   ACCESSOR,
+  CHANNEL,
   BUS,
 } from './nodes';
 
@@ -134,6 +135,18 @@ export function Accessor(source, channels, type, { line, character } = {}) {
     source,
     channels,
     type,
+    line,
+    character,
+  };
+}
+
+/**
+ *  name:   Identifier
+ */
+export function Channel(name, { line, character } = {}) {
+  return {
+    node: CHANNEL,
+    name,
     line,
     character,
   };

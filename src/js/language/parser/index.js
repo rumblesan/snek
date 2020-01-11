@@ -158,8 +158,11 @@ class Parser {
       );
       if (this.la1('period')) {
         this.match('period');
-        const channelNames = this.match('identifier').content.split('');
-        return ast.Accessor(bus, channelNames, undefined, position);
+        const channelPosition = this.position();
+        const channels = this.match('identifier')
+          .content.split('')
+          .map(c => ast.Channel(c, channelPosition));
+        return ast.Accessor(bus, channels, undefined, position);
       }
       return bus;
     } else if (this.la1('open paren')) {
@@ -197,8 +200,11 @@ class Parser {
 
     if (this.la1('period')) {
       this.match('period');
-      const channelNames = this.match('identifier').content.split('');
-      return ast.Accessor(func, channelNames, undefined, position);
+      const channelPosition = this.position();
+      const channels = this.match('identifier')
+        .content.split('')
+        .map(c => ast.Channel(c, channelPosition));
+      return ast.Accessor(func, channels, undefined, position);
     }
     return func;
   }

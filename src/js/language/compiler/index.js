@@ -255,7 +255,7 @@ const channelAliases = {
 
 function compileSourceAccessor(ast, state) {
   const sourceCode = compileBus(ast.source, state);
-  const channelCode = ast.channels.map(c => channelAliases[c]).join('');
+  const channelCode = ast.channels.map(c => channelAliases[c.name]).join('');
   return simpleCode(`${sourceCode.programCode}.${channelCode}`);
 }
 
@@ -279,7 +279,7 @@ function compilePatchAccessor(ast, inputAst, signalInputCode, state) {
       );
       break;
   }
-  const channelCode = ast.channels.map(c => channelAliases[c]).join('');
+  const channelCode = ast.channels.map(c => channelAliases[c.name]).join('');
   return compiledCode(
     sourceCode.usedBuiltIns,
     `${sourceCode.programCode}.${channelCode}`

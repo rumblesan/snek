@@ -9,4 +9,5 @@ export const SUBPATCH = 'SUBPATCH';
 export const BINARYOP = 'BINARYOP';
 export const NUM = 'NUM';
 export const ACCESSOR = 'ACCESSOR';
+export const CHANNEL = 'CHANNEL';
 export const BUS = 'BUS';

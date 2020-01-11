@@ -12,6 +12,7 @@ import {
   BinaryOp,
   Num,
   Accessor,
+  Channel,
   Bus,
 } from '../../ast';
 
@@ -34,7 +35,7 @@ describe('Parser', function() {
           Source(
             BinaryOp(
               '+',
-              Source(Accessor(Bus('position'), ['x'])),
+              Source(Accessor(Bus('position'), [Channel('x')])),
               Source(Num(1))
             )
           ),
@@ -63,7 +64,7 @@ describe('Parser', function() {
           SubPatch(
             'in',
             Patch(
-              Source(Accessor(Bus('in'), ['x'])),
+              Source(Accessor(Bus('in'), [Channel('x')])),
               Func('osc', [Source(Num(10))])
             )
           )
@@ -89,7 +90,7 @@ describe('Parser', function() {
         Patch(
           Patch(
             Patch(
-              Source(Accessor(Bus('position'), ['x'])),
+              Source(Accessor(Bus('position'), [Channel('x')])),
               Func('rotate', [Source(Num(3))])
             ),
             Func('osc', [Source(Num(10))])

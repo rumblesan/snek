@@ -6,8 +6,6 @@ import {
   Vector,
   typesMatch,
   typeToString,
-  busTypeChannels,
-  validChannelsForSource,
 } from '../types';
 import {
   PROGRAM,
@@ -96,11 +94,10 @@ function CheckerState(busses, functions, operators) {
   };
 }
 
-export function BusType(id, type, channels) {
+export function BusType(id, type) {
   return {
     id,
     type,
-    channels,
   };
 }
 
@@ -108,7 +105,6 @@ export function InternalBusType(id, type) {
   return {
     id,
     type,
-    channels: busTypeChannels(type),
   };
 }
 
@@ -282,6 +278,17 @@ function typeCheckBinaryOp(ast, state) {
   return ast.type;
 }
 
+const channelNumbers = {
+  x: 0,
+  r: 0,
+  y: 1,
+  g: 1,
+  z: 2,
+  b: 2,
+  w: 3,
+  a: 3,
+};
+
 function typeCheckAccessor(ast, inputType, state) {
   let sourceType;
   switch (ast.source.node) {
@@ -300,20 +307,24 @@ function typeCheckAccessor(ast, inputType, state) {
       "Can't access channels from a non Vector type bus",
       ast
     );
-  } else if (validChannelsForSource(ast.channels, sourceType)) {
-    if (ast.channels.length === 1) {
-      ast.type = sourceType.dataType;
-    } else {
-      ast.type = Vector(ast.channels.length, sourceType.dataType);
-    }
-    return ast.type;
-  } else {
-    throw new InvalidAccessorException(
-      `Accessor ${ast.channel} is not available on a vector with only ${ast.source.type.count} elements`,
-      ast.line,
-      ast.character
-    );
   }
+
+  ast.channels.every(c => {
+    if (channelNumbers[c.name] > sourceType.count - 1) {
+      throw new InvalidAccessorException(
+        `${c.name} is not available on a signal with only ${sourceType.count} channels`,
+        c.line,
+        c.character
+      );
+    }
+  });
+
+  if (ast.channels.length === 1) {
+    ast.type = sourceType.dataType;
+  } else {
+    ast.type = Vector(ast.channels.length, sourceType.dataType);
+  }
+  return ast.type;
 }
 
 function typeCheckBus(ast, state) {
