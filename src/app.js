@@ -53,7 +53,6 @@ function run() {
   const textArea = document.getElementById('code');
 
   const editor = CodeMirror.fromTextArea(textArea, {
-    lineNumbers: true,
     keyMap,
     value: startProgram,
     theme: 'snek',
