@@ -63,8 +63,8 @@ function run() {
         const { errors } = lint(text);
 
         return errors.map(err => ({
-          from: CodeMirror.Pos(err.line - 1, err.character),
-          to: CodeMirror.Pos(err.line - 1, err.character + err.length),
+          from: CodeMirror.Pos(err.line - 1, err.character - 1),
+          to: CodeMirror.Pos(err.line - 1, err.character - 1 + err.length),
           message: err.message,
           severity: 'error',
         }));
