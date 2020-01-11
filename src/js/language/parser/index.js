@@ -203,12 +203,12 @@ class Parser {
     return func;
   }
 
-  operator(left, opts = {}) {
+  operator(left) {
     this.debugLog('Operator');
     const shunter = new ArithmaticShunter({ testing: this.testing });
-    const position = opts.positions
-      ? { line: left.line, character: left.character }
-      : {};
+    const position = this.testing
+      ? {}
+      : { line: left.line, character: left.character };
     shunter.shuntValue(ast.Source(left, undefined, position));
     while (this.la1('operator')) {
       shunter.shuntOp(this.match('operator'));
