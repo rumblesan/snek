@@ -111,7 +111,7 @@ ${builtInBusCode}
 ${builtInFuncCode.join('\n')}
 
 void main() {
-  ${programCode.join('\n')}
+  ${programCode.join('\n  ')}
 }
 `);
 
