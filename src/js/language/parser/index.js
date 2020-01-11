@@ -1,31 +1,8 @@
 import lexer from './lexer';
-import ArithmaticShunter from './shuntingYard';
+import ArithmaticShunter from './arithmatic-shunter';
+import { ParserException, UnexpectedTokenException } from './errors';
 
 import * as ast from '../ast';
-
-export const defaultOpts = {
-  debug: false,
-  positions: true,
-};
-
-export class ParserException extends Error {
-  constructor(message) {
-    super(message);
-    this.name = 'ParserException';
-  }
-}
-
-export class UnexpectedTokenException extends ParserException {
-  constructor(expected, token) {
-    const msg = `Expected ${expected} but found ${token.type}`;
-    super(msg);
-    this.name = 'UnexpectedTokenException';
-    this.displayable = true;
-    this.line = token.line;
-    this.character = token.character;
-    this.length = token.content.length;
-  }
-}
 
 class Parser {
   constructor(options = {}) {

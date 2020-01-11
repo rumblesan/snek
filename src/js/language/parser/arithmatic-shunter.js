@@ -1,4 +1,4 @@
-import { ParserException } from 'canto34';
+import { ParserException, UnexpectedTokenException } from './errors';
 
 import * as ast from '../ast';
 
@@ -39,7 +39,10 @@ export default class ArithmaticShunter {
   shuntOp(newOp) {
     const opSymbol = newOp.content;
     if (!this.precedences[opSymbol]) {
-      throw new ParserException(`${opSymbol} is not a valid operator`);
+      throw new UnexpectedTokenException(
+        `${opSymbol} is not a valid operator`,
+        newOp
+      );
     }
     const peekOp = this.operatorStack[this.operatorStack.length - 1];
     if (this.precedences[opSymbol] <= this.precedences[peekOp]) {

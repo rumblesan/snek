@@ -1,9 +1,10 @@
+import { StandardTokenTypes, LineTracker } from 'canto34';
+
 import {
   LexerException,
-  StandardTokenTypes,
   PatternDefinitionException,
-  LineTracker,
-} from 'canto34';
+  UnmatchedCharacterException,
+} from './errors';
 
 function isNullOrUndefined(x) {
   if (typeof x === 'undefined') {
@@ -15,19 +16,6 @@ function isNullOrUndefined(x) {
   }
 
   return false;
-}
-
-const types = StandardTokenTypes;
-
-export class UnmatchedCharacterException extends LexerException {
-  constructor(visibleUserPartOfString, line, character) {
-    const msg = `No viable match in '${visibleUserPartOfString}...'`;
-    super(msg);
-    this.name = 'UnmatchedCharacterException';
-    this.displayable = true;
-    this.line = line;
-    this.character = character;
-  }
 }
 
 export class Lexer {
@@ -203,18 +191,18 @@ const number = () => ({
   },
 });
 
-lexer.addTokenType(types.whitespaceWithNewlines());
+lexer.addTokenType(StandardTokenTypes.whitespaceWithNewlines());
 lexer.addTokenType(comment());
-lexer.addTokenType(types.constant(';', 'semi colon'));
-lexer.addTokenType(types.comma());
-lexer.addTokenType(types.period());
+lexer.addTokenType(StandardTokenTypes.constant(';', 'semi colon'));
+lexer.addTokenType(StandardTokenTypes.comma());
+lexer.addTokenType(StandardTokenTypes.period());
 
-lexer.addTokenType(types.constant('->', 'patch arrow'));
-lexer.addTokenType(types.constant('=>', 'subpatch arrow'));
-lexer.addTokenType(types.constant('>>', 'route arrow'));
+lexer.addTokenType(StandardTokenTypes.constant('->', 'patch arrow'));
+lexer.addTokenType(StandardTokenTypes.constant('=>', 'subpatch arrow'));
+lexer.addTokenType(StandardTokenTypes.constant('>>', 'route arrow'));
 
-lexer.addTokenType(types.openParen());
-lexer.addTokenType(types.closeParen());
+lexer.addTokenType(StandardTokenTypes.openParen());
+lexer.addTokenType(StandardTokenTypes.closeParen());
 
 lexer.addTokenType(operator());
 
