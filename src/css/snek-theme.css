@@ -57,20 +57,8 @@
 .cm-s-snek span.cm-variable {
   color: #99cc99;
 }
-.cm-s-snek span.cm-variable-2 {
-  color: #6699cc;
-}
-.cm-s-snek span.cm-def {
-  color: #f99157;
-}
 .cm-s-snek span.cm-bracket {
   color: #cccccc;
-}
-.cm-s-snek span.cm-tag {
-  color: #f2777a;
-}
-.cm-s-snek span.cm-link {
-  color: #a16a94;
 }
 .cm-s-snek span.cm-error {
   background: #f2777a;

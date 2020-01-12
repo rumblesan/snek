@@ -39,6 +39,5 @@ export function codeToFrag(snekCode) {
 }
 
 export function lint(code) {
-  console.log('linting');
   return codeToFrag(code);
 }

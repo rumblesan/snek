@@ -32,14 +32,11 @@ parser.parse = function(program, options = {}) {
   this.debugLog('With Debugging');
   const errors = [];
   const lexResult = lexer.tokenize(program);
-  console.log(lexResult);
   lexResult.errors.forEach(err => errors.push(err));
 
   this.initialize(lexResult.tokens, options);
   const parseResult = this.program();
-  console.log(parseResult);
   parseResult.errors.forEach(err => errors.push(err));
-  console.log(errors);
 
   return {
     ast: parseResult.ast,

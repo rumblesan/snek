@@ -2,48 +2,87 @@ import { Lexer, StandardTokenTypes } from '@rumblesan/virgil';
 
 const lexer = new Lexer({ languageName: 'snek' });
 
-const comment = () => ({
+const whiteSpace = StandardTokenTypes.whitespaceWithNewlines();
+
+const comment = {
   name: 'comment',
   ignore: true,
   regexp: /^\/\/[^\n]*/,
-});
+};
 
-const identifier = () => ({
-  name: 'identifier',
-  regexp: /^[a-zA-Z][a-zA-Z0-9]*/,
-});
+const semicolon = StandardTokenTypes.constant(';', 'semi colon', 'punctuation');
 
-const operator = () => ({
+const comma = StandardTokenTypes.constant(',', 'comma', 'punctuation');
+
+const period = StandardTokenTypes.constant('.', 'period', 'operator');
+
+const patchArrow = StandardTokenTypes.constant('->', 'patch arrow', 'keyword');
+
+const subpatchArrow = StandardTokenTypes.constant(
+  '=>',
+  'subpatch arrow',
+  'keyword'
+);
+
+const routeArrow = StandardTokenTypes.constant('>>', 'route arrow', 'keyword');
+
+const openParen = StandardTokenTypes.constant('(', 'open paren', 'bracket');
+
+const closeParen = StandardTokenTypes.constant(')', 'close paren', 'bracket');
+
+const operator = {
   name: 'operator',
   regexp: /^[*/+\-%]+/,
-});
+  role: 'operator',
+};
 
-const number = () => ({
+const number = {
   name: 'number',
   regexp: /^\d+(\.\d+)?/,
-  role: ['constant', 'numeric'],
+  role: 'number',
   interpret(content) {
     return parseFloat(content);
   },
-});
+};
 
-lexer.addTokenType(StandardTokenTypes.whitespaceWithNewlines());
-lexer.addTokenType(comment());
-lexer.addTokenType(StandardTokenTypes.constant(';', 'semi colon'));
-lexer.addTokenType(StandardTokenTypes.comma());
-lexer.addTokenType(StandardTokenTypes.period());
+const identifier = {
+  name: 'identifier',
+  regexp: /^[a-zA-Z][a-zA-Z0-9]*/,
+  role: 'variable',
+};
 
-lexer.addTokenType(StandardTokenTypes.constant('->', 'patch arrow'));
-lexer.addTokenType(StandardTokenTypes.constant('=>', 'subpatch arrow'));
-lexer.addTokenType(StandardTokenTypes.constant('>>', 'route arrow'));
+export const tokenIdentifiers = [
+  whiteSpace,
+  comment,
+  semicolon,
+  comma,
+  period,
+  patchArrow,
+  routeArrow,
+  openParen,
+  closeParen,
+  operator,
+  number,
+  identifier,
+];
 
-lexer.addTokenType(StandardTokenTypes.openParen());
-lexer.addTokenType(StandardTokenTypes.closeParen());
+lexer.addTokenType(whiteSpace);
+lexer.addTokenType(comment);
+lexer.addTokenType(semicolon);
+lexer.addTokenType(comma);
+lexer.addTokenType(period);
 
-lexer.addTokenType(operator());
+lexer.addTokenType(patchArrow);
+lexer.addTokenType(subpatchArrow);
+lexer.addTokenType(routeArrow);
 
-lexer.addTokenType(number());
+lexer.addTokenType(openParen);
+lexer.addTokenType(closeParen);
 
-lexer.addTokenType(identifier());
+lexer.addTokenType(operator);
+
+lexer.addTokenType(number);
+
+lexer.addTokenType(identifier);
 
 export default lexer;
