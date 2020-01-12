@@ -9,7 +9,6 @@ CodeMirror.defineMode('snek', function() {
     for (let i = 0; i < tokenIdentifiers.length; i += 1) {
       const tid = tokenIdentifiers[i];
       if (stream.match(tid.regexp)) {
-        console.log('matched', tid.name, tid.role);
         if (!tid.role) return null;
 
         if (Array.isArray(tid.role)) {

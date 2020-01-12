@@ -19,7 +19,6 @@ const snek = {
 };
 
 function updateDrawFunc(regl, fragShader) {
-  //console.log(fragShader);
   const drawSnek = regl({
     frag: fragShader,
 
