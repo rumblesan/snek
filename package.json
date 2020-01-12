@@ -29,7 +29,7 @@
     "webpack-dev-server": "3.10.1"
   },
   "dependencies": {
-    "@rumblesan/virgil": "0.0.1",
+    "@rumblesan/virgil": "0.0.2",
     "dentist": "1.0.3",
     "regl": "^1.3.13"
   },

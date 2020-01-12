@@ -30,20 +30,21 @@ const parser = new Parser();
 
 parser.parse = function(program, options = {}) {
   this.debugLog('With Debugging');
-  try {
-    const tokens = lexer.tokenize(program);
-    this.initialize(tokens, options);
-    return this.program();
-  } catch (err) {
-    if (err.displayable) {
-      return {
-        ast: null,
-        errors: [err],
-      };
-    } else {
-      throw err;
-    }
-  }
+  const errors = [];
+  const lexResult = lexer.tokenize(program);
+  console.log(lexResult);
+  lexResult.errors.forEach(err => errors.push(err));
+
+  this.initialize(lexResult.tokens, options);
+  const parseResult = this.program();
+  console.log(parseResult);
+  parseResult.errors.forEach(err => errors.push(err));
+  console.log(errors);
+
+  return {
+    ast: parseResult.ast,
+    errors,
+  };
 };
 
 parser.program = function() {
