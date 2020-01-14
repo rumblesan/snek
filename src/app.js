@@ -10,9 +10,10 @@ import { defaultVertexShader } from './js/glsl';
 
 import { codeToFrag, lint } from './js/language';
 
-import './js/ui/editor-mode';
+import './js/editor/snek-mode';
 
 const startProgram = 'position.x -> osc(5) >> out;';
+
 const snek = {
   drawFunc: null,
 };
