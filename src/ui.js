@@ -1,4 +1,12 @@
-export default function UI(config, snek) {
+export function startupError(message) {
+  const errMsg = document.querySelector('#startup-error-message');
+  const text = document.createTextNode(message);
+  errMsg.appendChild(text);
+  const startupError = document.querySelector('#startup-error');
+  startupError.classList.remove('hidden-until-startup-error');
+}
+
+export function UI(config, snek) {
   const evalButton = document.querySelector('#evaluate');
 
   evalButton.addEventListener('click', e => {

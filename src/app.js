@@ -10,14 +10,15 @@ import createREGL from 'regl';
 import { getConfig } from './config.js';
 
 import Snek from './snek';
-import UI from './ui';
+import { UI, startupError } from './ui';
 
 const startProgram = 'position.x -> osc(5) >> out;';
 
 const canvas = document.getElementById('canvas');
 
-var gl = canvas.getContext('webgl2');
+const gl = canvas.getContext('webgl2');
 if (!gl) {
+  startupError('Could not create WebGL context');
   console.log('No webgl support');
 } else {
   const config = getConfig();
