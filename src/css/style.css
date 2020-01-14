@@ -9,6 +9,7 @@ canvas.display-on-load {
   display: block;
 }
 
+/* Layout */
 body {
   height: 100%;
   margin: 0 auto;
@@ -25,8 +26,6 @@ body {
 header {
   position: absolute;
   width: 100%;
-  color: #839496;
-  background-color: #002b36;
   z-index: 6;
 }
 
@@ -40,7 +39,6 @@ nav.navbar {
 nav.navbar .title {
   margin: 0px 5px;
   padding: 2px 5px;
-  color: #2aa198;
 }
 
 nav.navbar ul {
@@ -65,14 +63,6 @@ nav.navbar ul li button {
 nav.navbar ul li button {
   border-radius: 3px;
   border: none;
-  color: #839496;
-  background-color: #073642;
-}
-
-nav.navbar ul li button:hover {
-  background-color: #eee;
-  color: #073642;
-  background-color: #268bd2;
 }
 
 .CodeMirror {
@@ -87,15 +77,54 @@ nav.navbar ul li button:hover {
 
 .CodeMirror-gutters {
   border-right: 0;
-  background-color: #002b36;
   padding: 0 3px;
 }
 
 canvas {
   position: absolute;
-  top: 2rem;
+  top: 0px;
   left: 0px;
   z-index: -2;
   width: 100%;
-  height: calc(100% - 2rem);
+  height: 100%;
+}
+
+/* ColorSchemes */
+
+/* Default */
+header {
+  color: #839496;
+  background-color: #002b36;
+}
+
+nav.navbar .title {
+  color: #2aa198;
+}
+
+nav.navbar ul li button {
+  border: none;
+  color: #839496;
+  background-color: #073642;
+}
+
+nav.navbar ul li button:hover {
+  color: #073642;
+  background-color: #268bd2;
+}
+
+.CodeMirror-gutters {
+  background-color: #002b36;
+}
+
+/** Performance mode
+ *
+ *  Hide the header and make the gutter transparent so we get more canvas.
+ */
+
+.performance-mode header {
+  visibility: hidden;
+}
+
+.performance-mode .CodeMirror-gutters {
+  background: transparent;
 }

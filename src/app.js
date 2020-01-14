@@ -69,7 +69,11 @@ function getConfig() {
 
 function run() {
   const config = getConfig();
-  document.querySelector('body').classList.add(`theme-${config.theme}`);
+  const body = document.querySelector('body');
+  body.classList.add(`theme-${config.theme}`);
+  if (config.performanceMode) {
+    body.classList.add('performance-mode');
+  }
 
   const canvas = document.getElementById('canvas');
 
