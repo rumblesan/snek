@@ -12,7 +12,7 @@ import { codeToFrag, lint } from './js/language';
 
 import './js/ui/editor-mode';
 
-const startProgram = 'position.x -> osc(5) >> ot;';
+const startProgram = 'position.x -> osc(5) >> out;';
 const snek = {
   drawFunc: null,
 };
