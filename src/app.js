@@ -36,10 +36,40 @@ function updateDrawFunc(regl, fragShader) {
   snek.drawFunc = drawSnek;
 }
 
-function run() {
+const defaultConfig = {
+  keyMap: 'default',
+  lineNumbers: false,
+  theme: 'snek',
+  performanceMode: false,
+};
+
+function getConfig() {
   const urlParams = new URLSearchParams(window.location.search);
 
-  const keyMap = urlParams.has('keymap') ? urlParams.get('keymap') : 'vim';
+  const keyMap = urlParams.has('keymap')
+    ? urlParams.get('keymap')
+    : defaultConfig.keyMap;
+
+  const lineNumbers = urlParams.has('linenumbers') | defaultConfig.lineNumbers;
+
+  const theme = urlParams.has('theme')
+    ? urlParams.get('theme')
+    : defaultConfig.theme;
+
+  const performanceMode =
+    urlParams.has('performancemode') | defaultConfig.performanceMode;
+
+  return {
+    keyMap,
+    lineNumbers,
+    theme,
+    performanceMode,
+  };
+}
+
+function run() {
+  const config = getConfig();
+  document.querySelector('body').classList.add(`theme-${config.theme}`);
 
   const canvas = document.getElementById('canvas');
 
@@ -62,8 +92,9 @@ function run() {
   };
 
   const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-    keyMap,
-    theme: 'snek',
+    keyMap: config.keyMap,
+    lineNumbers: config.lineNumbers,
+    theme: config.theme,
     mode: 'snek',
     autofocus: true,
     gutters: ['CodeMirror-lint-markers'],
