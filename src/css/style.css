@@ -66,6 +66,7 @@ nav.navbar ul li button {
   width: 100%;
   height: calc(100% - 2rem);
   background: transparent;
+  font-size: 1.125rem;
 }
 
 .CodeMirror-gutters {
@@ -126,18 +127,13 @@ nav.navbar ul li button:hover {
 }
 
 .CodeMirror-gutters {
-  background-color: #002b36;
+  background: transparent;
 }
 
 /** Performance mode
- *
- *  Hide the header and make the gutter transparent so we get more canvas.
+ *  Hide the header so we get more canvas.
  */
 
 .performance-mode header {
   visibility: hidden;
-}
-
-.performance-mode .CodeMirror-gutters {
-  background: transparent;
 }

@@ -10,21 +10,21 @@ const comment = {
   regexp: /^\/\/[^\n]*/,
 };
 
-const semicolon = StandardTokenTypes.constant(';', 'semi colon', 'punctuation');
+const semicolon = StandardTokenTypes.constant(';', 'semi colon', 'atom');
 
-const comma = StandardTokenTypes.constant(',', 'comma', 'punctuation');
+const comma = StandardTokenTypes.constant(',', 'comma', 'atom');
 
 const period = StandardTokenTypes.constant('.', 'period', 'operator');
 
-const patchArrow = StandardTokenTypes.constant('->', 'patch arrow', 'keyword');
+const patchArrow = StandardTokenTypes.constant('->', 'patch arrow', 'operator');
 
 const subpatchArrow = StandardTokenTypes.constant(
   '=>',
   'subpatch arrow',
-  'keyword'
+  'operator'
 );
 
-const routeArrow = StandardTokenTypes.constant('>>', 'route arrow', 'keyword');
+const routeArrow = StandardTokenTypes.constant('>>', 'route arrow', 'operator');
 
 const openParen = StandardTokenTypes.constant('(', 'open paren', 'bracket');
 
