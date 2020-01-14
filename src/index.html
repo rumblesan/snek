@@ -18,17 +18,20 @@
 </head>
 <body>
 
-  <header>
-    <ul id="nav" class="hidden">
-      <li>
-        <span>Snek</span>
-      </li>
-    </ul>
+  <header class="display-on-load hidden">
+    <nav class="navbar">
+      <span class="title">Snek</span>
+      <ul>
+        <li>
+          <button>Evaluate</button>
+        </li>
+      </ul>
+    </nav>
   </header>
 
-  <textarea id="code" class="hidden">position.x -> osc(5) >> out;</textarea>
+  <textarea id="code" class="display-on-load hidden"></textarea>
 
-  <canvas id="canvas" class="hidden"></canvas>
+  <canvas id="canvas" class="display-on-load hidden"></canvas>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.min.js"></script>

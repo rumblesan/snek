@@ -1,57 +1,101 @@
-* {
-  box-sizing: border-box;
+.debug {
+  background-color: red !important;
+}
+
+/* Display things on the page once app bundle has loaded */
+header.display-on-load,
+textarea.display-on-load,
+canvas.display-on-load {
+  display: block;
 }
 
 body {
-  font: 12px/22px verdana, arial, sans-serif;
   height: 100%;
   margin: 0 auto;
   width: 100%;
   padding: 0;
+  font-size: 16px;
+  font-family: Tahoma, Geneva, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 header {
   position: absolute;
-  height: 30px;
   width: 100%;
-  background-color: #dddddd;
+  color: #839496;
+  background-color: #002b36;
   z-index: 6;
 }
 
-header ul#nav {
-  display: block;
-  position: relative;
-}
-#nav li {
-  display: block;
-  list-style: none;
-  float: left;
+nav.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 2rem;
 }
 
-#nav li a,
-#nav li span {
-  display: block;
-  padding: 4px 15px;
+nav.navbar .title {
+  margin: 0px 5px;
+  padding: 2px 5px;
+  color: #2aa198;
+}
+
+nav.navbar ul {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+nav.navbar ul li {
+  list-style: none;
+}
+
+nav.navbar ul li a,
+nav.navbar ul li button {
+  margin: 0px 5px;
+  padding: 2px 5px;
   text-decoration: none;
   text-align: center;
+  font-size: 1em;
+}
+
+nav.navbar ul li button {
+  border-radius: 3px;
+  border: none;
+  color: #839496;
+  background-color: #073642;
+}
+
+nav.navbar ul li button:hover {
+  background-color: #eee;
+  color: #073642;
+  background-color: #268bd2;
 }
 
 .CodeMirror {
   position: absolute;
-  top: 30px;
+  top: 2rem;
   left: 0px;
   z-index: 5;
   width: 100%;
-  height: calc(100% - 30px);
+  height: calc(100% - 2rem);
   background: transparent;
 }
 
-canvas#canvas {
-  display: block;
+.CodeMirror-gutters {
+  border-right: 0;
+  background-color: #002b36;
+  padding: 0 3px;
+}
+
+canvas {
   position: absolute;
-  top: 30px;
+  top: 2rem;
   left: 0px;
   z-index: -2;
   width: 100%;
-  height: calc(100% - 30px);
+  height: calc(100% - 2rem);
 }

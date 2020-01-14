@@ -1,7 +1,6 @@
 /* global CodeMirror */
 
 import './index.html';
-import './css/reset.css';
 import './css/style.css';
 import './css/snek-theme.css';
 
@@ -13,7 +12,7 @@ import { codeToFrag, lint } from './js/language';
 
 import './js/ui/editor-mode';
 
-const startProgram = 'position.x -> osc(5) >> out;';
+const startProgram = 'position.x -> osc(5) >> ot;';
 const snek = {
   drawFunc: null,
 };
@@ -52,13 +51,21 @@ function run() {
     gl: gl,
   });
 
-  const textArea = document.getElementById('code');
+  const evaluate = editor => {
+    const program = editor.getValue();
+    const result = codeToFrag(program);
+    if (result.errors.length < 1) {
+      updateDrawFunc(regl, result.code);
+    } else {
+      console.log('errors', result.errors);
+    }
+  };
 
-  const editor = CodeMirror.fromTextArea(textArea, {
+  const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
     keyMap,
-    value: startProgram,
     theme: 'snek',
     mode: 'snek',
+    autofocus: true,
     gutters: ['CodeMirror-lint-markers'],
     lint: {
       getAnnotations: text => {
@@ -73,22 +80,12 @@ function run() {
       },
     },
     extraKeys: {
-      'Ctrl-Enter': function(instance) {
-        var program = instance.getValue();
-        const result = codeToFrag(program);
-        if (result.errors.length < 1) {
-          updateDrawFunc(regl, result.code);
-        } else {
-          console.log('errors', result.errors);
-        }
-      },
+      'Ctrl-Enter': evaluate,
     },
   });
 
-  const result = codeToFrag(editor.getValue());
-  if (result.errors.length < 1) {
-    updateDrawFunc(regl, result.code);
-  }
+  editor.setValue(startProgram);
+  evaluate(editor);
 
   regl.frame(function() {
     regl.clear({
