@@ -8,7 +8,8 @@
  * otherwise there are wierd bugs with highlighted code backgrounds
  * */
 .CodeMirror .CodeMirror-line > span {
-  background-color: #002b36bb;
+  background-color: #002b36;
+  opacity: 80%;
 }
 
 .cm-s-snek .CodeMirror-line span span.CodeMirror-selectedtext {
@@ -16,9 +17,16 @@
 }
 
 /* Cursor styling */
+
+/* make cursor appear above text */
+.cm-s-snek.cm-fat-cursor .CodeMirror-cursors {
+  z-index: 15;
+}
+
 /* Vim command mode */
 .cm-s-snek.cm-fat-cursor .CodeMirror-cursor {
-  background: #fff;
+  background: #fffa;
+  opacity: 80%;
 }
 /* Vim visual mode and selected text mode */
 .cm-s-snek .CodeMirror-line .cm-animate-fat-cursor {
