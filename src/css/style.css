@@ -2,13 +2,6 @@
   background-color: red !important;
 }
 
-/* Display things on the page once app bundle has loaded */
-header.display-on-load,
-textarea.display-on-load,
-canvas.display-on-load {
-  display: block;
-}
-
 /* Layout */
 body {
   height: 100%;

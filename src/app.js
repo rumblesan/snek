@@ -68,6 +68,17 @@ function getConfig() {
 }
 
 function run() {
+  const canvas = document.getElementById('canvas');
+
+  var gl = canvas.getContext('webgl2');
+  if (!gl) {
+    return;
+  }
+
+  document.querySelectorAll('.hidden-until-load').forEach(el => {
+    el.classList.remove('hidden-until-load');
+  });
+
   const config = getConfig();
   const body = document.querySelector('body');
   body.classList.add(`theme-${config.theme}`);
@@ -75,12 +86,6 @@ function run() {
     body.classList.add('performance-mode');
   }
 
-  const canvas = document.getElementById('canvas');
-
-  var gl = canvas.getContext('webgl2');
-  if (!gl) {
-    return;
-  }
   const regl = createREGL({
     gl: gl,
   });

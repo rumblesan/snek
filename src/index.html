@@ -10,11 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/lint.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css" />
 
-  <style>.hidden { display: none; }</style>
+  <style>.hidden-until-load { visibility: hidden; }</style>
 </head>
 <body>
 
-  <header class="display-on-load hidden">
+  <header class="hidden-until-load">
     <nav class="navbar">
       <span class="title">Snek</span>
       <ul>
@@ -25,9 +25,9 @@
     </nav>
   </header>
 
-  <textarea id="code" class="display-on-load hidden"></textarea>
+  <textarea id="code" class="hidden-until-load"></textarea>
 
-  <canvas id="canvas" class="display-on-load hidden"></canvas>
+  <canvas id="canvas" class="hidden-until-load"></canvas>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/keymap/vim.min.js"></script>
