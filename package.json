@@ -6,6 +6,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development",
+    "build:site": "npx @11ty/eleventy",
+    "start:site": "npx @11ty/eleventy --serve --port 8081",
     "test": "jest test"
   },
   "bugs": {
@@ -16,6 +18,7 @@
     "url": "https://github.com/rumblesan/snek"
   },
   "devDependencies": {
+    "@11ty/eleventy": "0.10.0",
     "@babel/core": "7.7.7",
     "@babel/polyfill": "7.7.0",
     "@babel/preset-env": "7.7.7",
