@@ -17,20 +17,23 @@
       text-align: center;
       padding: 50px;
     }
-    .hidden-until-startup-error {
+    .hidden {
       display: none;
     }
-    .hidden-until-load {
+    .invisible-until-load {
       visibility: hidden;
     }
   </style>
 </head>
 <body>
 
-  <header class="hidden-until-load">
+  <header class="invisible-until-load">
     <nav class="navbar">
       <span class="title">Snek</span>
       <ul>
+        <li>
+          <span id="error-display" class="error-display hidden"></span>
+        </li>
         <li>
           <button id="evaluate">Evaluate</button>
         </li>
@@ -38,11 +41,11 @@
     </nav>
   </header>
 
-  <textarea id="code" class="hidden-until-load"></textarea>
+  <textarea id="code" class="invisible-until-load"></textarea>
 
-  <canvas id="canvas" class="hidden-until-load"></canvas>
+  <canvas id="canvas" class="invisible-until-load"></canvas>
 
-  <div id="startup-error" class="startup-error hidden-until-startup-error">
+  <div id="startup-error" class="startup-error hidden">
     <h1>Sorry, there was an error</h1>
     <p>Seems that we couldn't start up snek</p>
     <p id="startup-error-message"></p>

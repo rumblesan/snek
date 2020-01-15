@@ -1,10 +1,13 @@
 import { codeToFrag, lint } from './js/language';
 import { defaultVertexShader } from './js/glsl';
+import { UI } from './ui';
 
 export default class Snek {
   constructor(config, regl, CodeMirror) {
+    this.config = config;
     this.draw = null;
     this.regl = regl;
+    this.ui = new UI(this);
 
     this.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
       keyMap: config.keyMap,
@@ -35,13 +38,24 @@ export default class Snek {
     this.editor.setValue(program);
   }
 
+  setGlobalErrorHandler(handler) {
+    this.globalErrorHandler = handler;
+  }
+
   evaluate() {
-    const program = this.editor.getValue();
-    const result = codeToFrag(program);
-    if (result.errors.length < 1) {
-      this.updateDraw(result.code);
-    } else {
-      console.log('errors', result.errors);
+    try {
+      const program = this.editor.getValue();
+      const result = codeToFrag(program);
+      if (result.errors.length < 1) {
+        this.ui.clearError();
+        this.updateDraw(result.code);
+      } else {
+        const errCount = result.errors.length;
+        const msg = errCount === 1 ? '1 Error!' : `${errCount} Errors!`;
+        this.ui.displayError(new Error(msg));
+      }
+    } catch (err) {
+      this.ui.displayError(err);
     }
   }
 
@@ -64,6 +78,10 @@ export default class Snek {
   }
 
   start() {
+    if (this.config.performanceMode) {
+      this.ui.performanceMode(true);
+    }
+    this.ui.display();
     this.regl.frame(() => {
       this.regl.clear({
         color: [0, 0, 0, 1],

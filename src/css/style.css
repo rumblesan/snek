@@ -45,6 +45,7 @@ nav.navbar ul li {
 }
 
 nav.navbar ul li a,
+nav.navbar ul li span,
 nav.navbar ul li button {
   margin: 0px 5px;
   padding: 2px 5px;
@@ -124,6 +125,14 @@ nav.navbar ul li button {
 nav.navbar ul li button:hover {
   color: #073642;
   background-color: #268bd2;
+}
+
+nav.navbar .error-display {
+  color: #dc322f;
+  background-color: #073642;
+  text-decoration: underline;
+  border: 1px solid #cb4b16;
+  border-radius: 3px;
 }
 
 .CodeMirror-gutters {

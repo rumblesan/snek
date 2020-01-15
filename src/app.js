@@ -10,7 +10,7 @@ import createREGL from 'regl';
 import { getConfig } from './config.js';
 
 import Snek from './snek';
-import { UI, startupError } from './ui';
+import { startupError } from './ui';
 
 const startProgram = 'position.x -> osc(5) >> out;';
 
@@ -28,8 +28,6 @@ if (!gl) {
   const snek = new Snek(config, regl, CodeMirror);
   snek.setProgram(startProgram);
   snek.evaluate();
-
-  UI(config, snek);
 
   snek.start();
 }

@@ -1,27 +1,38 @@
 export function startupError(message) {
   const errMsg = document.querySelector('#startup-error-message');
-  const text = document.createTextNode(message);
-  errMsg.appendChild(text);
+  errMsg.appendChild(document.createTextNode(message));
   const startupError = document.querySelector('#startup-error');
-  startupError.classList.remove('hidden-until-startup-error');
+  startupError.classList.remove('hidden');
 }
 
-export function UI(config, snek) {
-  const evalButton = document.querySelector('#evaluate');
+export class UI {
+  constructor(snek) {
+    this.snek = snek;
 
-  evalButton.addEventListener('click', e => {
-    e.preventDefault();
-    snek.evaluate();
-    return false;
-  });
+    document.querySelector('button#evaluate').addEventListener('click', e => {
+      e.preventDefault();
+      this.snek.evaluate();
+      return false;
+    });
 
-  const body = document.querySelector('body');
-  body.classList.add(`theme-${config.theme}`);
-  if (config.performanceMode) {
-    body.classList.add('performance-mode');
+    this.errorDisplayText = document.createTextNode('');
+    this.errorDisplayEl = document.querySelector('#error-display');
+    this.errorDisplayEl.appendChild(this.errorDisplayText);
   }
-
-  document.querySelectorAll('.hidden-until-load').forEach(el => {
-    el.classList.remove('hidden-until-load');
-  });
+  display() {
+    document.querySelectorAll('.invisible-until-load').forEach(el => {
+      el.classList.remove('invisible-until-load');
+    });
+  }
+  performanceMode() {
+    document.querySelector('body').classList.add('performance-mode');
+  }
+  displayError(err) {
+    this.errorDisplayEl.classList.remove('hidden');
+    this.errorDisplayText.nodeValue = err.message.substring(0, 10);
+  }
+  clearError() {
+    this.errorDisplayEl.classList.add('hidden');
+    this.errorDisplayText.nodeValue = '';
+  }
 }
