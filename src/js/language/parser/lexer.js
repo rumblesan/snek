@@ -51,7 +51,7 @@ const identifier = {
   role: 'variable',
 };
 
-export const tokenIdentifiers = [
+export const tokenIdentifiers = {
   whiteSpace,
   comment,
   semicolon,
@@ -64,7 +64,7 @@ export const tokenIdentifiers = [
   operator,
   number,
   identifier,
-];
+};
 
 lexer.addTokenType(whiteSpace);
 lexer.addTokenType(comment);

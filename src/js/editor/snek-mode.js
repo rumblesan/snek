@@ -5,27 +5,56 @@ import { tokenIdentifiers } from '../language/parser/lexer';
 CodeMirror.defineMode('snek', function() {
   const ERRORCLASS = 'error';
 
+  const identifierRe = tokenIdentifiers.identifier.regexp;
+  const numberRe = tokenIdentifiers.number.regexp;
+  const operatorRe = tokenIdentifiers.operator.regexp;
+  const commentRe = tokenIdentifiers.comment.regexp;
+
+  const arrowRe = /^[-=>]>/;
+
   const globalBusses = ['position', 'time', 'out'];
+
   function tokenise(stream, state) {
-    for (let i = 0; i < tokenIdentifiers.length; i += 1) {
-      const tid = tokenIdentifiers[i];
-      const match = stream.match(tid.regexp);
-      if (match) {
-        switch (tid.name) {
-          case 'identifier':
-            return checkIdentifier(stream, state, tid, match[0]);
-          case 'period':
-            return checkPeriod(stream, state, tid, match[0]);
-          default:
-            return tokenToType(tid, match[0]);
-        }
-      }
+    const ch = stream.peek();
+    switch (ch) {
+      case ';':
+      case ',':
+        stream.next();
+        return 'atom';
+      case '.':
+        stream.next();
+        return checkPeriod(stream, state);
+      case '(':
+      case ')':
+        stream.next();
+        return 'bracket';
+      default:
+      // fallthrough
     }
+
+    if (stream.eatSpace()) {
+      return null;
+    }
+
+    let match;
+    if ((match = stream.match(identifierRe))) {
+      console.log(match);
+      return checkIdentifier(stream, state, match[0]);
+    } else if (stream.match(numberRe)) {
+      return 'number';
+    } else if (stream.match(arrowRe)) {
+      return 'operator';
+    } else if (stream.match(operatorRe)) {
+      return 'operator';
+    } else if (stream.match(commentRe)) {
+      return 'comment';
+    }
+
     stream.next();
     return ERRORCLASS;
   }
 
-  function checkIdentifier(stream, state, tid, match) {
+  function checkIdentifier(stream, state, match) {
     if (state.parsingChannel) {
       state.parsingChannel = false;
       return 'attribute';
@@ -39,22 +68,12 @@ CodeMirror.defineMode('snek', function() {
       return 'variable-2';
     }
 
-    return tokenToType(tid);
+    return 'variable';
   }
 
   function checkPeriod(stream, state) {
     state.parsingChannel = true;
     return 'operator';
-  }
-
-  function tokenToType(tid) {
-    if (!tid.role) return null;
-
-    if (Array.isArray(tid.role)) {
-      return tid.role.join(' ');
-    }
-
-    return tid.role;
   }
 
   return {
