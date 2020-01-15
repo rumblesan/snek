@@ -5,6 +5,7 @@ export default class Snek {
   constructor(config, regl, CodeMirror) {
     this.draw = null;
     this.regl = regl;
+
     this.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
       keyMap: config.keyMap,
       lineNumbers: config.lineNumbers,
@@ -25,7 +26,7 @@ export default class Snek {
         },
       },
       extraKeys: {
-        'Ctrl-Enter': this.evaluate,
+        'Ctrl-Enter': () => this.evaluate(),
       },
     });
   }
