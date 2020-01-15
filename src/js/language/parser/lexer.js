@@ -10,36 +10,30 @@ const comment = {
   regexp: /^\/\/[^\n]*/,
 };
 
-const semicolon = StandardTokenTypes.constant(';', 'semi colon', 'atom');
+const semicolon = StandardTokenTypes.constant(';', 'semi colon');
 
-const comma = StandardTokenTypes.constant(',', 'comma', 'atom');
+const comma = StandardTokenTypes.constant(',', 'comma');
 
-const period = StandardTokenTypes.constant('.', 'period', 'operator');
+const period = StandardTokenTypes.constant('.', 'period');
 
-const patchArrow = StandardTokenTypes.constant('->', 'patch arrow', 'operator');
+const patchArrow = StandardTokenTypes.constant('->', 'patch arrow');
 
-const subpatchArrow = StandardTokenTypes.constant(
-  '=>',
-  'subpatch arrow',
-  'operator'
-);
+const subpatchArrow = StandardTokenTypes.constant('=>', 'subpatch arrow');
 
-const routeArrow = StandardTokenTypes.constant('>>', 'route arrow', 'operator');
+const routeArrow = StandardTokenTypes.constant('>>', 'route arrow');
 
-const openParen = StandardTokenTypes.constant('(', 'open paren', 'bracket');
+const openParen = StandardTokenTypes.constant('(', 'open paren');
 
-const closeParen = StandardTokenTypes.constant(')', 'close paren', 'bracket');
+const closeParen = StandardTokenTypes.constant(')', 'close paren');
 
 const operator = {
   name: 'operator',
   regexp: /^[*/+\-%]+/,
-  role: 'operator',
 };
 
 const number = {
   name: 'number',
   regexp: /^\d+(\.\d+)?/,
-  role: 'number',
   interpret(content) {
     return parseFloat(content);
   },
@@ -48,7 +42,6 @@ const number = {
 const identifier = {
   name: 'identifier',
   regexp: /^[a-zA-Z][a-zA-Z0-9]*/,
-  role: 'variable',
 };
 
 export const tokenIdentifiers = {
