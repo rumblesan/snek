@@ -38,7 +38,6 @@ CodeMirror.defineMode('snek', function() {
 
     let match;
     if ((match = stream.match(identifierRe))) {
-      console.log(match);
       return checkIdentifier(stream, state, match[0]);
     } else if (stream.match(numberRe)) {
       return 'number';
