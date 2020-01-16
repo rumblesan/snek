@@ -4,8 +4,9 @@
   "description": "An experiment in creating a custom language for hydra like live-coding.",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "npm run build:snek && npm run build:site",
     "start": "webpack-dev-server --mode development",
+    "build:snek": "webpack --mode production",
     "build:site": "npx @11ty/eleventy",
     "start:site": "npx @11ty/eleventy --serve --port 8081",
     "test": "jest test"

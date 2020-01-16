@@ -6,9 +6,26 @@ title: Snek
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
+
+     <link rel="stylesheet" href="/site/css/style.css" />
+     <title>{{ title }}</title>
   </head>
   <body>
-    {{ content | safe }}
+    <header>
+      <nav class="navbar-left">
+        <ul>
+          <li>
+            <a href="https://snek.rumblesan.com" class="title">Snek</a>
+          </li>
+          <li>
+            <a href="/language">Language</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="content">
+      {{ content | safe }}
+    </section>
   </body>
 </html>

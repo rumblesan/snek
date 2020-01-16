@@ -3,60 +3,42 @@
 }
 
 /* Layout */
+* {
+  box-sizing: border-box;
+}
+
 body {
   height: 100%;
   margin: 0 auto;
   width: 100%;
-  padding: 0;
-  font-size: 16px;
-  font-family: Tahoma, Geneva, sans-serif;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 header {
   position: absolute;
   width: 100%;
   z-index: 6;
+  display: flex;
+  justify-content: space-between;
 }
 
-nav.navbar {
+nav.navbar-left {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  height: 2rem;
+}
+nav.navbar-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   height: 2rem;
 }
 
-nav.navbar .title {
-  margin: 0px 5px;
-  padding: 2px 5px;
-}
-
-nav.navbar ul {
+nav ul {
   display: flex;
   align-items: center;
+  padding: 0;
   margin: 0;
-}
-
-nav.navbar ul li {
-  list-style: none;
-}
-
-nav.navbar ul li a,
-nav.navbar ul li span,
-nav.navbar ul li button {
-  margin: 0px 5px;
-  padding: 2px 5px;
-  text-decoration: none;
-  text-align: center;
-  font-size: 1em;
-}
-
-nav.navbar ul li button {
-  border-radius: 3px;
-  border: none;
 }
 
 .CodeMirror {
@@ -66,13 +48,6 @@ nav.navbar ul li button {
   z-index: 5;
   width: 100%;
   height: calc(100% - 2rem);
-  background: transparent;
-  font-size: 1.125rem;
-}
-
-.CodeMirror-gutters {
-  border-right: 0;
-  padding: 0 3px;
 }
 
 canvas {
@@ -84,9 +59,8 @@ canvas {
   height: 100%;
 }
 
-/* ColorSchemes */
+/* Styling */
 
-/* Default */
 /* Solarized Scheme colours
  *
  * base03     -   #002b36
@@ -107,27 +81,52 @@ canvas {
  * green      -   #859900
  */
 
-header {
-  color: #839496;
+body {
   background-color: #002b36;
+  font-size: 16px;
+  font-family: Tahoma, Geneva, sans-serif;
 }
 
-nav.navbar .title {
-  color: #2aa198;
-}
-
-nav.navbar ul li button {
-  border: none;
+header {
   color: #839496;
   background-color: #073642;
 }
 
-nav.navbar ul li button:hover {
+a {
+  color: #6c71c4;
+}
+
+button {
+  color: #859900;
+  border: 1px solid #859900;
+  background-color: #073642;
+  border-radius: 3px;
+}
+
+button:hover {
   color: #073642;
   background-color: #268bd2;
 }
 
-nav.navbar .error-display {
+nav ul li {
+  list-style: none;
+}
+
+nav ul li a,
+nav ul li span,
+nav ul li button {
+  margin: 0px 5px;
+  padding: 2px 5px;
+  text-align: center;
+  font-size: 1em;
+}
+
+nav .title {
+  color: #2aa198;
+  font-weight: bold;
+}
+
+.error-display {
   color: #dc322f;
   background-color: #073642;
   text-decoration: underline;
@@ -135,8 +134,15 @@ nav.navbar .error-display {
   border-radius: 3px;
 }
 
+.CodeMirror {
+  background: transparent;
+  font-size: 1.125rem;
+}
+
 .CodeMirror-gutters {
   background: transparent;
+  border-right: 0;
+  padding: 0 3px;
 }
 
 /** Performance mode
