@@ -95,6 +95,62 @@ export const glslFuncs = {
         }`),
     },
   },
+  pixelate: {
+    inputType: Vector(2, Float()),
+    args: [
+      { name: 'pixelX', type: Float(), default: Source(Num(20)) },
+      { name: 'pixelY', type: Float(), default: Source(Num(20)) },
+    ],
+    returnType: Vector(2, Float()),
+    code: {
+      default: dedent(
+        `vec2 pixelate(vec2 st, float pixelX, float pixelY){
+          vec2 xy = vec2(pixelX, pixelY);
+          return (floor(st * xy) + 0.5)/xy;
+        }`
+      ),
+    },
+  },
+  posterize: {
+    inputType: Vector(4, Float()),
+    args: [
+      { name: 'bins', type: Float(), default: Source(Num(3.0)) },
+      { name: 'gamma', type: Float(), default: Source(Num(0.6)) },
+    ],
+    returnType: Vector(4, Float()),
+    code: {
+      default: dedent(`
+        vec4 posterize(vec4 c, float bins, float gamma){
+          vec4 c2 = pow(c, vec4(gamma));
+          c2 *= vec4(bins);
+          c2 = floor(c2);
+          c2/= vec4(bins);
+          c2 = pow(c2, vec4(1.0/gamma));
+          return vec4(c2.xyz, c.a);
+        }`),
+    },
+  },
+  shift: {
+    inputType: Vector(4, Float()),
+    args: [
+      { name: 'r', type: Float(), default: Source(Num(0.5)) },
+      { name: 'g', type: Float(), default: Source(Num(0.0)) },
+      { name: 'b', type: Float(), default: Source(Num(0.0)) },
+      { name: 'a', type: Float(), default: Source(Num(0.0)) },
+    ],
+    returnType: Vector(4, Float()),
+    code: {
+      default: dedent(`
+        vec4 shift(vec4 c, float r, float g, float b, float a){
+          vec4 c2 = vec4(c);
+          c2.r = fract(c2.r + r);
+          c2.g = fract(c2.g + g);
+          c2.b = fract(c2.b + b);
+          c2.a = fract(c2.a + a);
+          return vec4(c2.rgba);
+        }`),
+    },
+  },
 };
 
 export const funcTypes = Object.keys(glslFuncs).map(name => {
