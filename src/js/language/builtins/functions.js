@@ -25,6 +25,25 @@ export const glslFuncs = {
         }`),
     },
   },
+  repeat: {
+    inputType: Vector(2, Float()),
+    args: [
+      { name: 'repeatX', type: Float(), default: Source(Num(3.0)) },
+      { name: 'repeatY', type: Float(), default: Source(Num(3.0)) },
+      { name: 'offsetX', type: Float(), default: Source(Num(0.0)) },
+      { name: 'offsetY', type: Float(), default: Source(Num(0.0)) },
+    ],
+    returnType: Vector(2, Float()),
+    code: {
+      default: dedent(`
+        vec2 repeat(vec2 _st, float repeatX, float repeatY, float offsetX, float offsetY){
+          vec2 st = _st * vec2(repeatX, repeatY);
+          st.x += step(1., mod(st.y,2.0)) * offsetX;
+          st.y += step(1., mod(st.x,2.0)) * offsetY;
+          return fract(st);
+        }`),
+    },
+  },
   mult: {
     inputType: Generic(),
     args: [{ name: 'mult', type: Float(), default: Source(Num(1.0)) }],
@@ -65,14 +84,14 @@ export const glslFuncs = {
   modulate: {
     inputType: Vector(2, Float()),
     args: [
-      { name: 'texture', type: Vector(4, Float()) },
+      { name: 'modulator', type: Vector(2, Float()) },
       { name: 'amount', type: Float(), default: Source(Num(0.1)) },
     ],
     returnType: Vector(2, Float()),
     code: {
       default: dedent(`
-        vec2 modulate(vec2 st, vec4 c1, float amount){
-          return st + c1.xy*amount;
+        vec2 modulate(vec2 st, vec2 c1, float amount){
+          return st + c1*amount;
         }`),
     },
   },
