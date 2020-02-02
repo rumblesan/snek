@@ -130,8 +130,6 @@ nav .title {
   color: #dc322f;
   background-color: #073642;
   text-decoration: underline;
-  border: 1px solid #cb4b16;
-  border-radius: 3px;
 }
 
 .CodeMirror {
