@@ -17,29 +17,8 @@ export class UI {
       return false;
     });
 
-    document
-      .querySelector('button#display-glsl')
-      .addEventListener('click', e => {
-        e.preventDefault();
-        if (this.popupDisplayed) {
-          this.hidePopup();
-        } else {
-          this.showGLSLCode();
-        }
-        return false;
-      });
-
-    document
-      .querySelector('button#display-settings')
-      .addEventListener('click', e => {
-        e.preventDefault();
-        if (this.popupDisplayed) {
-          this.hidePopup();
-        } else {
-          this.showSettings();
-        }
-        return false;
-      });
+    this.setupPopup('button#display-glsl', this.showGLSLCode.bind(this));
+    this.setupPopup('button#display-settings', this.showSettings.bind(this));
 
     this.errorDisplayText = document.createTextNode('');
     this.errorDisplayEl = document.querySelector('#error-display');
@@ -90,6 +69,18 @@ export class UI {
     };
     const contents = this.templates.settingsDisplay(data);
     this.showPopup(contents);
+  }
+
+  setupPopup(selector, callback) {
+    document.querySelector(selector).addEventListener('click', e => {
+      e.preventDefault();
+      if (this.popupDisplayed) {
+        this.hidePopup();
+      } else {
+        callback();
+      }
+      return false;
+    });
   }
 
   showPopup(contents) {
