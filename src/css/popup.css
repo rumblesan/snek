@@ -1,0 +1,35 @@
+/* Layout */
+
+.popup-window {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 50%;
+  height: 70%;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Styling */
+.popup-window {
+  padding: 10px;
+  background-color: #002b36;
+  font-size: 16px;
+  font-family: Tahoma, Geneva, sans-serif;
+  border-radius: 5px;
+}
+
+.popup-window h3 {
+  padding: 0px;
+  margin: 0px;
+  color: #2aa198;
+  font-weight: bold;
+}
+
+.popup-window hr {
+  padding: 0px;
+  margin: 0px;
+  border: 1px solid #2aa198;
+}

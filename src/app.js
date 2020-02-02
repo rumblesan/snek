@@ -2,6 +2,7 @@
 
 import './index.html';
 import './css/style.css';
+import './css/popup.css';
 import './css/snek-theme.css';
 import './js/editor/snek-mode';
 
