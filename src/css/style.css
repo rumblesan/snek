@@ -59,6 +59,18 @@ canvas {
   height: 100%;
 }
 
+.popup-window {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 50%;
+  height: 70%;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Styling */
 
 /* Solarized Scheme colours
@@ -143,6 +155,13 @@ nav .title {
   background: transparent;
   border-right: 0;
   padding: 0 3px;
+}
+
+.popup-window {
+  background-color: #002b36;
+  font-size: 16px;
+  font-family: Tahoma, Geneva, sans-serif;
+  border-radius: 5px;
 }
 
 /** Performance mode

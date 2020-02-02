@@ -1,3 +1,5 @@
+import * as templates from './templates';
+
 export function startupError(message) {
   const errMsg = document.querySelector('#startup-error-message');
   errMsg.appendChild(document.createTextNode(message));
@@ -15,9 +17,24 @@ export class UI {
       return false;
     });
 
+    document
+      .querySelector('button#toggle-popup')
+      .addEventListener('click', e => {
+        e.preventDefault();
+        if (this.popupDisplayed) {
+          this.hidePopup();
+        } else {
+          this.showPopup({ title: 'Just a test' });
+        }
+        return false;
+      });
+
     this.errorDisplayText = document.createTextNode('');
     this.errorDisplayEl = document.querySelector('#error-display');
     this.errorDisplayEl.appendChild(this.errorDisplayText);
+
+    this.templates = templates;
+    this.popupDisplayed = false;
   }
   display() {
     document.querySelectorAll('.invisible-until-load').forEach(el => {
@@ -34,5 +51,26 @@ export class UI {
   clearError() {
     this.errorDisplayEl.classList.add('hidden');
     this.errorDisplayText.nodeValue = '';
+  }
+
+  showPopup(data) {
+    const popup = document.createElement('div');
+    popup.setAttribute('id', 'popup-window');
+    popup.classList.add('popup-window');
+    popup.innerHTML = this.templates.popupSurround(data);
+
+    const body = document.querySelector('body');
+    body.appendChild(popup);
+    this.popupDisplayed = true;
+    console.log('showing popup');
+  }
+
+  hidePopup() {
+    const popup = document.querySelector('#popup-window');
+    if (popup) {
+      popup.remove();
+    }
+    this.popupDisplayed = false;
+    console.log('hiding popup');
   }
 }
