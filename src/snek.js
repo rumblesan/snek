@@ -36,10 +36,8 @@ export default class Snek {
         'Ctrl-Enter': () => this.evaluate(),
       },
     });
-  }
-
-  setProgram(program) {
-    this.editor.setValue(program);
+    this.editor.setValue(config.program);
+    this.evaluate();
   }
 
   setGlobalErrorHandler(handler) {

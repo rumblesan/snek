@@ -13,8 +13,6 @@ import { getConfig } from './config.js';
 import Snek from './snek';
 import { startupError } from './ui';
 
-const startProgram = 'position.x -> osc(5) >> out;';
-
 const canvas = document.getElementById('canvas');
 
 const gl = canvas.getContext('webgl2');
@@ -27,8 +25,6 @@ if (!gl) {
   const regl = createREGL({ gl: gl });
 
   const snek = new Snek(config, regl, CodeMirror);
-  snek.setProgram(startProgram);
-  snek.evaluate();
 
   snek.start();
 }

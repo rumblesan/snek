@@ -3,6 +3,7 @@ const defaultConfig = {
   lineNumbers: false,
   theme: 'snek',
   performanceMode: false,
+  program: 'position.x -> osc(5) >> out;',
 };
 
 export function getConfig() {
@@ -21,10 +22,13 @@ export function getConfig() {
   const performanceMode =
     urlParams.has('performancemode') | defaultConfig.performanceMode;
 
+  const program = defaultConfig.program;
+
   return {
     keyMap,
     lineNumbers,
     theme,
     performanceMode,
+    program,
   };
 }
