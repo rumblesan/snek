@@ -26,6 +26,7 @@ export class UI {
 
     this.templates = templates;
     this.popupDisplayed = false;
+    this.checkHash();
   }
   display() {
     document.querySelectorAll('.invisible-until-load').forEach(el => {
@@ -43,22 +44,34 @@ export class UI {
     this.errorDisplayEl.classList.add('hidden');
     this.errorDisplayText.nodeValue = '';
   }
+  checkHash() {
+    switch (new URL(window.location).hash) {
+      case '#settings':
+        this.showSettings();
+        break;
+      case '#glsl':
+        this.showGLSLCode();
+        break;
+    }
+  }
 
   showGLSLCode() {
+    window.location.hash = 'glsl';
     const programs = this.snek.currentGLSL;
     const contents = this.templates.glslDisplay(programs);
     this.showPopup(contents);
   }
 
   showSettings() {
-    let defaultKeymapURL = new URL(window.location);
+    window.location.hash = 'settings';
+    const defaultKeymapURL = new URL(window.location);
     defaultKeymapURL.searchParams.delete('keymap');
-    let vimKeymapURL = new URL(window.location);
+    const vimKeymapURL = new URL(window.location);
     vimKeymapURL.searchParams.set('keymap', 'vim');
 
-    let performanceDisabledURL = new URL(window.location);
+    const performanceDisabledURL = new URL(window.location);
     performanceDisabledURL.searchParams.delete('performancemode');
-    let performanceEnabledURL = new URL(window.location);
+    const performanceEnabledURL = new URL(window.location);
     performanceEnabledURL.searchParams.set('performancemode', 'enabled');
 
     const data = {
@@ -107,6 +120,7 @@ export class UI {
   }
 
   hidePopup() {
+    window.location.hash = '';
     const popup = document.querySelector('#popup-window');
     if (popup) {
       popup.remove();
