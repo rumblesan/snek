@@ -19,7 +19,8 @@
   justify-content: space-between;
 }
 
-.popup-window h3 {
+.popup-window h3,
+.popup-window h4 {
   padding: 0px;
   margin: 0px;
 }
@@ -36,6 +37,7 @@
   background-color: #073642;
   font-size: 16px;
   font-family: Tahoma, Geneva, sans-serif;
+  color: #93a1a1;
   border-radius: 5px;
   scrollbar-width: thin;
   scrollbar-color: #2aa198 #073642;
@@ -53,7 +55,8 @@
   border: 3px solid #073642;
 }
 
-.popup-window h3 {
+.popup-window h3,
+.popup-window h4 {
   color: #2aa198;
   font-weight: bold;
 }
@@ -69,6 +72,10 @@
   padding: 0px;
   margin: 5px 0px;
   border: 1px solid #2aa198;
+}
+
+.popup-window section {
+  margin-bottom: 2rem;
 }
 
 .popup-window pre {

@@ -29,6 +29,18 @@ export class UI {
         return false;
       });
 
+    document
+      .querySelector('button#display-settings')
+      .addEventListener('click', e => {
+        e.preventDefault();
+        if (this.popupDisplayed) {
+          this.hidePopup();
+        } else {
+          this.showSettings();
+        }
+        return false;
+      });
+
     this.errorDisplayText = document.createTextNode('');
     this.errorDisplayEl = document.querySelector('#error-display');
     this.errorDisplayEl.appendChild(this.errorDisplayText);
@@ -56,6 +68,27 @@ export class UI {
   showGLSLCode() {
     const programs = this.snek.currentGLSL;
     const contents = this.templates.glslDisplay(programs);
+    this.showPopup(contents);
+  }
+
+  showSettings() {
+    let defaultKeymapURL = new URL(window.location);
+    defaultKeymapURL.searchParams.delete('keymap');
+    let vimKeymapURL = new URL(window.location);
+    vimKeymapURL.searchParams.set('keymap', 'vim');
+
+    let performanceDisabledURL = new URL(window.location);
+    performanceDisabledURL.searchParams.delete('performancemode');
+    let performanceEnabledURL = new URL(window.location);
+    performanceEnabledURL.searchParams.set('performancemode', 'enabled');
+
+    const data = {
+      defaultKeymapURL: defaultKeymapURL.toString(),
+      vimKeymapURL: vimKeymapURL.toString(),
+      performanceEnabledURL: performanceEnabledURL.toString(),
+      performanceDisabledURL: performanceDisabledURL.toString(),
+    };
+    const contents = this.templates.settingsDisplay(data);
     this.showPopup(contents);
   }
 
