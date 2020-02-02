@@ -8,6 +8,10 @@ export default class Snek {
     this.draw = null;
     this.regl = regl;
     this.ui = new UI(this);
+    this.currentGLSL = {
+      frag: '',
+      vert: '',
+    };
 
     this.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
       keyMap: config.keyMap,
@@ -75,6 +79,10 @@ export default class Snek {
 
       count: 3,
     });
+    this.currentGLSL = {
+      vert: defaultVertexShader,
+      frag: fragShader,
+    };
   }
 
   start() {

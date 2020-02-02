@@ -18,13 +18,13 @@ export class UI {
     });
 
     document
-      .querySelector('button#toggle-popup')
+      .querySelector('button#display-glsl')
       .addEventListener('click', e => {
         e.preventDefault();
         if (this.popupDisplayed) {
           this.hidePopup();
         } else {
-          this.showPopup({ title: 'Just a test' });
+          this.showGLSLCode();
         }
         return false;
       });
@@ -53,11 +53,28 @@ export class UI {
     this.errorDisplayText.nodeValue = '';
   }
 
-  showPopup(data) {
+  showGLSLCode() {
+    const programs = this.snek.currentGLSL;
+    const contents = this.templates.glslDisplay(programs);
+    this.showPopup(contents);
+  }
+
+  showPopup(contents) {
+    if (this.popupDisplayed) {
+      this.hidePopup();
+    }
     const popup = document.createElement('div');
     popup.setAttribute('id', 'popup-window');
     popup.classList.add('popup-window');
-    popup.innerHTML = this.templates.popupSurround(data);
+    popup.innerHTML = contents;
+    const close = popup.querySelector('#popup-close');
+    if (close) {
+      close.addEventListener('click', e => {
+        e.preventDefault();
+        this.hidePopup();
+        return false;
+      });
+    }
 
     const body = document.querySelector('body');
     body.appendChild(popup);
