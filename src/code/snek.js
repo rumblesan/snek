@@ -44,6 +44,10 @@ export default class Snek {
     this.globalErrorHandler = handler;
   }
 
+  getProgram() {
+    return this.editor.getValue();
+  }
+
   evaluate() {
     try {
       const program = this.editor.getValue();

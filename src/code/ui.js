@@ -1,4 +1,5 @@
 import * as templates from '../templates';
+import { encodeProgram } from './encoder';
 
 export function startupError(message) {
   const errMsg = document.querySelector('#startup-error-message');
@@ -13,6 +14,7 @@ export class UI {
 
     this.clickHandler('button#evaluate', this.snek.evaluate.bind(this.snek));
     this.clickHandler('button#display-glsl', this.showGLSLCode.bind(this));
+    this.clickHandler('button#display-sharing', () => this.showSharing());
     this.clickHandler('button#display-settings', this.showSettings.bind(this));
 
     this.errorDisplayText = document.createTextNode('');
@@ -50,7 +52,20 @@ export class UI {
       case '#glslcode':
         this.showGLSLCode();
         break;
+      case '#sharing':
+        this.showSharing();
+        break;
     }
+  }
+
+  showSharing() {
+    const encodedProgram = encodeProgram(this.snek.getProgram());
+    const programSharingURL = URL.fromLocation();
+    programSharingURL.searchParams.set('program', encodedProgram);
+
+    this.showPopup('sharing', templates.sharingPopup, {
+      programSharingURL: programSharingURL.toString(),
+    });
   }
 
   showGLSLCode() {

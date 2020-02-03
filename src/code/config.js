@@ -1,3 +1,5 @@
+import { decodeProgram } from './encoder';
+
 const defaultConfig = {
   keyMap: 'default',
   lineNumbers: false,
@@ -20,7 +22,10 @@ export function getConfig() {
   const performanceMode =
     params.has('performancemode') | defaultConfig.performanceMode;
 
-  const program = defaultConfig.program;
+  // TODO this could do with error handling
+  const program = params.has('program')
+    ? decodeProgram(params.get('program'))
+    : defaultConfig.program;
 
   return {
     keyMap,
