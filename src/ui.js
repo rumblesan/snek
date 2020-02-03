@@ -11,11 +11,7 @@ export class UI {
   constructor(snek) {
     this.snek = snek;
 
-    document.querySelector('button#evaluate').addEventListener('click', e => {
-      e.preventDefault();
-      this.snek.evaluate();
-      return false;
-    });
+    this.setupButton('button#evaluate', this.snek.evaluate.bind(this));
 
     this.setupPopup('button#display-glsl', this.showGLSLCode.bind(this));
     this.setupPopup('button#display-settings', this.showSettings.bind(this));
@@ -82,6 +78,14 @@ export class UI {
     };
     const contents = this.templates.settingsDisplay(data);
     this.showPopup(contents);
+  }
+
+  setupButton(selector, callback) {
+    document.querySelector(selector).addEventListener('click', e => {
+      e.preventDefault();
+      callback();
+      return false;
+    });
   }
 
   setupPopup(selector, callback) {
