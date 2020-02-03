@@ -1,5 +1,4 @@
-import settingsPopup from '../templates/settings-menu.handlebars';
-import glslDisplayPopup from '../templates/glsl-display-popup.handlebars';
+import * as templates from '../templates';
 
 export function startupError(message) {
   const errMsg = document.querySelector('#startup-error-message');
@@ -55,7 +54,11 @@ export class UI {
   }
 
   showGLSLCode() {
-    this.showPopup('glslcode', glslDisplayPopup, this.snek.currentGLSL);
+    this.showPopup(
+      'glslcode',
+      templates.glslDisplayPopup,
+      this.snek.currentGLSL
+    );
   }
 
   showSettings() {
@@ -74,7 +77,7 @@ export class UI {
     const lineNumbersEnabledURL = URL.fromLocation();
     lineNumbersEnabledURL.searchParams.set('linenumbers', 'enabled');
 
-    this.showPopup('settings', settingsPopup, {
+    this.showPopup('settings', templates.settingsPopup, {
       defaultKeymapURL: defaultKeymapURL.toString(),
       vimKeymapURL: vimKeymapURL.toString(),
       performanceEnabledURL: performanceEnabledURL.toString(),
