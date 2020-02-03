@@ -2,14 +2,14 @@
 
 import './index.html';
 import './styles/main.scss';
-import './js/editor/snek-mode';
+import './code/editor/snek-mode';
 
 import createREGL from 'regl';
 
-import { getConfig } from './config.js';
+import { getConfig } from './code/config';
 
-import Snek from './snek';
-import { startupError } from './ui';
+import Snek from './code/snek';
+import { startupError } from './code/ui';
 
 const canvas = document.getElementById('canvas');
 

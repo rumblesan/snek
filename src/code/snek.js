@@ -1,5 +1,5 @@
-import { codeToFrag, lint } from './js/language';
-import { defaultVertexShader } from './js/glsl';
+import { codeToFrag, lint } from './language';
+import { defaultVertexShader } from './glsl';
 import { UI } from './ui';
 
 export default class Snek {
