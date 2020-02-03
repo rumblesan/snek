@@ -12,16 +12,15 @@ export class UI {
   constructor(snek) {
     this.snek = snek;
 
-    this.setupButton('button#evaluate', this.snek.evaluate.bind(this));
-
-    this.setupPopup('button#display-glsl', this.showGLSLCode.bind(this));
-    this.setupPopup('button#display-settings', this.showSettings.bind(this));
+    this.clickHandler('button#evaluate', this.snek.evaluate.bind(this.snek));
+    this.clickHandler('button#display-glsl', this.showGLSLCode.bind(this));
+    this.clickHandler('button#display-settings', this.showSettings.bind(this));
 
     this.errorDisplayText = document.createTextNode('');
     this.errorDisplayEl = document.querySelector('#error-display');
     this.errorDisplayEl.appendChild(this.errorDisplayText);
 
-    this.popupDisplayed = false;
+    this.displayedPopup = null;
     this.checkHash();
   }
   display() {
@@ -45,22 +44,19 @@ export class UI {
       case '#settings':
         this.showSettings();
         break;
-      case '#glsl':
+      case '#glslcode':
         this.showGLSLCode();
         break;
     }
   }
 
   showGLSLCode() {
-    URL.setHash('glsl');
     const programs = this.snek.currentGLSL;
     const contents = glslDisplayPopup(programs);
-    this.showPopup(contents);
+    this.showPopup('glslcode', contents);
   }
 
   showSettings() {
-    URL.setHash('settings');
-
     const defaultKeymapURL = URL.fromLocation();
     defaultKeymapURL.searchParams.delete('keymap');
     const vimKeymapURL = URL.fromLocation();
@@ -85,10 +81,10 @@ export class UI {
       lineNumbersDisabledURL: lineNumbersDisabledURL.toString(),
     };
     const contents = settingsPopup(data);
-    this.showPopup(contents);
+    this.showPopup('settings', contents);
   }
 
-  setupButton(selector, callback) {
+  clickHandler(selector, callback) {
     document.querySelector(selector).addEventListener('click', e => {
       e.preventDefault();
       callback();
@@ -96,22 +92,17 @@ export class UI {
     });
   }
 
-  setupPopup(selector, callback) {
-    document.querySelector(selector).addEventListener('click', e => {
-      e.preventDefault();
-      if (this.popupDisplayed) {
-        this.hidePopup();
-      } else {
-        callback();
-      }
-      return false;
-    });
-  }
-
-  showPopup(contents) {
-    if (this.popupDisplayed) {
+  showPopup(name, contents) {
+    if (this.displayedPopup === name) {
+      this.hidePopup();
+      return;
+    }
+    if (this.displayedPopup) {
       this.hidePopup();
     }
+    this.displayedPopup = name;
+    URL.setHash(this.displayedPopup);
+
     const popup = document.createElement('div');
     popup.setAttribute('id', 'popup-window');
     popup.classList.add('popup-window');
@@ -128,16 +119,14 @@ export class UI {
     const body = document.querySelector('body');
     body.appendChild(popup);
     this.popupDisplayed = true;
-    console.log('showing popup');
   }
 
   hidePopup() {
-    window.location.hash = '';
     const popup = document.querySelector('#popup-window');
     if (popup) {
       popup.remove();
     }
-    this.popupDisplayed = false;
-    console.log('hiding popup');
+    this.displayedPopup = '';
+    URL.setHash(this.displayedPopup);
   }
 }
