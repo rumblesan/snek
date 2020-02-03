@@ -10,13 +10,20 @@ export function startupError(message) {
 
 export class UI {
   constructor(config, snek) {
-    this.clickHandler('#evaluate', () => snek.evaluate());
-    this.clickHandler('#display-glsl', () => this.showGLSLCode(snek));
-    this.clickHandler('#display-sharing', () => this.showSharing(snek));
-    this.clickHandler('#display-settings', () => this.showSettings());
+    this.popups = {};
+    this.displayedPopupName = null;
 
-    this.displayedPopup = null;
+    this.registerPopup('glslcode', () => this.showGLSLMarkup(snek));
+    this.registerPopup('sharing', () => this.sharingMarkup(snek));
+    this.registerPopup('settings', () => this.settingsMarkup());
+
+    this.clickHandler('#evaluate', () => snek.evaluate());
+    this.clickHandler('#display-glsl', () => this.triggerPopup('glslcode'));
+    this.clickHandler('#display-sharing', () => this.triggerPopup('sharing'));
+    this.clickHandler('#display-settings', () => this.triggerPopup('settings'));
+
     this.checkHash();
+
     if (config.performanceMode) {
       document.querySelector('body').classList.add('performance-mode');
     }
@@ -41,34 +48,26 @@ export class UI {
   }
 
   checkHash() {
-    switch (URL.fromLocation().hash) {
-      case '#settings':
-        this.showSettings();
-        break;
-      case '#glslcode':
-        this.showGLSLCode();
-        break;
-      case '#sharing':
-        this.showSharing();
-        break;
+    const hash = URL.getHash();
+    if (hash) {
+      this.triggerPopup(hash);
     }
   }
 
-  showSharing(snek) {
+  sharingMarkup(snek) {
     const encodedProgram = encodeProgram(snek.getProgram());
     const programSharingURL = URL.fromLocation();
     programSharingURL.searchParams.set('program', encodedProgram);
-
-    this.showPopup('sharing', templates.sharingPopup, {
+    return templates.sharingPopup({
       programSharingURL: programSharingURL.toString(),
     });
   }
 
-  showGLSLCode(snek) {
-    this.showPopup('glslcode', templates.glslDisplayPopup, snek.currentGLSL);
+  showGLSLMarkup(snek) {
+    return templates.glslDisplayPopup(snek.currentGLSL);
   }
 
-  showSettings() {
+  settingsMarkup() {
     const defaultKeymapURL = URL.fromLocation();
     defaultKeymapURL.searchParams.delete('keymap');
     const vimKeymapURL = URL.fromLocation();
@@ -84,7 +83,7 @@ export class UI {
     const lineNumbersEnabledURL = URL.fromLocation();
     lineNumbersEnabledURL.searchParams.set('linenumbers', 'enabled');
 
-    this.showPopup('settings', templates.settingsPopup, {
+    return templates.settingsPopup({
       defaultKeymapURL: defaultKeymapURL.toString(),
       vimKeymapURL: vimKeymapURL.toString(),
       performanceEnabledURL: performanceEnabledURL.toString(),
@@ -102,34 +101,46 @@ export class UI {
     });
   }
 
-  showPopup(name, template, data) {
-    if (this.displayedPopup === name) {
+  registerPopup(name, markupGenerator) {
+    this.popups[name] = {
+      name,
+      markupGenerator: markupGenerator,
+    };
+  }
+
+  triggerPopup(name) {
+    if (!this.popups[name]) {
+      return;
+    }
+
+    if (this.displayedPopupName === name) {
+      // If the currently displayed popup is the one we're triggering
+      // then assume that the button has been clicked to hide it again
       this.hidePopup();
       return;
     }
-    if (this.displayedPopup) {
+
+    // If a popup is displayed, but isn't the triggered one,
+    // then hide it and display the newly triggered one
+    if (this.displayedPopupName) {
       this.hidePopup();
     }
-    this.displayedPopup = name;
-    URL.setHash(this.displayedPopup);
+
+    this.displayedPopupName = name;
+    URL.setHash(this.displayedPopupName);
 
     const popup = document.createElement('div');
     popup.setAttribute('id', 'popup-window');
     popup.classList.add('popup-window');
-    popup.innerHTML = template(data);
+    popup.innerHTML = this.popups[name].markupGenerator();
 
-    const close = popup.querySelector('#popup-close');
-    if (close) {
-      close.addEventListener('click', e => {
-        e.preventDefault();
-        this.hidePopup();
-        return false;
-      });
-    }
+    popup.querySelector('#popup-close').addEventListener('click', e => {
+      e.preventDefault();
+      this.hidePopup();
+      return false;
+    });
 
-    const body = document.querySelector('body');
-    body.appendChild(popup);
-    this.popupDisplayed = true;
+    document.querySelector('body').appendChild(popup);
   }
 
   hidePopup() {
@@ -137,7 +148,7 @@ export class UI {
     if (popup) {
       popup.remove();
     }
-    this.displayedPopup = '';
-    URL.setHash(this.displayedPopup);
+    this.displayedPopupName = '';
+    URL.setHash(this.displayedPopupName);
   }
 }

@@ -9,3 +9,7 @@ URL.prototype.copy = function() {
 URL.setHash = function(hash) {
   window.location.hash = hash;
 };
+
+URL.getHash = function() {
+  return window.location.hash.substring(1);
+};
