@@ -93,9 +93,7 @@ export default class Snek {
         color: [0, 0, 0, 1],
       });
 
-      if (this.draw !== null) {
-        this.draw();
-      }
+      this.draw();
     });
   }
 }
