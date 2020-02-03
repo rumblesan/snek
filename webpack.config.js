@@ -14,18 +14,24 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: [
-          /node_modules/,
-          /codemirror/,
-        ],
+        exclude: [/node_modules/, /codemirror/],
         loader: 'babel-loader',
         options: {
-          presets: [
-            ['@babel/preset-env'],
-          ],
+          presets: [['@babel/preset-env']],
         },
       },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
+        ],
+      },
       {
         test: /\.html$/,
         loader: 'file-loader',

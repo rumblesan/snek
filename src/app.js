@@ -1,9 +1,7 @@
 /* global CodeMirror */
 
 import './index.html';
-import './css/style.css';
-import './css/popup.css';
-import './css/snek-theme.css';
+import './styles/main.scss';
 import './js/editor/snek-mode';
 
 import createREGL from 'regl';
