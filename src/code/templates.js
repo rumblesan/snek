@@ -44,5 +44,14 @@ export const settingsDisplay = Handlebars.compile(`
       </ul>
     </section>
 
+    <section>
+      <h4>Line Numbers</h4>
+      <p>Line numbers can be added to the editor with the <em>linenumbers</em> query argument.</p>
+      <ul>
+        <li><a href="{{lineNumbersEnabledURL}}">Enable Line Numbers</a></li>
+        <li><a href="{{lineNumbersDisabledURL}}">Disable Line Numbers</a></li>
+      </ul>
+    </section>
+
   </div>
 `);

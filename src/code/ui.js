@@ -71,11 +71,18 @@ export class UI {
     const performanceEnabledURL = URL.fromLocation();
     performanceEnabledURL.searchParams.set('performancemode', 'enabled');
 
+    const lineNumbersDisabledURL = URL.fromLocation();
+    lineNumbersDisabledURL.searchParams.delete('linenumbers');
+    const lineNumbersEnabledURL = URL.fromLocation();
+    lineNumbersEnabledURL.searchParams.set('linenumbers', 'enabled');
+
     const data = {
       defaultKeymapURL: defaultKeymapURL.toString(),
       vimKeymapURL: vimKeymapURL.toString(),
       performanceEnabledURL: performanceEnabledURL.toString(),
       performanceDisabledURL: performanceDisabledURL.toString(),
+      lineNumbersEnabledURL: lineNumbersEnabledURL.toString(),
+      lineNumbersDisabledURL: lineNumbersDisabledURL.toString(),
     };
     const contents = this.templates.settingsDisplay(data);
     this.showPopup(contents);
