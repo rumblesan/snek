@@ -7,21 +7,18 @@ const defaultConfig = {
 };
 
 export function getConfig() {
-  const url = URL.fromLocation();
+  const params = URL.fromLocation().searchParams;
 
-  const keyMap = url.searchParams.has('keymap')
-    ? url.searchParams.get('keymap')
+  const keyMap = params.has('keymap')
+    ? params.get('keymap')
     : defaultConfig.keyMap;
 
-  const lineNumbers =
-    url.searchParams.has('linenumbers') | defaultConfig.lineNumbers;
+  const lineNumbers = params.has('linenumbers') | defaultConfig.lineNumbers;
 
-  const theme = url.searchParams.has('theme')
-    ? url.searchParams.get('theme')
-    : defaultConfig.theme;
+  const theme = params.has('theme') ? params.get('theme') : defaultConfig.theme;
 
   const performanceMode =
-    url.searchParams.has('performancemode') | defaultConfig.performanceMode;
+    params.has('performancemode') | defaultConfig.performanceMode;
 
   const program = defaultConfig.program;
 
