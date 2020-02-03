@@ -10,16 +10,10 @@ export function startupError(message) {
 
 export class UI {
   constructor(config, snek) {
-    this.snek = snek;
-
-    this.clickHandler('button#evaluate', this.snek.evaluate.bind(this.snek));
-    this.clickHandler('button#display-glsl', this.showGLSLCode.bind(this));
-    this.clickHandler('button#display-sharing', () => this.showSharing());
-    this.clickHandler('button#display-settings', this.showSettings.bind(this));
-
-    this.errorDisplayText = document.createTextNode('');
-    this.errorDisplayEl = document.querySelector('#error-display');
-    this.errorDisplayEl.appendChild(this.errorDisplayText);
+    this.clickHandler('#evaluate', () => snek.evaluate());
+    this.clickHandler('#display-glsl', () => this.showGLSLCode(snek));
+    this.clickHandler('#display-sharing', () => this.showSharing(snek));
+    this.clickHandler('#display-settings', () => this.showSettings());
 
     this.displayedPopup = null;
     this.checkHash();
@@ -35,13 +29,15 @@ export class UI {
   }
 
   displayError(err) {
-    this.errorDisplayEl.classList.remove('hidden');
-    this.errorDisplayText.nodeValue = err.message.substring(0, 10);
+    const errorDisplayEl = document.querySelector('#error-display');
+    errorDisplayEl.classList.remove('hidden');
+    errorDisplayEl.innerText = err.message.substring(0, 10);
   }
 
   clearError() {
-    this.errorDisplayEl.classList.add('hidden');
-    this.errorDisplayText.nodeValue = '';
+    const errorDisplayEl = document.querySelector('#error-display');
+    errorDisplayEl.classList.add('hidden');
+    errorDisplayEl.innerText = '';
   }
 
   checkHash() {
@@ -58,8 +54,8 @@ export class UI {
     }
   }
 
-  showSharing() {
-    const encodedProgram = encodeProgram(this.snek.getProgram());
+  showSharing(snek) {
+    const encodedProgram = encodeProgram(snek.getProgram());
     const programSharingURL = URL.fromLocation();
     programSharingURL.searchParams.set('program', encodedProgram);
 
@@ -68,12 +64,8 @@ export class UI {
     });
   }
 
-  showGLSLCode() {
-    this.showPopup(
-      'glslcode',
-      templates.glslDisplayPopup,
-      this.snek.currentGLSL
-    );
+  showGLSLCode(snek) {
+    this.showPopup('glslcode', templates.glslDisplayPopup, snek.currentGLSL);
   }
 
   showSettings() {
