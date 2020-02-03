@@ -6,6 +6,8 @@ import './code/editor/snek-mode';
 
 import createREGL from 'regl';
 
+import './code/polyfills';
+
 import { getConfig } from './code/config';
 
 import Snek from './code/snek';

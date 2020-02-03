@@ -41,7 +41,7 @@ export class UI {
     this.errorDisplayText.nodeValue = '';
   }
   checkHash() {
-    switch (new URL(window.location).hash) {
+    switch (URL.fromLocation().hash) {
       case '#settings':
         this.showSettings();
         break;
@@ -52,22 +52,23 @@ export class UI {
   }
 
   showGLSLCode() {
-    window.location.hash = 'glsl';
+    URL.setHash('glsl');
     const programs = this.snek.currentGLSL;
     const contents = this.templates.glslDisplay(programs);
     this.showPopup(contents);
   }
 
   showSettings() {
-    window.location.hash = 'settings';
-    const defaultKeymapURL = new URL(window.location);
+    URL.setHash('settings');
+
+    const defaultKeymapURL = URL.fromLocation();
     defaultKeymapURL.searchParams.delete('keymap');
-    const vimKeymapURL = new URL(window.location);
+    const vimKeymapURL = URL.fromLocation();
     vimKeymapURL.searchParams.set('keymap', 'vim');
 
-    const performanceDisabledURL = new URL(window.location);
+    const performanceDisabledURL = URL.fromLocation();
     performanceDisabledURL.searchParams.delete('performancemode');
-    const performanceEnabledURL = new URL(window.location);
+    const performanceEnabledURL = URL.fromLocation();
     performanceEnabledURL.searchParams.set('performancemode', 'enabled');
 
     const data = {
