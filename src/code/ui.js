@@ -1,4 +1,5 @@
-import * as templates from './templates';
+import settingsPopup from '../templates/settings-menu.handlebars';
+import glslDisplayPopup from '../templates/glsl-display-popup.handlebars';
 
 export function startupError(message) {
   const errMsg = document.querySelector('#startup-error-message');
@@ -20,7 +21,6 @@ export class UI {
     this.errorDisplayEl = document.querySelector('#error-display');
     this.errorDisplayEl.appendChild(this.errorDisplayText);
 
-    this.templates = templates;
     this.popupDisplayed = false;
     this.checkHash();
   }
@@ -54,7 +54,7 @@ export class UI {
   showGLSLCode() {
     URL.setHash('glsl');
     const programs = this.snek.currentGLSL;
-    const contents = this.templates.glslDisplay(programs);
+    const contents = glslDisplayPopup(programs);
     this.showPopup(contents);
   }
 
@@ -84,7 +84,7 @@ export class UI {
       lineNumbersEnabledURL: lineNumbersEnabledURL.toString(),
       lineNumbersDisabledURL: lineNumbersDisabledURL.toString(),
     };
-    const contents = this.templates.settingsDisplay(data);
+    const contents = settingsPopup(data);
     this.showPopup(contents);
   }
 

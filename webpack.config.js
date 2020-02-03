@@ -21,6 +21,7 @@ module.exports = {
         },
       },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.handlebars$/, loader: 'handlebars-loader' },
       {
         test: /\.s[ac]ss$/i,
         use: [
