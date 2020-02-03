@@ -7,7 +7,7 @@ export default class Snek {
     this.config = config;
     this.draw = null;
     this.regl = regl;
-    this.ui = new UI(this);
+    this.ui = new UI(config, this);
     this.currentGLSL = {
       frag: '',
       vert: '',
@@ -84,9 +84,6 @@ export default class Snek {
   }
 
   start() {
-    if (this.config.performanceMode) {
-      this.ui.performanceMode(true);
-    }
     this.ui.display();
     this.regl.frame(() => {
       this.regl.clear({

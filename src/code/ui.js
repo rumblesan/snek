@@ -9,7 +9,7 @@ export function startupError(message) {
 }
 
 export class UI {
-  constructor(snek) {
+  constructor(config, snek) {
     this.snek = snek;
 
     this.clickHandler('button#evaluate', this.snek.evaluate.bind(this.snek));
@@ -22,23 +22,27 @@ export class UI {
 
     this.displayedPopup = null;
     this.checkHash();
+    if (config.performanceMode) {
+      document.querySelector('body').classList.add('performance-mode');
+    }
   }
+
   display() {
     document.querySelectorAll('.invisible-until-load').forEach(el => {
       el.classList.remove('invisible-until-load');
     });
   }
-  performanceMode() {
-    document.querySelector('body').classList.add('performance-mode');
-  }
+
   displayError(err) {
     this.errorDisplayEl.classList.remove('hidden');
     this.errorDisplayText.nodeValue = err.message.substring(0, 10);
   }
+
   clearError() {
     this.errorDisplayEl.classList.add('hidden');
     this.errorDisplayText.nodeValue = '';
   }
+
   checkHash() {
     switch (URL.fromLocation().hash) {
       case '#settings':
@@ -51,9 +55,7 @@ export class UI {
   }
 
   showGLSLCode() {
-    const programs = this.snek.currentGLSL;
-    const contents = glslDisplayPopup(programs);
-    this.showPopup('glslcode', contents);
+    this.showPopup('glslcode', glslDisplayPopup, this.snek.currentGLSL);
   }
 
   showSettings() {
@@ -72,16 +74,14 @@ export class UI {
     const lineNumbersEnabledURL = URL.fromLocation();
     lineNumbersEnabledURL.searchParams.set('linenumbers', 'enabled');
 
-    const data = {
+    this.showPopup('settings', settingsPopup, {
       defaultKeymapURL: defaultKeymapURL.toString(),
       vimKeymapURL: vimKeymapURL.toString(),
       performanceEnabledURL: performanceEnabledURL.toString(),
       performanceDisabledURL: performanceDisabledURL.toString(),
       lineNumbersEnabledURL: lineNumbersEnabledURL.toString(),
       lineNumbersDisabledURL: lineNumbersDisabledURL.toString(),
-    };
-    const contents = settingsPopup(data);
-    this.showPopup('settings', contents);
+    });
   }
 
   clickHandler(selector, callback) {
@@ -92,7 +92,7 @@ export class UI {
     });
   }
 
-  showPopup(name, contents) {
+  showPopup(name, template, data) {
     if (this.displayedPopup === name) {
       this.hidePopup();
       return;
@@ -106,7 +106,8 @@ export class UI {
     const popup = document.createElement('div');
     popup.setAttribute('id', 'popup-window');
     popup.classList.add('popup-window');
-    popup.innerHTML = contents;
+    popup.innerHTML = template(data);
+
     const close = popup.querySelector('#popup-close');
     if (close) {
       close.addEventListener('click', e => {
