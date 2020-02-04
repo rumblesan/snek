@@ -9,7 +9,9 @@ export function startupError(message) {
 }
 
 export class UI {
-  constructor(config, snek) {
+  constructor(config, eventBus, snek) {
+    this.eventBus = eventBus;
+
     this.popups = {};
     this.displayedPopupName = null;
 
@@ -17,22 +19,23 @@ export class UI {
     this.registerPopup('sharing', () => this.sharingMarkup(snek));
     this.registerPopup('settings', () => this.settingsMarkup());
 
-    this.clickHandler('#evaluate', () => snek.evaluate());
+    this.clickHandler('#evaluate', () => this.eventBus.emit('evaluate'));
     this.clickHandler('#display-glsl', () => this.triggerPopup('glslcode'));
     this.clickHandler('#display-sharing', () => this.triggerPopup('sharing'));
     this.clickHandler('#display-settings', () => this.triggerPopup('settings'));
 
-    this.checkHash();
-
-    if (config.performanceMode) {
-      document.querySelector('body').classList.add('performance-mode');
-    }
+    this.eventBus.on('display-error', err => this.displayError(err));
+    this.eventBus.on('clear-error', () => this.clearError());
   }
 
   display() {
     document.querySelectorAll('.invisible-until-load').forEach(el => {
       el.classList.remove('invisible-until-load');
     });
+  }
+
+  performanceMode() {
+    document.querySelector('body').classList.add('performance-mode');
   }
 
   displayError(err) {
@@ -47,24 +50,19 @@ export class UI {
     errorDisplayEl.innerText = '';
   }
 
-  checkHash() {
-    const hash = URL.getHash();
-    if (hash) {
-      this.triggerPopup(hash);
-    }
-  }
-
   sharingMarkup(snek) {
     const encodedProgram = encodeProgram(snek.getProgram());
     const programSharingURL = URL.fromLocation();
     programSharingURL.searchParams.set('program', encodedProgram);
+    // TODO maybe make the entire URL clear of params???
+    programSharingURL.hash = '';
     return templates.sharingPopup({
       programSharingURL: programSharingURL.toString(),
     });
   }
 
   showGLSLMarkup(snek) {
-    return templates.glslDisplayPopup(snek.currentGLSL);
+    return templates.glslDisplayPopup(snek.getGLSL());
   }
 
   settingsMarkup() {

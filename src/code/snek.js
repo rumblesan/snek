@@ -1,13 +1,12 @@
 import { codeToFrag, lint } from './language';
 import { defaultVertexShader } from './glsl';
-import { UI } from './ui';
 
-export default class Snek {
-  constructor(config, regl, CodeMirror) {
+export class Snek {
+  constructor(config, eventBus, regl, CodeMirror) {
     this.config = config;
     this.draw = null;
     this.regl = regl;
-    this.ui = new UI(config, this);
+    this.eventBus = eventBus;
     this.currentGLSL = {
       frag: '',
       vert: '',
@@ -38,14 +37,16 @@ export default class Snek {
     });
     this.editor.setValue(config.program);
     this.evaluate();
-  }
 
-  setGlobalErrorHandler(handler) {
-    this.globalErrorHandler = handler;
+    this.eventBus.on('evaluate', () => this.evaluate());
   }
 
   getProgram() {
     return this.editor.getValue();
+  }
+
+  getGLSL() {
+    return this.currentGLSL;
   }
 
   evaluate() {
@@ -53,15 +54,15 @@ export default class Snek {
       const program = this.editor.getValue();
       const result = codeToFrag(program);
       if (result.errors.length < 1) {
-        this.ui.clearError();
+        this.eventBus.emit('clear-error');
         this.updateDraw(result.code);
       } else {
         const errCount = result.errors.length;
         const msg = errCount === 1 ? '1 Error!' : `${errCount} Errors!`;
-        this.ui.displayError(new Error(msg));
+        this.eventBus.emit('display-error', new Error(msg));
       }
     } catch (err) {
-      this.ui.displayError(err);
+      this.eventBus.emit('display-error', err);
     }
   }
 
@@ -88,7 +89,6 @@ export default class Snek {
   }
 
   start() {
-    this.ui.display();
     this.regl.frame(() => {
       this.regl.clear({
         color: [0, 0, 0, 1],
