@@ -10,15 +10,25 @@ $cursor-color: #fff;
 /* Specifically only make the first child span background translucent
  * otherwise there are wierd bugs with highlighted code backgrounds
  * */
-.CodeMirror .CodeMirror-line > span {
-  background-color: solarized.$base03;
-  opacity: 80%;
-}
-
 .cm-s-snek {
+
+  &.CodeMirror {
+    background: transparent;
+  }
+
+  .CodeMirror .CodeMirror-line > span {
+    background-color: solarized.$base03;
+    opacity: 80%;
+  }
 
   .CodeMirror-line span span.CodeMirror-selectedtext {
     background-color: solarized.$base1;
+  }
+
+  .CodeMirror-gutters {
+    background: transparent;
+    border-right: 0;
+    padding: 0 3px;
   }
 
   /* Cursor styling */
