@@ -1,6 +1,5 @@
-/* global process, require, module, __dirname */
+/* global require, module, __dirname */
 
-const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
