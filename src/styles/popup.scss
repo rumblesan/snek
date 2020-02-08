@@ -59,6 +59,9 @@
   h3, h4 {
     color: solarized.$cyan;
     font-weight: bold;
+    &.error {
+      color: solarized.$orange;
+    }
   }
 
   button.close {

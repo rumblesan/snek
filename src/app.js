@@ -13,13 +13,12 @@ import { getConfig } from './code/config';
 import { EventBus } from './code/event-bus';
 import { Snek } from './code/snek';
 import { UI } from './code/ui';
-import { startupError } from './code/ui';
 
 const canvas = document.getElementById('canvas');
 
 const gl = canvas.getContext('webgl2');
 if (!gl) {
-  startupError('Could not create WebGL context');
+  UI.startupError('Could not create WebGL context');
   console.log('No webgl support');
 } else {
   const regl = createREGL({ gl: gl });

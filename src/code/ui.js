@@ -1,13 +1,6 @@
 import * as templates from '../templates';
 import { encodeProgram } from './encoder';
 
-export function startupError(message) {
-  const errMsg = document.querySelector('#startup-error-message');
-  errMsg.appendChild(document.createTextNode(message));
-  const startupError = document.querySelector('#startup-error');
-  startupError.classList.remove('hidden');
-}
-
 export class UI {
   constructor(config, eventBus, snek) {
     this.eventBus = eventBus;
@@ -148,5 +141,15 @@ export class UI {
     }
     this.displayedPopupName = '';
     URL.setHash(this.displayedPopupName);
+  }
+
+  static startupError(message) {
+    const popup = document.createElement('div');
+    popup.setAttribute('id', 'popup-window');
+    popup.classList.add('popup-window');
+    popup.innerHTML = templates.startupError({
+      startupErrorMessage: message,
+    });
+    document.querySelector('body').appendChild(popup);
   }
 }
