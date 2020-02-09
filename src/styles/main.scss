@@ -2,9 +2,13 @@
 @use 'nav';
 @use 'snek-theme';
 @use 'popup';
+@use 'noscript';
 
 .debug {
   background-color: red !important;
+}
+.hidden {
+  display: none;
 }
 
 /* Layout */
