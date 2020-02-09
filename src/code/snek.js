@@ -20,6 +20,7 @@ export class Snek {
         keyMap: config.keyMap,
         lineNumbers: config.lineNumbers,
         theme: config.theme,
+        value: config.program,
         mode: 'snek',
         autofocus: true,
         gutters: ['CodeMirror-lint-markers'],
@@ -40,10 +41,17 @@ export class Snek {
         },
       }
     );
-    this.editor.setValue(config.program);
     this.evaluate();
 
     this.eventBus.on('evaluate', () => this.evaluate());
+
+    this.regl.frame(() => {
+      this.regl.clear({
+        color: [0, 0, 0, 1],
+      });
+
+      this.draw();
+    });
   }
 
   getProgram() {
@@ -91,15 +99,5 @@ export class Snek {
       vert: defaultVertexShader,
       frag: fragShader,
     };
-  }
-
-  start() {
-    this.regl.frame(() => {
-      this.regl.clear({
-        color: [0, 0, 0, 1],
-      });
-
-      this.draw();
-    });
   }
 }
