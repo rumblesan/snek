@@ -21,7 +21,7 @@ module.exports = {
       },
       { test: /\.handlebars$/, loader: 'handlebars-loader' },
       {
-        test: /\.html$/,
+        test: /\.html$|\.ico$/,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]',

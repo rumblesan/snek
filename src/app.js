@@ -1,6 +1,7 @@
 /* global CodeMirror */
 
 import './index.html';
+import './favicon.ico';
 import './code/editor/snek-mode';
 
 import './code/polyfills';
