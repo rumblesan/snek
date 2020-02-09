@@ -19,19 +19,7 @@ module.exports = {
           presets: [['@babel/preset-env']],
         },
       },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
       { test: /\.handlebars$/, loader: 'handlebars-loader' },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          'css-loader',
-          // Compiles Sass to CSS
-          'sass-loader',
-        ],
-      },
       {
         test: /\.html$/,
         loader: 'file-loader',
@@ -50,6 +38,7 @@ module.exports = {
     extensions: ['.js', '.html'],
   },
   devServer: {
+    contentBase: path.join(__dirname, 'dist'),
     host: '0.0.0.0',
     port: 8080,
   },

@@ -16,7 +16,7 @@ $cursor-color: #fff;
     background: transparent;
   }
 
-  .CodeMirror .CodeMirror-line > span {
+  &.CodeMirror .CodeMirror-line > span {
     background-color: solarized.$base03;
     opacity: 80%;
   }

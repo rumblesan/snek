@@ -4,10 +4,13 @@
   "description": "An experiment in creating a custom language for hydra like live-coding.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:snek && npm run build:site",
-    "start": "webpack-dev-server --mode development",
+    "build": "npm run build:snek && npm run build:css && npm run build:site",
+    "start": "concurrently 'npm run start:snek' 'npm run start:css'",
     "build:snek": "webpack --mode production",
+    "build:css": "sass --no-source-map --style=compressed src/styles/main.scss dist/main.css",
     "build:site": "npx @11ty/eleventy",
+    "start:snek": "webpack-dev-server --mode development",
+    "start:css": "sass --watch src/styles/main.scss dist/main.css",
     "start:site": "npx @11ty/eleventy --serve --port 8081",
     "test": "jest test"
   },
@@ -26,6 +29,7 @@
     "babel-eslint": "10.0.3",
     "babel-jest": "24.9.0",
     "babel-loader": "8.0.6",
+    "concurrently": "5.1.0",
     "css-loader": "3.4.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.7.0",
@@ -36,9 +40,7 @@
     "jest": "24.9.0",
     "prettier": "1.19.1",
     "sass": "1.25.0",
-    "sass-loader": "8.0.2",
     "source-map-loader": "0.2.4",
-    "style-loader": "1.1.1",
     "webpack": "4.41.4",
     "webpack-cli": "3.3.10",
     "webpack-dev-server": "3.10.1"
