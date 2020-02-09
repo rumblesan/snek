@@ -2,9 +2,7 @@ import * as templates from '../templates';
 import { encodeProgram } from './encoder';
 
 export class UI {
-  constructor(config, eventBus, snek) {
-    this.eventBus = eventBus;
-
+  constructor(eventBus, snek) {
     this.popups = {};
     this.displayedPopupName = null;
 
@@ -12,13 +10,13 @@ export class UI {
     this.registerPopup('sharing', () => this.sharingMarkup(snek));
     this.registerPopup('settings', () => this.settingsMarkup());
 
-    this.clickHandler('#evaluate', () => this.eventBus.emit('evaluate'));
+    this.clickHandler('#evaluate', () => eventBus.emit('evaluate'));
     this.clickHandler('#display-glsl', () => this.triggerPopup('glslcode'));
     this.clickHandler('#display-sharing', () => this.triggerPopup('sharing'));
     this.clickHandler('#display-settings', () => this.triggerPopup('settings'));
 
-    this.eventBus.on('display-error', err => this.displayError(err));
-    this.eventBus.on('clear-error', () => this.clearError());
+    eventBus.on('display-error', err => this.displayError(err));
+    eventBus.on('clear-error', () => this.clearError());
   }
 
   display() {

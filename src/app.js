@@ -26,7 +26,7 @@ if (!gl) {
   const config = getConfig();
   const eventBus = new EventBus();
   const snek = new Snek(config, eventBus, regl, CodeMirror);
-  const ui = new UI(config, eventBus, snek);
+  const ui = new UI(eventBus, snek);
 
   ui.display();
 
