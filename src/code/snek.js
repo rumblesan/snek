@@ -12,29 +12,34 @@ export class Snek {
       vert: '',
     };
 
-    this.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-      keyMap: config.keyMap,
-      lineNumbers: config.lineNumbers,
-      theme: config.theme,
-      mode: 'snek',
-      autofocus: true,
-      gutters: ['CodeMirror-lint-markers'],
-      lint: {
-        getAnnotations: text => {
-          const { errors } = lint(text);
+    this.editor = CodeMirror(
+      el => {
+        document.querySelector('body').appendChild(el);
+      },
+      {
+        keyMap: config.keyMap,
+        lineNumbers: config.lineNumbers,
+        theme: config.theme,
+        mode: 'snek',
+        autofocus: true,
+        gutters: ['CodeMirror-lint-markers'],
+        lint: {
+          getAnnotations: text => {
+            const { errors } = lint(text);
 
-          return errors.map(err => ({
-            from: CodeMirror.Pos(err.line - 1, err.character - 1),
-            to: CodeMirror.Pos(err.line - 1, err.character - 1 + err.length),
-            message: err.message,
-            severity: 'error',
-          }));
+            return errors.map(err => ({
+              from: CodeMirror.Pos(err.line - 1, err.character - 1),
+              to: CodeMirror.Pos(err.line - 1, err.character - 1 + err.length),
+              message: err.message,
+              severity: 'error',
+            }));
+          },
         },
-      },
-      extraKeys: {
-        'Ctrl-Enter': () => this.evaluate(),
-      },
-    });
+        extraKeys: {
+          'Ctrl-Enter': () => this.evaluate(),
+        },
+      }
+    );
     this.editor.setValue(config.program);
     this.evaluate();
 

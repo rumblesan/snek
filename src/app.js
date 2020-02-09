@@ -27,8 +27,6 @@ if (!gl) {
   const snek = new Snek(config, eventBus, regl, CodeMirror);
   const ui = new UI(eventBus, snek);
 
-  ui.display();
-
   snek.start();
 
   if (config.performanceMode) {

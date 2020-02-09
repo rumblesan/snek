@@ -18,9 +18,6 @@
     .hidden {
       display: none;
     }
-    .invisible-until-load {
-      visibility: hidden;
-    }
     noscript h1 {
       color: #cb4b16;
       font-size: 38px;
@@ -31,7 +28,7 @@
 </head>
 <body>
 
-  <header class="invisible-until-load">
+  <header>
     <nav class="navbar-left">
       <ul>
         <li>
@@ -64,9 +61,7 @@
     </nav>
   </header>
 
-  <textarea id="code" class="invisible-until-load"></textarea>
-
-  <canvas id="canvas" class="invisible-until-load"></canvas>
+  <canvas id="canvas"></canvas>
 
   <noscript>
     <h1>Sorry, you need to enable JavaScript</h1>

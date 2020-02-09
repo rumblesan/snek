@@ -19,12 +19,6 @@ export class UI {
     eventBus.on('clear-error', () => this.clearError());
   }
 
-  display() {
-    document.querySelectorAll('.invisible-until-load').forEach(el => {
-      el.classList.remove('invisible-until-load');
-    });
-  }
-
   performanceMode() {
     document.querySelector('body').classList.add('performance-mode');
   }
