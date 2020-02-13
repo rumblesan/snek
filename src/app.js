@@ -26,9 +26,15 @@ const eventBus = new EventBus();
 const ui = new UI(eventBus);
 const popups = new Popups(document.querySelector('body'));
 eventBus.on('display-popup', popups.trigger.bind(popups));
+popups.register('error-popup', false, (message, error) => {
+  return templates.errorPopup({
+    message,
+    error,
+  });
+});
 
 const gl = canvas.getContext('webgl2');
-if (!gl) {
+if (gl) {
   eventBus.emit(
     'display-popup',
     'error-popup',

@@ -1,5 +1,4 @@
 import './style.scss';
-import errorPopup from './error-popup.handlebars';
 
 export class Popups {
   constructor(rootEl) {
@@ -7,13 +6,6 @@ export class Popups {
     this.popups = {};
     this.displayedPopupName = '';
     this.displayedPopupEl = null;
-
-    this.register('error-popup', false, (message, error) => {
-      return errorPopup({
-        message,
-        error,
-      });
-    });
   }
 
   register(name, displayHash, markupGenerator) {
