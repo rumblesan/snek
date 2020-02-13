@@ -3,7 +3,6 @@ import { defaultVertexShader } from './glsl';
 
 export class Snek {
   constructor(config, eventBus, regl, CodeMirror) {
-    this.config = config;
     this.draw = null;
     this.regl = regl;
     this.eventBus = eventBus;
