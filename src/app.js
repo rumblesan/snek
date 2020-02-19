@@ -34,7 +34,7 @@ popups.register('error-popup', false, (message, error) => {
 });
 
 const gl = canvas.getContext('webgl2');
-if (gl) {
+if (!gl) {
   eventBus.emit(
     'display-popup',
     'error-popup',
