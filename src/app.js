@@ -2,6 +2,7 @@
 
 import './index.html';
 import './favicon.ico';
+import './styles/main.scss';
 import './code/editor/snek-mode';
 
 import './code/polyfills';

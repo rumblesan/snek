@@ -4,13 +4,11 @@
   "description": "An experiment in creating a custom language for hydra like live-coding.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:snek && npm run build:css && npm run build:site",
-    "start": "concurrently 'npm run start:snek' 'npm run start:css'",
+    "build": "npm run build:snek && npm run build:site",
+    "start": "npm run start:snek",
     "build:snek": "webpack --mode production",
-    "build:css": "sass --no-source-map --style=compressed src/styles/main.scss dist/main.css",
     "build:site": "npx @11ty/eleventy",
     "start:snek": "webpack-dev-server --mode development",
-    "start:css": "sass --watch src/styles/main.scss dist/main.css",
     "start:site": "npx @11ty/eleventy --serve --port 8081",
     "test": "jest test"
   },
@@ -38,6 +36,7 @@
     "handlebars": "4.7.2",
     "handlebars-loader": "1.7.1",
     "jest": "24.9.0",
+    "mini-css-extract-plugin": "0.9.0",
     "prettier": "1.19.1",
     "sass": "1.25.0",
     "sass-loader": "8.0.2",

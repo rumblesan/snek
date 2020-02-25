@@ -1,6 +1,7 @@
 /* global require, module, __dirname */
 
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, 'src/app.js'),
@@ -8,29 +9,24 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'app.js',
   },
-  mode: 'production',
+  plugins: [new MiniCssExtractPlugin()],
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: [/node_modules/, /codemirror/],
+        exclude: [
+          path.resolve(__dirname, 'node_modules'),
+          path.resolve(__dirname, 'codemirror'),
+        ],
         loader: 'babel-loader',
         options: {
-          presets: [['@babel/preset-env']],
+          presets: ['@babel/preset-env'],
         },
       },
       { test: /\.handlebars$/, loader: 'handlebars-loader' },
-      { test: /\.css$/, loader: 'style-loader!css-loader' },
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          // Creates `style` nodes from JS strings
-          'style-loader',
-          // Translates CSS into CommonJS
-          'css-loader',
-          // Compiles Sass to CSS
-          'sass-loader',
-        ],
+        test: /\.(sa|sc|c)ss$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       {
         test: /\.html$|\.ico$/,
