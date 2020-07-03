@@ -26,8 +26,13 @@ CodeMirror.defineMode('snek', function() {
         return checkPeriod(stream, state);
       case '(':
       case ')':
+      case '[':
+      case ']':
         stream.next();
         return 'bracket';
+      case '=':
+        stream.next();
+        return 'keyword';
       default:
       // fallthrough
     }
