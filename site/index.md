@@ -16,7 +16,7 @@ The aesthetic is heavily [hydra](https://hydra-editor.glitch.me/) influenced. Pr
 
 ## Language
 
-The [Language](docs/language) document should hopefully detail everything, though it's liable to be out of date as I hack on things.
+The [Language](language) document should hopefully detail everything, though it's liable to be out of date as I hack on things.
 
 
 ## Technical Details
