@@ -1,0 +1,32 @@
+---
+layout: base.njk
+---
+<h3>Functions</h3>
+<ul>
+{%- for item in builtindata.functions %}
+<li>
+    <ul>
+      <li>{{ item.name }}</li>
+      <li>{{ item.args }}</li>
+    </ul>
+  </li>
+{% endfor -%}
+</ul>
+
+<h3>Ops</h3>
+<ul>
+{%- for item in builtindata.ops %}
+  <li>
+    {{ item.name }}
+  </li>
+{% endfor -%}
+</ul>
+
+<h3>Busses</h3>
+<ul>
+{%- for item in builtindata.busses %}
+  <li>
+    {{ item.name }}
+  </li>
+{% endfor -%}
+</ul>

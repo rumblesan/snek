@@ -4,8 +4,9 @@
   "description": "An experiment in creating a custom language for hydra like live-coding.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run build:snek && npm run build:site",
+    "build": "npm run build:builtindata && npm run build:snek && npm run build:site",
     "start": "npm run start:snek",
+    "build:builtindata": "babel-node ./scripts/builtindata.js site/_data/builtindata.json",
     "build:snek": "webpack --mode production",
     "build:site": "npx @11ty/eleventy",
     "start:snek": "webpack-dev-server --mode development",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@11ty/eleventy": "^0.11.0",
     "@babel/core": "^7.10.4",
+    "@babel/node": "^7.12.6",
     "@babel/polyfill": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
     "babel-eslint": "^10.1.0",
