@@ -31,7 +31,8 @@ In this slightly larger example
 ```snek
 position.y -> osc(3).xy >> mod;
 
-position -> modulate(mod) -> repeat(time / 8, 3, 0.1, 1.1) -> rotate(5).x -> osc(5, 0.1, mod.g) >> out;
+position -> modulate(mod) -> repeat(time / 8, 3, 0.1, 1.1)
+    -> rotate(5).x -> osc(5, 0.1, mod.g) >> out;
 ```
 
 A user bus called `mod` is created which then gets used twice on the second line. This bus has 2 channels, because when it's created on the first line, only the `x` and `y` channels of the `osc` function output are sent to it.
