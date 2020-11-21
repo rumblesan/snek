@@ -49,6 +49,17 @@ export function typeToString(type) {
       return 'generic';
     case FLOAT:
       return 'float';
+    case VEC:
+      return `vec${type.count}`;
+  }
+}
+
+export function typeToName(type) {
+  switch (type.type) {
+    case GENERIC:
+      return 'generic';
+    case FLOAT:
+      return 'float';
     case INPUT:
       return 'input';
     case VEC:
