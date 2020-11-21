@@ -113,3 +113,11 @@ section.content h5,
 section.content h6 {
   color: #cb4b16;
 }
+
+.pane {
+  border-radius: 3px;
+  padding: 5px;
+  background-color: #073642;
+  color: #268bd2;
+  margin: 10px;
+}

@@ -1,32 +1,42 @@
 ---
 layout: base.njk
 ---
-<h3>Functions</h3>
-<ul>
+<h2>Functions</h3>
 {%- for item in builtindata.functions %}
-<li>
+<div class="pane">
+  <h3>{{ item.name }}</h3>
+  <p></p>
+  <h4>Arguments</h4>
     <ul>
-      <li>{{ item.name }}</li>
-      <li>{{ item.args }}</li>
+    {%- for arg in item.args %}
+    <li><strong>{{ arg.name }}</strong> - {{ arg.type }}. Default {{ arg.default }}</li>
+    {% endfor -%}
     </ul>
-  </li>
+  <h4>Output</h4>
+  <p>{{ item.output }}</p>
+</div>
 {% endfor -%}
-</ul>
 
-<h3>Ops</h3>
-<ul>
+<hr \>
+
+<h2>Ops</h2>
 {%- for item in builtindata.ops %}
-  <li>
-    {{ item.name }}
-  </li>
+<div class="pane">
+  <h3>{{ item.name }}</h3>
+  <p>Left: {{ item.left }}</p>
+  <p>Right: {{ item.right }}</p>
+  <p>Output: {{ item.output }}</p>
+</div>
 {% endfor -%}
-</ul>
 
-<h3>Busses</h3>
-<ul>
+<hr \>
+
+<h2>Busses</h2>
 {%- for item in builtindata.busses %}
-  <li>
-    {{ item.name }}
-  </li>
+<div class="pane">
+  <h3>{{ item.name }}</h3>
+  <p>Type: {{ item.type }}</p>
+  <p>Channels: {{ item.channels }}</p>
+  <p>Direction: {{ item.direction }}</p>
+</div>
 {% endfor -%}
-</ul>
