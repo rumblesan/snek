@@ -49,8 +49,10 @@ export function typeToString(type) {
       return 'generic';
     case FLOAT:
       return 'float';
+    case INPUT:
+      return 'input';
     case VEC:
-      return `vec${type.count}`;
+      return `vec${type.count}<${typeToString(type.dataType)}>`;
   }
 }
 
