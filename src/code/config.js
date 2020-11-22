@@ -5,7 +5,13 @@ const defaultConfig = {
   lineNumbers: false,
   theme: 'snek',
   performanceMode: false,
-  program: 'position.x -> osc(5) >> out;',
+  program: `
+position.y -> osc(3).rg >> mod;
+
+time -> osc(0.2).yz -> rotate(2) >> mod2;
+
+position -> modulate(mod) -> repeat(time / 8, 3, 1, 1.1)
+    -> rotate(mod2.r * 10).x -> osc(5, mod2.g / 10, mod.g) >> out;`,
 };
 
 export function getConfig() {
