@@ -20,6 +20,8 @@ The [Language](/site/language) document should hopefully detail everything, thou
 
 The [Builtins](/site/builtins) document lists all the built in functions, operators and buses.
 
+The [Todo](/site/todo) document covers things that are half completed or not yet started.
+
 
 ## Technical Details
 
