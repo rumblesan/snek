@@ -18,6 +18,8 @@ The aesthetic is heavily [hydra](https://hydra-editor.glitch.me/) influenced. Pr
 
 The [Language](/site/language) document should hopefully detail everything, though it's liable to be out of date as I hack on things.
 
+The [Builtins](/site/builtins) document lists all the built in functions, operators and buses.
+
 
 ## Technical Details
 
