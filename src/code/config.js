@@ -3,7 +3,7 @@ import { decodeProgram } from './encoder';
 const defaultConfig = {
   keyMap: 'default',
   lineNumbers: false,
-  theme: 'snek',
+  theme: 'rumblesan',
   performanceMode: false,
   program: `
 position.y -> osc(3).rg >> mod;
