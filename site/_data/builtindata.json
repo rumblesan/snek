@@ -1,1 +1,89 @@
-{"functions":[{"name":"osc","args":[{"name":"frequency","type":"float","default":"60 ->"},{"name":"sync","type":"float","default":"0.1 ->"},{"name":"offset","type":"float","default":"0 ->"}],"output":"vec4<float>"},{"name":"repeat","args":[{"name":"repeatX","type":"float","default":"3 ->"},{"name":"repeatY","type":"float","default":"3 ->"},{"name":"offsetX","type":"float","default":"0 ->"},{"name":"offsetY","type":"float","default":"0 ->"}],"output":"vec2<float>"},{"name":"mult","args":[{"name":"mult","type":"float","default":"1 ->"}],"output":"input"},{"name":"rotate","args":[{"name":"angle","type":"float","default":"time ->"}],"output":"vec2<float>"},{"name":"modulate","args":[{"name":"modulator","type":"vec2<float>"},{"name":"amount","type":"float","default":"0.1 ->"}],"output":"vec2<float>"},{"name":"pixelate","args":[{"name":"pixelX","type":"float","default":"20 ->"},{"name":"pixelY","type":"float","default":"20 ->"}],"output":"vec2<float>"},{"name":"posterize","args":[{"name":"bins","type":"float","default":"3 ->"},{"name":"gamma","type":"float","default":"0.6 ->"}],"output":"vec4<float>"},{"name":"shift","args":[{"name":"r","type":"float","default":"0.5 ->"},{"name":"g","type":"float","default":"0 ->"},{"name":"b","type":"float","default":"0 ->"},{"name":"a","type":"float","default":"0 ->"}],"output":"vec4<float>"}],"ops":[{"name":"+","left":"float","right":"float","output":"float"},{"name":"-","left":"float","right":"float","output":"float"},{"name":"/","left":"float","right":"float","output":"float"},{"name":"*","left":"float","right":"float","output":"float"},{"name":"%","left":"float","right":"float","output":"float"}],"busses":[{"name":"position","type":"vec2<float>","channels":"x, y","direction":"input"},{"name":"out","type":"vec4<float>","channels":"x, y, z, w","direction":"output"},{"name":"time","type":"float","channels":"","direction":"input"}]}
+{
+  "functions": [
+    {
+      "name": "osc",
+      "args": [
+        { "name": "frequency", "type": "float", "default": "60 ->" },
+        { "name": "sync", "type": "float", "default": "0.1 ->" },
+        { "name": "offset", "type": "float", "default": "0 ->" }
+      ],
+      "output": "vec4<float>"
+    },
+    {
+      "name": "repeat",
+      "args": [
+        { "name": "repeatX", "type": "float", "default": "3 ->" },
+        { "name": "repeatY", "type": "float", "default": "3 ->" },
+        { "name": "offsetX", "type": "float", "default": "0 ->" },
+        { "name": "offsetY", "type": "float", "default": "0 ->" }
+      ],
+      "output": "vec2<float>"
+    },
+    {
+      "name": "mult",
+      "args": [{ "name": "mult", "type": "float", "default": "1 ->" }],
+      "output": "input"
+    },
+    {
+      "name": "rotate",
+      "args": [{ "name": "angle", "type": "float", "default": "time ->" }],
+      "output": "vec2<float>"
+    },
+    {
+      "name": "modulate",
+      "args": [
+        { "name": "modulator", "type": "vec2<float>" },
+        { "name": "amount", "type": "float", "default": "0.1 ->" }
+      ],
+      "output": "vec2<float>"
+    },
+    {
+      "name": "pixelate",
+      "args": [
+        { "name": "pixelX", "type": "float", "default": "20 ->" },
+        { "name": "pixelY", "type": "float", "default": "20 ->" }
+      ],
+      "output": "vec2<float>"
+    },
+    {
+      "name": "posterize",
+      "args": [
+        { "name": "bins", "type": "float", "default": "3 ->" },
+        { "name": "gamma", "type": "float", "default": "0.6 ->" }
+      ],
+      "output": "vec4<float>"
+    },
+    {
+      "name": "shift",
+      "args": [
+        { "name": "r", "type": "float", "default": "0.5 ->" },
+        { "name": "g", "type": "float", "default": "0 ->" },
+        { "name": "b", "type": "float", "default": "0 ->" },
+        { "name": "a", "type": "float", "default": "0 ->" }
+      ],
+      "output": "vec4<float>"
+    }
+  ],
+  "ops": [
+    { "name": "+", "left": "float", "right": "float", "output": "float" },
+    { "name": "-", "left": "float", "right": "float", "output": "float" },
+    { "name": "/", "left": "float", "right": "float", "output": "float" },
+    { "name": "*", "left": "float", "right": "float", "output": "float" },
+    { "name": "%", "left": "float", "right": "float", "output": "float" }
+  ],
+  "busses": [
+    {
+      "name": "position",
+      "type": "vec2<float>",
+      "channels": "x, y",
+      "direction": "input"
+    },
+    {
+      "name": "out",
+      "type": "vec4<float>",
+      "channels": "x, y, z, w",
+      "direction": "output"
+    },
+    { "name": "time", "type": "float", "channels": "", "direction": "input" }
+  ]
+}

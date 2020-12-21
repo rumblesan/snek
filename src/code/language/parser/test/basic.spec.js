@@ -20,8 +20,8 @@ import { dedent } from 'dentist';
 
 import assert from 'assert';
 
-describe('Parser', function() {
-  it('parses a simple patch', function() {
+describe('Parser', function () {
+  it('parses a simple patch', function () {
     const program = dedent(`
                            position.x + 1 -> osc(10) >> speed;
                            `);
@@ -48,7 +48,7 @@ describe('Parser', function() {
     assert.deepEqual(ast, expected);
   });
 
-  it('parses a patch with a subpatch', function() {
+  it('parses a patch with a subpatch', function () {
     const program = dedent(`
                            position->(in => in.x->osc(10)) >> out;
                            `);
@@ -75,7 +75,7 @@ describe('Parser', function() {
     assert.deepEqual(ast, expected);
   });
 
-  it('parses a chain of functions', function() {
+  it('parses a chain of functions', function () {
     const program = dedent(`
                            position.x -> rotate(3) -> osc(10) -> invert() >> speed;
                            `);

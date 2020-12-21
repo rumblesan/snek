@@ -24,7 +24,7 @@ export class EventBus {
   }
 
   emit(eventName, ...args) {
-    this._getEventListeners(eventName).forEach(cb => {
+    this._getEventListeners(eventName).forEach((cb) => {
       cb(...args);
     });
     return this;

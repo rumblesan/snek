@@ -1,6 +1,6 @@
 export class UI {
   constructor(eventBus) {
-    eventBus.on('display-error', err => this.displayError(err));
+    eventBus.on('display-error', (err) => this.displayError(err));
     eventBus.on('clear-error', () => this.clearError());
     eventBus.on('clear-error', () => this.clearError());
   }

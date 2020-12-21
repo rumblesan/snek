@@ -22,13 +22,13 @@ import {
 
 function CheckerState(busses, functions, operators) {
   const busDict = {};
-  busses.forEach(b => (busDict[b.id] = b));
+  busses.forEach((b) => (busDict[b.id] = b));
 
   const funcDict = {};
-  functions.forEach(f => (funcDict[f.name] = f));
+  functions.forEach((f) => (funcDict[f.name] = f));
 
   const opDict = {};
-  operators.forEach(o => (opDict[o.id] = o));
+  operators.forEach((o) => (opDict[o.id] = o));
 
   return {
     busses: busDict,
@@ -83,7 +83,7 @@ export function typeCheck(ast, busses = [], functions = [], ops = []) {
 
 function typeCheckProgram(ast, state) {
   const result = { ast: null, errors: [] };
-  ast.routings.forEach(routing => {
+  ast.routings.forEach((routing) => {
     try {
       typeCheckRouting(routing, state);
     } catch (err) {
@@ -171,7 +171,7 @@ function typeCheckSource(ast, state) {
 
 function typeCheckFunction(ast, inputAst, state) {
   const funcTypes = state.functions[ast.name];
-  ast.args.forEach(a => typeCheckSignal(a, state));
+  ast.args.forEach((a) => typeCheckSignal(a, state));
   if (!typesMatch(funcTypes.inputType, inputAst.type)) {
     throw new IncorrectPatchTypeException(funcTypes, inputAst, ast);
   }
@@ -244,7 +244,7 @@ function typeCheckAccessor(ast, inputType, state) {
     );
   }
 
-  ast.channels.every(c => {
+  ast.channels.every((c) => {
     if (channelNumbers[c.name] > sourceType.count - 1) {
       throw new InvalidAccessorException(
         `${c.name} is not available on a signal with only ${sourceType.count} channels`,

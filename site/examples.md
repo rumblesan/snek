@@ -6,7 +6,6 @@ layout: base.njk
 
 Some larger examples.
 
-
 ```snek
 position.y -> osc(3) -> mult(30).xy >> mod;
 

@@ -7,8 +7,8 @@ import { dedent } from 'dentist';
 
 import assert from 'assert';
 
-describe('Language', function() {
-  it('compiles a simple patch to a fragment shader', function() {
+describe('Language', function () {
+  it('compiles a simple patch to a fragment shader', function () {
     const program = dedent(`
                            position.x + 1 -> osc(10) >> out;
                            `);
@@ -31,7 +31,7 @@ void main() {
     assert.deepEqual(result.code, expected);
   });
 
-  it('compiles a patch with generic functions', function() {
+  it('compiles a patch with generic functions', function () {
     const program = dedent(`
                            position.x -> osc(10) -> mult(0.3) >> out;
                            `);
@@ -55,7 +55,7 @@ void main() {
     assert.deepEqual(result.code, expected);
   });
 
-  it('compiles a patch with multi channel accessors', function() {
+  it('compiles a patch with multi channel accessors', function () {
     const program = dedent(`
                            position.yx -> rotate(10, position.y->osc(1).r).y -> osc(4) >> out;
                            `);

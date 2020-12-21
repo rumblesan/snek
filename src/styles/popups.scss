@@ -22,7 +22,8 @@
     border: 3px solid solarized.$base02;
   }
 
-  h3, h4 {
+  h3,
+  h4 {
     color: solarized.$cyan;
     font-weight: bold;
     &.error {

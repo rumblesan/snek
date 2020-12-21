@@ -9,7 +9,7 @@ import { busTypes, busCompileTargets } from './builtins/busses';
 export function codeToFrag(snekCode) {
   const errors = [];
   const parseResult = Parser.parse(snekCode);
-  parseResult.errors.forEach(err => errors.push(err));
+  parseResult.errors.forEach((err) => errors.push(err));
 
   if (!parseResult.ast) {
     return { errors };
@@ -21,7 +21,7 @@ export function codeToFrag(snekCode) {
     funcTypes,
     opTypes
   );
-  typeCheckResult.errors.forEach(err => errors.push(err));
+  typeCheckResult.errors.forEach((err) => errors.push(err));
   if (!typeCheckResult.ast) {
     return { errors };
   }
@@ -31,7 +31,7 @@ export function codeToFrag(snekCode) {
     busCompileTargets,
     funcCompileTargets
   );
-  compileResult.errors.forEach(err => errors.push(err));
+  compileResult.errors.forEach((err) => errors.push(err));
   return {
     code: compileResult.code,
     errors,

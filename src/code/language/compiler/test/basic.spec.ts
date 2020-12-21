@@ -15,8 +15,8 @@ import { dedent } from 'dentist';
 
 import assert from 'assert';
 
-describe('Compiler', function() {
-  it('compiles a simple patch', function() {
+describe('Compiler', function () {
+  it('compiles a simple patch', function () {
     const program = dedent(`
                            position.x + 1 -> osc(10).w -> osc(4) >> out;
                            `);

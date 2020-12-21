@@ -21,10 +21,10 @@ export class CompilerException extends Error {
 
 function CompilerState(busses, functions) {
   const funcDict = {};
-  functions.forEach(f => (funcDict[f.name] = f));
+  functions.forEach((f) => (funcDict[f.name] = f));
 
   const busDict = {};
-  busses.forEach(b => (busDict[b.name] = b));
+  busses.forEach((b) => (busDict[b.name] = b));
 
   return {
     busses: busDict,
@@ -89,19 +89,19 @@ function compileProgram(ast, state) {
   const programCode = [];
 
   const builtInBusCode = Object.values(state.busses)
-    .filter(b => b.direction === 'input')
-    .map(b => `${b.glslType} ${typeToString(b.type)} ${b.glslName};`)
+    .filter((b) => b.direction === 'input')
+    .map((b) => `${b.glslType} ${typeToString(b.type)} ${b.glslName};`)
     .join('\n');
 
-  ast.routings.forEach(routing => {
+  ast.routings.forEach((routing) => {
     const output = compileRouting(routing, state);
     Object.values(output.usedBuiltIns).forEach(
-      ub => (usedBuiltIns[ub.name] = ub)
+      (ub) => (usedBuiltIns[ub.name] = ub)
     );
     programCode.push(output.programCode);
   });
 
-  const builtInFuncCode = Object.values(usedBuiltIns).map(ub => ub.body);
+  const builtInFuncCode = Object.values(usedBuiltIns).map((ub) => ub.body);
 
   const mainBody = dedent(`
 precision mediump float;
@@ -194,7 +194,7 @@ function compilePatch(ast, state) {
       break;
   }
   Object.keys(output.usedBuiltIns).forEach(
-    name => (usedBuiltIns[name] = output.usedBuiltIns[name])
+    (name) => (usedBuiltIns[name] = output.usedBuiltIns[name])
   );
   return compiledCode(usedBuiltIns, output.programCode);
 }
@@ -217,9 +217,9 @@ function compileFunction(ast, inputAst, signalInputCode, state) {
     [usedFuncName]: { name: usedFuncName, body: funcBody },
   };
   const argCode = [signalInputCode];
-  ast.args.forEach(arg => {
+  ast.args.forEach((arg) => {
     const output = compileSignal(arg, state);
-    Object.values(output.usedBuiltIns).forEach(ub => (usedBuiltIns[ub] = ub));
+    Object.values(output.usedBuiltIns).forEach((ub) => (usedBuiltIns[ub] = ub));
     argCode.push(output.programCode);
   });
   const funcCode = `${usedFuncName}(${argCode.join(', ')})`;
@@ -255,7 +255,7 @@ const channelAliases = {
 
 function compileSourceAccessor(ast, state) {
   const sourceCode = compileBus(ast.source, state);
-  const channelCode = ast.channels.map(c => channelAliases[c.name]).join('');
+  const channelCode = ast.channels.map((c) => channelAliases[c.name]).join('');
   return simpleCode(`${sourceCode.programCode}.${channelCode}`);
 }
 
@@ -279,7 +279,7 @@ function compilePatchAccessor(ast, inputAst, signalInputCode, state) {
       );
       break;
   }
-  const channelCode = ast.channels.map(c => channelAliases[c.name]).join('');
+  const channelCode = ast.channels.map((c) => channelAliases[c.name]).join('');
   return compiledCode(
     sourceCode.usedBuiltIns,
     `${sourceCode.programCode}.${channelCode}`

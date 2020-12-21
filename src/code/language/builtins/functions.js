@@ -153,21 +153,21 @@ export const glslFuncs = {
   },
 };
 
-export const funcTypes = Object.keys(glslFuncs).map(name => {
+export const funcTypes = Object.keys(glslFuncs).map((name) => {
   const info = glslFuncs[name];
   return FunctionType(
     name,
     info.inputType,
-    info.args.map(a => a.type),
+    info.args.map((a) => a.type),
     info.returnType
   );
 });
 
-export const funcCompileTargets = Object.keys(glslFuncs).map(name => {
+export const funcCompileTargets = Object.keys(glslFuncs).map((name) => {
   const info = glslFuncs[name];
   return BuiltInFunction(
     name,
-    info.args.map(a => a.default),
+    info.args.map((a) => a.default),
     isGeneric(info.inputType),
     info.code
   );

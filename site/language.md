@@ -22,6 +22,7 @@ In the following code
 ```snek
 position.x -> osc(5) >> out;
 ```
+
 The signal on the `x` channel of the `position` bus is transformed by the `osc` function (which is given a value of `5` for its frequency argument) and then routed that to the `out` bus.
 
 There's quite a few things going on here so let's break it down.
@@ -30,7 +31,7 @@ The `position` bus has two channels, x and y, and we can use the `.` followed by
 
 The `osc` function expects a single channel routed into it, and uses this to create an oscillating signal out, with the argument we give it defining the frequency of that oscillator.
 
-The output from the oscillator function is actually a four channel signal, which we route to the `out` bus to be used as *rgba* colour information which results in a black and white oscillator across the X axis.
+The output from the oscillator function is actually a four channel signal, which we route to the `out` bus to be used as _rgba_ colour information which results in a black and white oscillator across the X axis.
 
 ## Basic Syntax
 
@@ -46,10 +47,10 @@ The semicolon, `;`, is used to define the end of a routing from one bus to anoth
 
 When splitting channels out of a signal, the characters `r`, `g`, `b`, `a`, `x`, `y`, `z` and `w` can all be used and combined freely.
 
-* `r` and `x` will get the first channel.
-* `g` and `y` will get the second channel.
-* `b` and `z` will get the third channel.
-* `a` and `w` will get the fourth channel.
+- `r` and `x` will get the first channel.
+- `g` and `y` will get the second channel.
+- `b` and `z` will get the third channel.
+- `a` and `w` will get the fourth channel.
 
 This can be used to switch the order of channels in a signal, as well as duplicate them,.
 
@@ -58,7 +59,6 @@ position.x -> osc(5).bryy >> out;
 ```
 
 The above code will take the four channel signal output from the `osc` function and then combine the third, first, third, and a duplicate third channel together.
-
 
 ## Additional Functions
 
@@ -78,7 +78,7 @@ Signals can be passed to functions as arguments, just like numbers can.
 position.x -> osc(5) -> shift(0.1, 0.2, position.y, 0) >> out;
 ```
 
-Here you should see an offset for the blue colour in the *y* axis, but it's quite static, so let's make that signal an oscillator.
+Here you should see an offset for the blue colour in the _y_ axis, but it's quite static, so let's make that signal an oscillator.
 
 ```snek
 position.x -> osc(5) -> shift(0.1, 0.2, position.y -> osc(6).r, 0) >> out;

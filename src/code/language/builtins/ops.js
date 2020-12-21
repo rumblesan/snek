@@ -34,7 +34,7 @@ export const glslOps = {
   },
 };
 
-export const opTypes = Object.keys(glslOps).map(op => {
+export const opTypes = Object.keys(glslOps).map((op) => {
   const info = glslOps[op];
   return OperatorType(
     op,

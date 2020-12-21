@@ -2,7 +2,7 @@
 
 import { tokenIdentifiers } from '../language/parser/lexer';
 
-CodeMirror.defineMode('snek', function() {
+CodeMirror.defineMode('snek', function () {
   const ERRORCLASS = 'error';
 
   const identifierRe = tokenIdentifiers.identifier.regexp;
@@ -81,7 +81,7 @@ CodeMirror.defineMode('snek', function() {
   }
 
   return {
-    startState: function() {
+    startState: function () {
       return {
         parsingChannel: false,
       };

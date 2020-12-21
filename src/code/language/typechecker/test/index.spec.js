@@ -22,8 +22,8 @@ import { dedent } from 'dentist';
 
 import assert from 'assert';
 
-describe('Type Checker', function() {
-  it('typechecks a simple patch', function() {
+describe('Type Checker', function () {
+  it('typechecks a simple patch', function () {
     const program = dedent(`
                            position.x + 1 -> osc(10) >> speed;
                            `);
@@ -64,7 +64,7 @@ describe('Type Checker', function() {
     assert.deepEqual(ast, expected);
   });
 
-  it('type checks a chain of functions', function() {
+  it('type checks a chain of functions', function () {
     const program = dedent(`
                            position.x -> osc(10) -> invert() -> modulate(position.y -> osc(1)) >> out;
                            `);
@@ -139,7 +139,7 @@ describe('Type Checker', function() {
     assert.deepEqual(ast, expected);
   });
 
-  it('typechecks a generic function', function() {
+  it('typechecks a generic function', function () {
     const program = dedent(`
                            position.x -> osc(10) -> invert() >> speed;
                            `);
@@ -183,7 +183,7 @@ describe('Type Checker', function() {
     assert.deepEqual(ast, expected);
   });
 
-  it('typechecks an internal bus', function() {
+  it('typechecks an internal bus', function () {
     const program = dedent(`
                            position.x -> osc(10) >> foo;
                            foo.w -> osc(2) >> out;
@@ -230,7 +230,7 @@ describe('Type Checker', function() {
     assert.deepEqual(ast, expected);
   });
 
-  it('typechecks an accessor on a function call', function() {
+  it('typechecks an accessor on a function call', function () {
     const program = dedent(`
                            position.x -> osc(10).x -> osc(4) >> speed;
                            `);

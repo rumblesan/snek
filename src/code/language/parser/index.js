@@ -28,15 +28,15 @@ const BinaryOpConstructor = (opToken, value1Ast, value2Ast) => {
 
 const parser = new Parser();
 
-parser.parse = function(program, options = {}) {
+parser.parse = function (program, options = {}) {
   this.debugLog('With Debugging');
   const errors = [];
   const lexResult = lexer.tokenize(program);
-  lexResult.errors.forEach(err => errors.push(err));
+  lexResult.errors.forEach((err) => errors.push(err));
 
   this.initialize(lexResult.tokens, options);
   const parseResult = this.program();
-  parseResult.errors.forEach(err => errors.push(err));
+  parseResult.errors.forEach((err) => errors.push(err));
 
   return {
     ast: parseResult.ast,
@@ -44,7 +44,7 @@ parser.parse = function(program, options = {}) {
   };
 };
 
-parser.program = function() {
+parser.program = function () {
   const routings = [];
   const errors = [];
   while (!this.eof()) {
@@ -65,7 +65,7 @@ parser.program = function() {
   };
 };
 
-parser.routing = function() {
+parser.routing = function () {
   this.debugLog('Routing');
   const position = this.position();
   const signal = this.signal();
@@ -76,7 +76,7 @@ parser.routing = function() {
   return ast.Routing(signal, bus, position);
 };
 
-parser.signal = function() {
+parser.signal = function () {
   this.debugLog('Signal');
   const position = this.position();
   let source = this.source();
@@ -88,7 +88,7 @@ parser.signal = function() {
   return source;
 };
 
-parser.source = function() {
+parser.source = function () {
   this.debugLog('Source');
   const position = this.position();
   let src = this.baseSource();
@@ -98,7 +98,7 @@ parser.source = function() {
   return ast.Source(src, undefined, position);
 };
 
-parser.baseSource = function() {
+parser.baseSource = function () {
   this.debugLog('Base Source');
   const position = this.position();
   if (this.la1('number')) {
@@ -110,7 +110,7 @@ parser.baseSource = function() {
       const channelPosition = this.position();
       const channels = this.match('identifier')
         .content.split('')
-        .map(c => ast.Channel(c, channelPosition));
+        .map((c) => ast.Channel(c, channelPosition));
       return ast.Accessor(bus, channels, undefined, position);
     }
     return bus;
@@ -122,7 +122,7 @@ parser.baseSource = function() {
   }
 };
 
-parser.func = function() {
+parser.func = function () {
   this.debugLog('Function');
   if (this.la1('open paren')) {
     this.match('open paren');
@@ -152,13 +152,13 @@ parser.func = function() {
     const channelPosition = this.position();
     const channels = this.match('identifier')
       .content.split('')
-      .map(c => ast.Channel(c, channelPosition));
+      .map((c) => ast.Channel(c, channelPosition));
     return ast.Accessor(func, channels, undefined, position);
   }
   return func;
 };
 
-parser.operator = function(left) {
+parser.operator = function (left) {
   this.debugLog('Operator');
   const shunter = new ArithmaticShunter(operatorPrecedences, {
     astConstructor: BinaryOpConstructor,
@@ -174,7 +174,7 @@ parser.operator = function(left) {
   return shunter.getOutput();
 };
 
-parser.argList = function() {
+parser.argList = function () {
   const args = [];
   if (this.la1('close paren')) {
     this.debugLog('argList: 0 args');
@@ -189,7 +189,7 @@ parser.argList = function() {
   return args;
 };
 
-parser.bus = function() {
+parser.bus = function () {
   const position = this.position();
   const busName = this.match('identifier').content;
   this.debugLog(`parsed Bus: ${busName}`);

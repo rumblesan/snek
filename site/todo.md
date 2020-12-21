@@ -6,7 +6,7 @@ layout: base.njk
 
 ## SubPatches
 
-The parser has support for *SubPatches* though the type checker currently doesn't.
+The parser has support for _SubPatches_ though the type checker currently doesn't.
 
 ```snek
 position->(in => in.x->osc(10)) >> out;

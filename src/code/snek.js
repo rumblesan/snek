@@ -12,7 +12,7 @@ export class Snek {
     };
 
     this.editor = CodeMirror(
-      el => {
+      (el) => {
         document.querySelector('body').appendChild(el);
       },
       {
@@ -24,10 +24,10 @@ export class Snek {
         autofocus: true,
         gutters: ['CodeMirror-lint-markers'],
         lint: {
-          getAnnotations: text => {
+          getAnnotations: (text) => {
             const { errors } = lint(text);
 
-            return errors.map(err => ({
+            return errors.map((err) => ({
               from: CodeMirror.Pos(err.line - 1, err.character - 1),
               to: CodeMirror.Pos(err.line - 1, err.character - 1 + err.length),
               message: err.message,
@@ -89,7 +89,7 @@ export class Snek {
       },
 
       uniforms: {
-        u_time: args => 0.01 * args.tick,
+        u_time: (args) => 0.01 * args.tick,
       },
 
       count: 3,

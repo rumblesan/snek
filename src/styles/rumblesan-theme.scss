@@ -11,7 +11,6 @@ $cursor-color: #fff;
  * otherwise there are wierd bugs with highlighted code backgrounds
  * */
 .cm-s-rumblesan {
-
   &.CodeMirror {
     background: transparent;
   }
@@ -104,5 +103,4 @@ $cursor-color: #fff;
     font-weight: bold;
     color: solarized.$red;
   }
-
 }

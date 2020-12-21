@@ -26,12 +26,12 @@ export const glslBusses = {
   },
 };
 
-export const busTypes = Object.keys(glslBusses).map(name => {
+export const busTypes = Object.keys(glslBusses).map((name) => {
   const info = glslBusses[name];
   return BusType(name, info.type, info.channels);
 });
 
-export const busCompileTargets = Object.keys(glslBusses).map(name => {
+export const busCompileTargets = Object.keys(glslBusses).map((name) => {
   const info = glslBusses[name];
   return BuiltInBus(
     name,
