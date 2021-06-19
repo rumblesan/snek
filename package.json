@@ -21,7 +21,7 @@
     "url": "https://github.com/rumblesan/snek"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^0.11.0",
+    "@11ty/eleventy": "^0.12.1",
     "@babel/core": "^7.10.4",
     "@babel/node": "^7.12.6",
     "@babel/polyfill": "^7.10.4",
@@ -35,21 +35,21 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "file-loader": "^6.0.0",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "handlebars-loader": "^1.7.1",
     "jest": "^26.1.0",
-    "mini-css-extract-plugin": "^0.9.0",
+    "mini-css-extract-plugin": "^1.6.0",
     "prettier": "^2.0.5",
     "sass": "^1.26.9",
     "sass-loader": "^9.0.1",
     "source-map-loader": "^1.0.1",
     "style-loader": "^1.2.1",
-    "webpack": "4.43.0",
-    "webpack-cli": "3.3.12",
-    "webpack-dev-server": "3.11.0"
+    "webpack": "^4.46.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@rumblesan/virgil": "0.0.4",
+    "@rumblesan/virgil": "0.0.8",
     "dentist": "^1.0.3",
     "regl": "^1.6.1"
   },
